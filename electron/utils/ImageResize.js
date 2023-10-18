@@ -1,14 +1,11 @@
-const { ipcMain } = require("electron");
+let resultPicData = "";
 
-// 图片裁剪
+// 图片调整大小
 var Jimp = require("jimp");
 const Crypto = require("crypto");
 const os = require("os");
 const fs = require("fs-extra");
 const path = require("path");
-const utils = require("./ImageToHexArray");
-
-let resultPicData = "";
 
 const imgEditorHandle = async (width, height, picData) => {
   // console.info('图片：', picData)
@@ -46,13 +43,6 @@ const imgEditorHandle = async (width, height, picData) => {
   });
 };
 
-ipcMain.handle("pic-data-editor", async (event, width, height, picData) => {
-  imgEditorHandle(width, height, picData);
-  await new Promise((resolve) => setTimeout(resolve, 700));
-  return resultPicData;
-});
+module.exports.getResultData = () => resultPicData
 
-ipcMain.handle("pic-data-parse", async (event, data, ...configArray) => {
-  const result = await utils.ImageToHexArray.generate(data, configArray)
-  return result
-});
+module.exports.imageResize = imgEditorHandle
