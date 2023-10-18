@@ -3,7 +3,6 @@ import { onMounted, ref, onUnmounted } from 'vue'
 // const { ipcRenderer } = require('electron')
 // import os from 'os'
 const win = window as any
-defineProps<{ title?: string }>()
 
 // let isMac = ref<boolean>(os.platform() == 'darwin')
 
