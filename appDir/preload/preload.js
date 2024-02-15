@@ -1,1 +1,26 @@
-"use strict";const{contextBridge:t,ipcRenderer:n}=require("electron"),s=()=>{n.send("window-min")},c=()=>{n.send("window-max")},r=()=>{n.send("window-close")};t.exposeInMainWorld("myApi",{minimizeWindow:s,maximizeWindow:c,closeWindow:r});window.addEventListener("DOMContentLoaded",()=>{const i=(e,d)=>{const o=document.getElementById(e);o&&(o.innerText=d)};for(const e of["chrome","node","electron"])i(`${e}-version`,process.versions[e])});
+"use strict";
+const { contextBridge, ipcRenderer } = require("electron");
+const minimizeWindow = () => {
+  ipcRenderer.send("window-min");
+};
+const maximizeWindow = () => {
+  ipcRenderer.send("window-max");
+};
+const closeWindow = () => {
+  ipcRenderer.send("window-close");
+};
+contextBridge.exposeInMainWorld("myApi", {
+  minimizeWindow,
+  maximizeWindow,
+  closeWindow
+});
+window.addEventListener("DOMContentLoaded", () => {
+  const replaceText = (selector, text) => {
+    const element = document.getElementById(selector);
+    if (element)
+      element.innerText = text;
+  };
+  for (const dependency of ["chrome", "node", "electron"]) {
+    replaceText(`${dependency}-version`, process.versions[dependency]);
+  }
+});
