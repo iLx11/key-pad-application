@@ -9,7 +9,7 @@ import PopBox from '../components/PopBox.vue'
   <PopBox ref="popBoxRef" />
   <WindowTools />
   <div class="container">
-    
+    appContent
   </div>
 </template>
 
@@ -49,7 +49,7 @@ import PopBox from '../components/PopBox.vue'
   background: var(--content-box-color);
   color: var(--text-color-1);
   padding-bottom: 12px;
-  -webkit-app-region: drag;
+  // -webkit-app-region: drag;
 
 
   div {

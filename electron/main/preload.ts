@@ -15,25 +15,10 @@ const closeWindow = () => {
   ipcRenderer.send('window-close')
 }
 
-// 裁剪图片
-const resizeImage = async (resizeWidth, resizeHeight, editorPicData) => {
-  const data = await ipcRenderer.invoke('pic-data-editor', resizeWidth, resizeHeight, editorPicData)
-  return data
-}
-
-// 生成数据
-const generateResultArray = async ( picData, configArray0,  configArray1, configArray2, configArray3) => {
-  const data = ipcRenderer.invoke('pic-data-parse', picData, configArray0,  configArray1, configArray2, configArray3)
-  return data
-}
-
 contextBridge.exposeInMainWorld('myApi', {
-  // handleSend: handleSend
   minimizeWindow,
   maximizeWindow,
-  closeWindow,
-  resizeImage,
-  generateResultArray
+  closeWindow
 })
 // 所有的 Node.js API接口 都可以在 preload 进程中被调用.
 // 它拥有与Chrome扩展一样的沙盒。

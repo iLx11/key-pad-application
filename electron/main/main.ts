@@ -2,8 +2,11 @@
 const { app, protocol, BrowserWindow, globalShortcut } = require('electron')
 // 需在当前文件内开头引入 Node.js 的 'path' 模块
 const path = require('path')
-require('../controller/windowControl')
-// require('./EditorConfig')
+
+import windowControlListener from "../controller/windowControl";
+
+windowControlListener()
+
 app.commandLine.appendSwitch("--ignore-certificate-errors", "true");
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -32,10 +35,11 @@ const createWindow = () => {
             // webSecurity: false,
             // sandbox: false,
             nodeIntegration: true,
-            preload: path.join(__dirname, './preload.js'),
+            preload: path.join(__dirname, '../preload/preload.js'),
         }
     })
     win.setMenu(null)
+    // 如果打包，就渲染 index.html
     if (app.isPackaged) {
         win.loadURL(`file://${path.join(__dirname, '../../dist/index.html')}`)
         win.webContents.openDevTools()
@@ -52,14 +56,14 @@ const createWindow = () => {
 }
 
 app.whenReady().then(() => {
-
+    // 创建窗口
     createWindow()
-
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
 })
 
+// 关闭所有窗口
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
 })
