@@ -1,14 +1,32 @@
 <script setup lang="ts">
 import WindowTools from '../components/WindowTools.vue'
-import { onMounted, nextTick, ref, watch } from 'vue'
+import { onMounted, nextTick, ref, watch} from 'vue'
 import PopBox from '../components/PopBox.vue'
+import { useRouter } from 'vue-router';
+
+
+const router = useRouter();
+
+
+const win = window as any
+
+const createWindow = () => {
+console.log(router)
+console.log(router.currentRoute.value.path)
+  win.myApi.createNewWindow({
+    route: '/child',
+  }, {
+    width: 500,
+    height: 500
+  })
+}
 
 </script>
 
 <template>
   <PopBox ref="popBoxRef" />
   <WindowTools />
-  <div class="container">
+  <div class="container" @click="createWindow">
     appContent
   </div>
 </template>

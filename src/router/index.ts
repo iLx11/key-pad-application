@@ -1,19 +1,21 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomePage from '../window/HomePage.vue'
-import test from '../window/test.vue'
+import ChildPage from '../window/ChildPage.vue'
 
 const router = createRouter({
-  history: createWebHashHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
-      name: 'homePage',
-      component: HomePage
+      redirect: '/home'
     },
     {
-      path: '/test',
-      name: 'test',
-      component: test
+      path: '/home',
+      component: () => import('../window/HomePage.vue')
+    },
+    {
+      path: '/child',
+      component: () => import('../window/ChildPage.vue')
     }
   ]
 })

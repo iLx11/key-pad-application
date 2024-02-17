@@ -1,4 +1,5 @@
 {
+  "baseUrl": "./",
   "files": [],
   "references": [
     {
@@ -17,5 +18,6 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "electron/controller/**/*.ts",
-    "electron/main/**/*.ts", ]
+    "electron/main/**/*.ts", 
+    "electron/interface/**/*.ts"]
 }

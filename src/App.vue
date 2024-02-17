@@ -44,6 +44,7 @@ html, body, #app {
   height: 100%;
   overflow: hidden;
   font-family: "ceyy";
+  background: rgba(0, 0, 0, 0);
 }
 li {
   list-style : none;

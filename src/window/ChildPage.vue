@@ -1,14 +1,25 @@
 <script setup lang="ts">
 
+const win = window as any
+
+const createWindow = () => {
+  win.myApi.createNewWindow({
+    route: '/child1',
+  }, {
+    width: 300,
+    height: 300
+  })
+}
+
 </script>
 
 <template>
   <div class="container">
-    apptest
+    childPage
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #cover {
   width: 98%;
   height: 98%;
