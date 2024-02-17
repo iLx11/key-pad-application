@@ -23,6 +23,7 @@ export const windowControlListener = () => {
   ipcMain.on('window-close', (event) => {
     const webContent = event.sender
     const win = BrowserWindow.fromWebContents(webContent)
+    // delete CreateWindow.group[event.frameId - 1]
     win.close()
   })
 }

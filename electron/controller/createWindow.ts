@@ -14,8 +14,8 @@ interface IGroup {
 
 export default class CreateWindow {
   // 路由与主窗口标识
-  private static group: IGroup = []
-  // 主窗口
+  private public static group: IGroup = []
+  // 记录主窗口
   private static main: BrowserWindow | null | undefined = null
   // 窗口配置项
   private defaultConfig: IWindowConfig
@@ -38,7 +38,7 @@ export default class CreateWindow {
       isMultiWindow: false, //是否支持多开窗口 (如果为 false，当窗体存在，再次创建不会新建一个窗体 只 focus 显示即可，，如果为 true，即使窗体存在，也可以新建一个)
       isMainWin: false, //是否主窗口创建父子窗口 --(当为 true 时会替代当前主窗口)
       parentId: null, //父窗口 id   子窗口永远显示在父窗口顶部 【父窗口可以操作】
-      modal: false //模态窗口 -- 模态窗口是禁用父窗口的子窗口，创建模态窗口必须设置 parent 和 modal 选项 【父窗口不能操作】
+      modal: true //模态窗口 -- 模态窗口是禁用父窗口的子窗口，创建模态窗口必须设置 parent 和 modal 选项 【父窗口不能操作】
     }
     this.defaultOptions = {
       width: 900,
@@ -59,7 +59,13 @@ export default class CreateWindow {
       resizable: true,
       minimizable: true,
       maximizable: true,
+      /* 
+        【父窗口不能操作】
+         模态窗口 -- 模态窗口是禁用父窗口的子窗口，创
+         建模态窗口必须设置 parent 和 modal 选项
+      */
       modal: true,
+      parent: null,
       webPreferences: {
         // nodeIntegration: true,
         contextIsolation: true,
@@ -79,21 +85,31 @@ export default class CreateWindow {
 
   // 创建窗口
   public createWindow(configurations: object, options: object) {
-    console.info(CreateWindow.group)
+    // console.info(CreateWindow.group)
     // 判断是否有页面
-    if(CreateWindow.group.some(o => o.route === configurations.route)) {
-      console.info('window is created')
-      return 
-    };
+    let windowId: number = 0
+    if (
+      CreateWindow.group.some((o: object, i: number) => {
+        windowId = i
+        return o.route === configurations.route
+      })
+    ) {
+      console.info('window is already created')
+      this.getWindowById(windowId + 1)?.blur()
+      return
+    }
     // 传递的配置与默认配置创建新的对象
     let windowConfig = Object.assign({}, this.defaultConfig, configurations)
     // 传递的选项与默认选项创建新的对象
     let windowOptions = Object.assign({}, this.defaultOptions, options)
-    
-
+    // 设定其他窗口的父窗口
+    if (!windowConfig.isMainWin && CreateWindow.main) {
+      windowOptions.parent = CreateWindow.main
+    }
     // 创建窗口
     let win = new BrowserWindow(windowOptions)
     console.log('window id:' + win.id)
+    // 记录路由与窗口 id
     CreateWindow.group[win.id - 1] = {
       windowId: win.id,
       route: windowConfig.route
@@ -106,20 +122,29 @@ export default class CreateWindow {
     // 是否主窗口
     if (windowConfig.isMainWin) {
       if (CreateWindow.main) {
-        console.log('主窗口存在')
-        delete CreateWindow.group[CreateWindow.main.id]
+        console.info('main window already created')
+        delete CreateWindow.group[0]
         CreateWindow.main.close()
       }
+      // 记录主窗口
       CreateWindow.main = win
     }
-    //
-    win.on('close', () => win.setOpacity(0))
+    // 窗口被清除之后，清除存储
+    win.on('close', () => {
+      CreateWindow.group.forEach((o, i) => {
+        if(this.getWindowById(o.windowId) == win)
+          delete CreateWindow.group[i]
+        if(win == this.main)
+          app.quit()
+      });
+      win.setOpacity(0)
+    })
 
     // 加载页面
     let winURL: string
     if (app.isPackaged) {
       // winURL = windowConfig.route ? `app://../../dist/index.html` : `file://${path.join(__dirname, '../../dist/index.html')}`
-      win.loadFile(join(__dirname, "../../dist/index.html"), {hash: windowConfig.route })
+      win.loadFile(join(__dirname, '../../dist/index.html'), { hash: windowConfig.route })
     } else {
       winURL = windowConfig.route ? `http://localhost:${process.env['VITE_DEV_SERVER_PORT']}/#${windowConfig.route}` : `http://localhost:${process.env['VITE_DEV_SERVER_PORT']}/#`
       win.loadURL(winURL)
@@ -128,8 +153,8 @@ export default class CreateWindow {
     win.setMenu(null)
     // 设置路由
     win.webContents.openDevTools()
-    win.on("hide", () => win.webContents.closeDevTools())
-    // 全局变量注册
+    win.on('hide', () => win.webContents.closeDevTools())
+    // 全局快捷键注册
     globalShortcut.register('CommandOrControl+Shift+i', function () {
       win.webContents.openDevTools()
     })
