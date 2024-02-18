@@ -21,8 +21,12 @@ const createMainWindow = async () => {
     route: '/home',
     isMainWin: true,
   }, {
-    width: 900,
-    height: 700
+    width: 680,
+    height: 500,
+    maxWidth: 680,
+    maxHeight: 500,
+    // maximizable: false,
+    // resizable: false
   })
 }
 
@@ -44,7 +48,7 @@ const createWindow = () => {
     maxWidth: 999,
     maxHeight: 773,
     minWidth: 688,
-    minHeight: 560,
+    minHeight: 450,
     webPreferences: {
       // nodeIntegration: true,
       // contextIsolation:false,

@@ -52,8 +52,8 @@ export default class CreateWindow {
       transparent: true,
       maxWidth: null,
       maxHeight: null,
-      minWidth: 688,
-      minHeight: 560,
+      minWidth: 630,
+      minHeight: 450,
       backgroundColor: 'rgba(0,0,0,0)',
       autoHideMenuBar: true,
       resizable: true,
@@ -108,6 +108,7 @@ export default class CreateWindow {
     }
     // 创建窗口
     let win = new BrowserWindow(windowOptions)
+    console.info(windowOptions)
     console.log('window id:' + win.id)
     // 记录路由与窗口 id
     CreateWindow.group[win.id - 1] = {
