@@ -1,4 +1,4 @@
-## electron + vue + ts + pinia + sass + router 开发模板
+## key-pad-application 
 
 ### 项目设置
 

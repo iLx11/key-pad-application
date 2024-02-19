@@ -116,7 +116,6 @@ const _CreateWindow = class _CreateWindow2 {
       windowOptions.parent = _CreateWindow2.main;
     }
     let win = new electron.BrowserWindow(windowOptions);
-    console.info(windowOptions);
     console.log("window id:" + win.id);
     _CreateWindow2.group[win.id - 1] = {
       windowId: win.id,

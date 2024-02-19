@@ -14,7 +14,7 @@ interface IGroup {
 
 export default class CreateWindow {
   // 路由与主窗口标识
-  private public static group: IGroup = []
+  private static group: IGroup = []
   // 记录主窗口
   private static main: BrowserWindow | null | undefined = null
   // 窗口配置项
@@ -108,7 +108,7 @@ export default class CreateWindow {
     }
     // 创建窗口
     let win = new BrowserWindow(windowOptions)
-    console.info(windowOptions)
+    // console.info(windowOptions)
     console.log('window id:' + win.id)
     // 记录路由与窗口 id
     CreateWindow.group[win.id - 1] = {

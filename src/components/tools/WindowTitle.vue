@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import WindowTools from '../components/WindowTools.vue'
+import WindowTools from './WindowTools.vue'
 
 const win = window as any
 

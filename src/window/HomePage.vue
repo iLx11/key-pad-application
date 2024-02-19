@@ -1,23 +1,26 @@
 <script setup lang="ts">
-import WindowTools from '../components/WindowTools.vue'
-import WindowTitle from '../components/WindowTitle.vue'
+import WindowTools from '../components/tools/WindowTools.vue'
+import WindowTitle from '../components/tools/WindowTitle.vue'
 import { onMounted, nextTick, ref, watch } from 'vue'
-import PopBox from '../components/PopBox.vue'
+import PopBox from '../components/tools/PopBox.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const win = window as any
 
+onMounted(() => {
+  createWindow()
+})
 const createWindow = () => {
-  console.log(router)
-  console.log(router.currentRoute.value.path)
+  // console.log(router)
+  // console.log(router.currentRoute.value.path)
   win.myApi.createNewWindow(
     {
-      route: '/child'
+      route: '/config'
     },
     {
-      width: 500,
-      height: 500
+      width: 800,
+      height: 600
     }
   )
 }
