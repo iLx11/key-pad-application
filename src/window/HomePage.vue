@@ -19,8 +19,8 @@ const createWindow = () => {
       route: '/config'
     },
     {
-      width: 800,
-      height: 600
+      width: 900,
+      height: 700
     }
   )
 }

@@ -15,7 +15,18 @@ const router = createRouter({
     },
     {
       path: '/config',
-      component: () => import('../window/KeyConfigPage.vue')
+      redirect: '/config/1',
+      component: () => import('../window/KeyConfigPage.vue'),
+      children: [
+        {
+          path: '/config/0',
+          component: () => import('../views/CompKey.vue')
+        },
+        {
+          path: '/config/1',
+          component: () => import('../views/SendText.vue')
+        }
+      ]
     }
   ]
 })

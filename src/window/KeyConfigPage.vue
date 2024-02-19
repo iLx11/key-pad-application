@@ -4,7 +4,13 @@ import PopBox from '../components/tools/PopBox.vue'
 import ConfigData from '../components/configPage/ConfigData.vue'
 import EventBox from '../components/configPage/EventBox.vue'
 import FuncBox from '../components/configPage/FuncBox.vue'
+import { ref } from 'vue'
 
+const funcShow = ref<boolean>(true)
+
+const closeFuncBox = (event) => {
+  funcShow.value = false
+}
 </script>
 
 <template>
@@ -24,6 +30,9 @@ import FuncBox from '../components/configPage/FuncBox.vue'
         <FuncBox />
       </div>
     </div>
+    <div id="func-position" v-if="funcShow" @click.stop="closeFuncBox">
+      <router-view @click.stop=""></router-view>
+    </div>
   </div>
 </template>
 
@@ -42,12 +51,11 @@ import FuncBox from '../components/configPage/FuncBox.vue'
 .container {
   width: 100%;
   height: 100%;
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border: 6px solid rgba(15, 16, 23, 1);
-  border-radius: 3em;
+  border-radius: 2.5em;
   overflow: hidden;
   box-sizing: border-box;
   padding: 10px;
@@ -57,12 +65,13 @@ import FuncBox from '../components/configPage/FuncBox.vue'
   background-color: #d9c6c6;
   background-image: linear-gradient(135deg, #d9c6c6 0%, #c9e0e5 87%, #cfdcdd 100%);
   padding-bottom: 4em;
+  position: relative;
 }
 #key-config-content {
   width: 100%;
   height: 100%;
-  max-width: 900px;
-  max-height: 700px;
+  max-width: 950px;
+  max-height: 750px;
   margin: 0 auto;
   border-radius: 19px;
   overflow: hidden;
@@ -75,23 +84,36 @@ import FuncBox from '../components/configPage/FuncBox.vue'
     border-radius: 9px;
     background: rgba(114, 106, 109, 0.2);
   }
-  .div1 { 
-    grid-area: 1 / 1 / 4 / 4; 
+  .div1 {
+    grid-area: 1 / 1 / 4 / 4;
     padding: 15px;
   }
-.div2 { 
-  grid-area: 4 / 1 / 7 / 4;
-  padding: 12px;
-  div {
-    width: 100%;
-    height: 100%;
-    // background: rgba(255, 255, 255, 0.7);
-    border-radius: 12px;
+  .div2 {
+    grid-area: 4 / 1 / 7 / 4;
+    padding: 12px;
+    div {
+      width: 100%;
+      height: 100%;
+      // background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+    }
+  }
+  .div3 {
+    grid-area: 1 / 4 / 7 / 6;
+    padding: 12px;
   }
 }
-.div3 { 
-  grid-area: 1 / 4 / 7 / 6;
-  padding: 12px;
-}
+#func-position {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 66;
+  background: rgba( 158, 170, 172, 0.3 );
+  backdrop-filter: blur( 2px );
+  -webkit-backdrop-filter: blur( 2px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 </style>
