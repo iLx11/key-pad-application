@@ -15,7 +15,7 @@ const router = createRouter({
     },
     {
       path: '/config',
-      redirect: '/config/1',
+      redirect: '/config/2',
       component: () => import('../window/KeyConfigPage.vue'),
       children: [
         {
@@ -25,6 +25,10 @@ const router = createRouter({
         {
           path: '/config/1',
           component: () => import('../views/SendText.vue')
+        },
+        {
+          path: '/config/2',
+          component: () => import('../views/CompDelay.vue')
         }
       ]
     }

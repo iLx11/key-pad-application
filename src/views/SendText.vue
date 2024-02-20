@@ -10,7 +10,7 @@
         确认
       </div>
       <div id="text-limit">
-        <span>sdfdf</span>/100
+        <span>0</span>/100
       </div>
   </div>
 </template>
@@ -18,9 +18,9 @@
 <style lang="scss" scoped>
 #send-text-content {
   width: 60%;
-  height: 40%;
+  height: 35%;
   max-width: 600px;
-  max-height: 300px;
+  max-height: 350px;
   position: absolute;
   top: 50%;
   left: 50%;
