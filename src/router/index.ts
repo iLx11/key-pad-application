@@ -15,7 +15,7 @@ const router = createRouter({
     },
     {
       path: '/config',
-      redirect: '/config/2',
+      redirect: '/config/6',
       component: () => import('../window/KeyConfigPage.vue'),
       children: [
         {
@@ -29,6 +29,22 @@ const router = createRouter({
         {
           path: '/config/2',
           component: () => import('../views/CompDelay.vue')
+        },
+        {
+          path: '/config/3',
+          component: () => import('../views/FilePath.vue')
+        },
+        {
+          path: '/config/4',
+          component: () => import('../views/MediaKey.vue')
+        },
+        {
+          path: '/config/5',
+          component: () => import('../views/MouseFunc.vue')
+        },
+        {
+          path: '/config/6',
+          component: () => import('../views/MenuFunc.vue')
         }
       ]
     }
