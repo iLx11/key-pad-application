@@ -132,11 +132,12 @@ const _CreateWindow = class _CreateWindow2 {
       }
       _CreateWindow2.main = win;
     }
+    let that = this;
     win.on("close", () => {
       _CreateWindow2.group.forEach((o, i) => {
         if (this.getWindowById(o.windowId) == win)
           delete _CreateWindow2.group[i];
-        if (win == this.main)
+        if (win == that.main)
           electron.app.quit();
       });
       win.setOpacity(0);
@@ -158,6 +159,7 @@ const _CreateWindow = class _CreateWindow2 {
     win.once("ready-to-show", () => {
       win.show();
     });
+    return win;
   }
 };
 _CreateWindow.group = [];
@@ -170,6 +172,13 @@ ipcMain.on("window-create", (event, optionObj, configObj) => {
   let cw = new CreateWindow();
   cw.createWindow(optionObj, configObj);
 });
+ipcMain.on("store-set", (event, objData) => {
+  for (const cur of BrowserWindow.getAllWindows()) {
+    if (cur != BrowserWindow.fromWebContents(event.sender)) {
+      cur.webContents.send("store-get", objData);
+    }
+  }
+});
 const createMainWindow = async () => {
   let mainW = new CreateWindow();
   mainW.createWindow({
@@ -180,9 +189,7 @@ const createMainWindow = async () => {
     height: 500,
     maxWidth: 680,
     maxHeight: 500
-    // maximizable: false,
-    // resizable: false
-  });
+  }).webContents.send("test", "sdfasdf");
 };
 app.commandLine.appendSwitch("--ignore-certificate-errors", "true");
 protocol.registerSchemesAsPrivileged([{ scheme: "app", privileges: { secure: true, standard: true } }]);

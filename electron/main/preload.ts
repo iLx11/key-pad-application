@@ -1,5 +1,11 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
+// Pinia store 设置主动更改同步
+const setConfigStore = (obj: object) => {
+  // console.log(obj)
+  ipcRenderer.send('store-set', obj)
+}
+
 // 打开新窗口
 const createNewWindow = (optionObj: object, configObj: object) => {
   ipcRenderer.send('window-create', optionObj, configObj)
@@ -24,7 +30,13 @@ contextBridge.exposeInMainWorld('myApi', {
   minimizeWindow,
   maximizeWindow,
   closeWindow,
-  createNewWindow
+  createNewWindow,
+  setConfigStore,
+  // Pinia store 设置被动同步监听
+  storeChangeListen: (callbacka) =>
+    ipcRenderer.on('store-get', (event, data) => {
+      callbacka(data)
+    })
 })
 // 所有的 Node.js API接口 都可以在 preload 进程中被调用.
 // 它拥有与Chrome扩展一样的沙盒。

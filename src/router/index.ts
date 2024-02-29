@@ -12,11 +12,12 @@ const router = createRouter({
     {
       path: '/home',
       component: () => import('../window/HomePage.vue')
+      // component: HomePage
     },
     {
       path: '/config',
-      redirect: '/config/6',
       component: () => import('../window/KeyConfigPage.vue'),
+      // component: KeyConfigPage,
       children: [
         {
           path: '/config/0',

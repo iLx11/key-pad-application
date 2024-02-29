@@ -1,5 +1,8 @@
 "use strict";
 const { contextBridge, ipcRenderer } = require("electron");
+const setConfigStore = (obj) => {
+  ipcRenderer.send("store-set", obj);
+};
 const createNewWindow = (optionObj, configObj) => {
   ipcRenderer.send("window-create", optionObj, configObj);
 };
@@ -16,7 +19,12 @@ contextBridge.exposeInMainWorld("myApi", {
   minimizeWindow,
   maximizeWindow,
   closeWindow,
-  createNewWindow
+  createNewWindow,
+  setConfigStore,
+  // Pinia store 设置被动同步监听
+  storeChangeListen: (callbacka) => ipcRenderer.on("store-get", (event, data) => {
+    callbacka(data);
+  })
 });
 window.addEventListener("DOMContentLoaded", () => {
   const replaceText = (selector, text) => {

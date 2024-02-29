@@ -84,7 +84,7 @@ export default class CreateWindow {
   }
 
   // 创建窗口
-  public createWindow(configurations: object, options: object) {
+  public createWindow(configurations: object, options: object): BrowserWindow {
     // console.info(CreateWindow.group)
     // 判断是否有页面
     let windowId: number = 0
@@ -131,11 +131,12 @@ export default class CreateWindow {
       CreateWindow.main = win
     }
     // 窗口被清除之后，清除存储
+    let that = this
     win.on('close', () => {
       CreateWindow.group.forEach((o, i) => {
         if(this.getWindowById(o.windowId) == win)
           delete CreateWindow.group[i]
-        if(win == this.main)
+        if(win == that.main)
           app.quit()
       });
       win.setOpacity(0)
@@ -162,5 +163,7 @@ export default class CreateWindow {
     win.once('ready-to-show', () => {
       win.show()
     })
+    // 返回创建的窗口
+    return win
   }
 }

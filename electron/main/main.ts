@@ -14,6 +14,18 @@ ipcMain.on('window-create', (event, optionObj: object, configObj: object) => {
   cw.createWindow(optionObj, configObj)
 })
 
+
+// pinia
+ipcMain.on('store-set', (event, objData) => {
+  // 遍历窗口发送
+  for(const cur of BrowserWindow.getAllWindows()) {
+    if(cur != BrowserWindow.fromWebContents(event.sender)) {
+      cur.webContents.send('store-get', objData)
+    }
+  }
+})
+
+
 // 创建主窗口
 const createMainWindow = async () => {
   let mainW = new CreateWindow()
@@ -25,9 +37,7 @@ const createMainWindow = async () => {
     height: 500,
     maxWidth: 680,
     maxHeight: 500,
-    // maximizable: false,
-    // resizable: false
-  })
+  }).webContents.send('test', 'sdfasdf')
 }
 
 app.commandLine.appendSwitch('--ignore-certificate-errors', 'true')

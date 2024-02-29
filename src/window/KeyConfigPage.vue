@@ -4,13 +4,45 @@ import PopBox from '../components/tools/PopBox.vue'
 import ConfigData from '../components/configPage/ConfigData.vue'
 import EventBox from '../components/configPage/EventBox.vue'
 import FuncBox from '../components/configPage/FuncBox.vue'
-import { ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useConfigStore } from '../stores/configStore'
+import { useRouter } from 'vue-router'
 
-const funcShow = ref<boolean>(true)
+const win = window as any
+const router = useRouter()
+const configStore = useConfigStore()
+const funcShow = ref<boolean>(false)
+
+
+onMounted(() => {
+  win.myApi.storeChangeListen((objData: object) => {
+    console.info('keyConfigPage listening')
+    const keys = Object.keys(objData)
+    for(let key of keys) {
+      // 设置对应 store 的
+      configStore[`set${key.replace(key.charAt(0), key.charAt(0).toUpperCase())}`](objData[key])
+    }
+  })
+  // 获取 配置的索引
+  win.myApi.setConfigStore({
+    get: 'configIndex'
+  })
+})
 
 const closeFuncBox = (event) => {
   funcShow.value = false
+  configStore.setFuncShow(false)
+  router.push(`/config`)
 }
+watch(
+  () => configStore.funcShow,
+  () => {
+    if (configStore.funcShow == true) {
+      funcShow.value = true
+    }
+  }
+)
+
 </script>
 
 <template>
@@ -110,10 +142,11 @@ const closeFuncBox = (event) => {
   top: 0;
   left: 0;
   z-index: 66;
-  background: rgba( 158, 170, 172, 0.3 );
-  backdrop-filter: blur( 2px );
-  -webkit-backdrop-filter: blur( 2px );
+  background: rgba(158, 170, 172, 0.3);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   border-radius: 10px;
-  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  z-index: 88;
 }
 </style>
