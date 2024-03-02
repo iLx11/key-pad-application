@@ -68,7 +68,6 @@ const keyValueChange = () => {
 }
 const changeSelect = (speacialId: number) => {
   speacialArr[speacialId].isSelect = !speacialArr[speacialId].isSelect
-
 }
 
 // 提交
@@ -80,9 +79,14 @@ const commit = () => {
     count += specialKeyCode[x.spId]
     userKeyStr += x.spName + ' + '
   })
-  // 处理键值索引
-  for(let i of keyValue.value) {
-    genKeyStr += getStringMap().get(i).hex
+  try {
+    // 处理键值索引
+    for(let i of keyValue.value) {
+      genKeyStr += getStringMap().get(i).hex
+    }
+  } catch (error) {
+    configStore.notice("有错误产生，可能有不支持的字符")
+    return 
   }
   // 没有快捷键按普通按键处理
   if(count == 0) {
@@ -97,7 +101,7 @@ const commit = () => {
     userKey: userKeyStr,
     genKey: genKeyStr
   }
-  console.info(configStore.keyConfig[configStore.curEvent])
+  // console.info(configStore.keyConfig[configStore.curEvent])
   configStore.setFuncShow(false)
 }
 
@@ -112,7 +116,7 @@ const commit = () => {
       </div>
     </div>
     <div id="key-input-box">
-      <input type="text" v-model="keyValue" @input="keyValueChange"/>
+      <input type="text" v-model="keyValue" @input="keyValueChange" spellcheck="false"/>
       <div id="commit-box" @click="commit">
         确认
       </div>

@@ -624,7 +624,7 @@ export const hidKeyCode = [
     },
     {
         "key": 89,
-        "word": "",
+        "word": ";",
         "dec": "51",
         "hex": "33",
         "kind": 1
@@ -638,14 +638,14 @@ export const hidKeyCode = [
     },
     {
         "key": 91,
-        "word": "‘",
+        "word": "'",
         "dec": "52",
         "hex": "34",
         "kind": 1
     },
     {
         "key": 92,
-        "word": "“",
+        "word": '"',
         "dec": "52",
         "hex": "34",
         "kind": 1
