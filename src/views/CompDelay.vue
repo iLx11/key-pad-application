@@ -18,9 +18,9 @@ const aa = 23
       <div id="comp-key-content">
         <div id="comp-special">
           <div>LCtrl</div>
-          <div></div>
-          <div></div>
-          <div></div>
+          <div>LShift</div>
+          <div>LAlt</div>
+          <div>LW/</div>
           <div></div>
           <div></div>
           <div></div>

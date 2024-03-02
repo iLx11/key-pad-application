@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, watch } from 'vue'
+import { customRef, onMounted, reactive, watch } from 'vue'
 import { useConfigStore } from '../../stores/configStore'
 
 const configStore = useConfigStore()
@@ -8,7 +8,7 @@ const eventObjArray: Array<object> = [
   {
     eventId: 0,
     eventName: '按下',
-    isSelect: false
+    isSelect: true
   },
   {
     eventId: 1,
@@ -39,9 +39,10 @@ const eventObjArray: Array<object> = [
 
 const eventShowArray = reactive<Array<object>>([])
 const changeSelect = (k: number) => {
-  console.info(eventShowArray[k].isSelect)
   eventShowArray.forEach((o) => (o.isSelect = false))
   eventShowArray[k].isSelect = true
+  configStore.setCurEvent(k)
+  // console.info(configStore.curEvent)
 }
 watch(
   () => configStore.configIndex,

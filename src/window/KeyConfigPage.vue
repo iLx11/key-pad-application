@@ -12,7 +12,7 @@ const win = window as any
 const router = useRouter()
 const configStore = useConfigStore()
 const funcShow = ref<boolean>(false)
-
+const popBoxRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   win.myApi.storeChangeListen((objData: object) => {
@@ -29,19 +29,29 @@ onMounted(() => {
   })
 })
 
-const closeFuncBox = (event) => {
-  funcShow.value = false
+const closeFuncBox = () => {
   configStore.setFuncShow(false)
-  router.push(`/config`)
 }
 watch(
   () => configStore.funcShow,
   () => {
     if (configStore.funcShow == true) {
       funcShow.value = true
+    }else {
+      funcShow.value = false
+      router.push(`/config`)
     }
   }
 )
+watch(() => configStore.isTextShow, () => {
+  if(configStore.isTextShow == true) {
+    configStore.setIsTextShow(false)
+    popBoxRef.value['showPop'](configStore.noticeText)
+  }
+}, {
+  immediate: true,
+  deep: true
+})
 
 </script>
 
