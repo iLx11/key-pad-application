@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { compileFunction } from "vm";
-import { reactive, ref } from "vue";
+import { reactive, ref, watch } from "vue";
 import { useConfigStore } from '../stores/configStore'
 import { getStringMap } from "../utils/hidKeyCode";
 import { toHexStr } from "../utils/strTools"
@@ -59,13 +58,13 @@ const speacialArr = reactive<ISpeacialArr>([
 ])
 const keyValue = ref<string>('')
 // 输入框改变
-const keyValueChange = () => {
+watch(() => keyValue.value, () => {
   let reg = new RegExp(/[(\u4e00-\u9fa5)|(A-Z)]/)
-  if(reg.test(keyValue.value)) {
+  if (reg.test(keyValue.value)) {
     keyValue.value = keyValue.value.replace(reg, '')
     configStore.notice('只能输入英文小写字母~')
   }
-}
+})
 const changeSelect = (speacialId: number) => {
   speacialArr[speacialId].isSelect = !speacialArr[speacialId].isSelect
 }
@@ -116,7 +115,7 @@ const commit = () => {
       </div>
     </div>
     <div id="key-input-box">
-      <input type="text" v-model="keyValue" @input="keyValueChange" spellcheck="false"/>
+      <input type="text" v-model="keyValue" spellcheck="false"/>
       <div id="commit-box" @click="commit">
         确认
       </div>
