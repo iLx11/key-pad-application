@@ -22,46 +22,56 @@ watch(
 const commit = () => {
   if (textValue.value == '') return
   let genkeyStr: string = ''
-  let state = 2
-  for (let i = 0; i < textValue.value.length; i ++) {
-    if(/[A-Z]/.test(textValue.value[i])) {
-      if(state != 3) {
-        genkeyStr += 'aaa'
-      }
-      state = 3
-      genkeyStr += getStringMap().get(textValue.value[i]).hex
-      continue
-    }
-    if(state != 0) {
-      genkeyStr += '00'
-    }
-    state = 0
-    if(/\r|\n/.test(textValue.value[i])) {
-      genkeyStr += getStringMap().get('Enter').hex
-      continue
-    }
-    genkeyStr += getStringMap().get(textValue.value[i]).hex
-  }
-  // try {
-  //   // 处理键值索引
-  //   for(let j of tempArr) {
-  //     for(let i of j) {
-  //       genkeyStr += getStringMap().get(i).hex
-  //     }
-  //     genkeyStr += getStringMap().get('Enter').hex
-  //   }
-  // } catch (error) {
-  //   configStore.notice("有错误产生，可能有不支持的字符")
-  //   return
-  // }
+  let state: number = 0
+  let tempStr: string = ''
+  let keyCount: number = 0
 
+  try {
+    for (let i = 0; i < textValue.value.length; i++) {
+      // 特殊键值
+      if (!/\r|\n/.test(textValue.value[i])) {
+        if (/[A-Z]/.test(textValue.value[i]) || getStringMap().get(textValue.value[i]).kind > 1) {
+          if (state != 3 && state != 0) {
+            genkeyStr += `00${toHexStr(tempStr.length / 2)}${tempStr}`
+            tempStr = ''
+            keyCount++
+          }
+          state = 3
+          tempStr += getStringMap().get(textValue.value[i]).hex
+          continue
+        }
+      }
+      // 普通键值
+      if (state != 2 && state != 0) {
+        genkeyStr += `02${toHexStr(tempStr.length / 2)}${tempStr}`
+        tempStr = ''
+        keyCount++
+      }
+      state = 2
+      if (/\r|\n/.test(textValue.value[i])) {
+        tempStr += getStringMap().get('Enter').hex
+        continue
+      }
+      tempStr += getStringMap().get(textValue.value[i]).hex
+    }
+    if (state == 2) {
+      genkeyStr += `00${toHexStr(tempStr.length / 2)}${tempStr}`
+    }
+    if (state == 3) {
+      genkeyStr += `02${toHexStr(tempStr.length / 2)}${tempStr}`
+    }
+    genkeyStr = `1${toHexStr(++keyCount)}${genkeyStr}`
+  } catch (error) {
+    configStore.notice('有错误产生，可能有不支持的字符')
+    return
+  }
   console.info(genkeyStr)
-  // configStore.setFuncShow(false)
-  // console.info(configStore.keyConfig[configStore.curEvent])
-  // configStore.keyConfig[configStore.curEvent] = {
-  //   userKey: userKeyStr,
-  //   genKey: genKeyStr
-  // }
+  configStore.keyConfig[configStore.curEvent] = {
+    userKey: textValue.value,
+    genKey: genkeyStr
+  }
+  console.info(configStore.keyConfig[configStore.curEvent])
+  configStore.setFuncShow(false)
 }
 </script>
 

@@ -375,7 +375,7 @@ export const hidKeyCode = [
         "word": "!",
         "dec": "30",
         "hex": "1E",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 54,
@@ -389,7 +389,7 @@ export const hidKeyCode = [
         "word": "@",
         "dec": "31",
         "hex": "1F",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 56,
@@ -403,7 +403,7 @@ export const hidKeyCode = [
         "word": "#",
         "dec": "32",
         "hex": "20",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 58,
@@ -417,7 +417,7 @@ export const hidKeyCode = [
         "word": "$",
         "dec": "33",
         "hex": "21",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 60,
@@ -431,7 +431,7 @@ export const hidKeyCode = [
         "word": "%",
         "dec": "34",
         "hex": "22",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 62,
@@ -445,7 +445,7 @@ export const hidKeyCode = [
         "word": "^",
         "dec": "35",
         "hex": "23",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 64,
@@ -459,7 +459,7 @@ export const hidKeyCode = [
         "word": "&",
         "dec": "36",
         "hex": "24",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 66,
@@ -473,7 +473,7 @@ export const hidKeyCode = [
         "word": "*",
         "dec": "37",
         "hex": "25",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 68,
@@ -487,7 +487,7 @@ export const hidKeyCode = [
         "word": "(",
         "dec": "38",
         "hex": "26",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 70,
@@ -501,11 +501,11 @@ export const hidKeyCode = [
         "word": ")",
         "dec": "39",
         "hex": "27",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 72,
-        "word": "Return(ENTER)",
+        "word": "Enter",
         "dec": "40",
         "hex": "28",
         "kind": 1
@@ -533,7 +533,7 @@ export const hidKeyCode = [
     },
     {
         "key": 76,
-        "word": "Spacebar",
+        "word": " ",
         "dec": "44",
         "hex": "2C",
         "kind": 1
@@ -547,10 +547,10 @@ export const hidKeyCode = [
     },
     {
         "key": 78,
-        "word": "(underscore)",
+        "word": "_",
         "dec": "45",
         "hex": "2D",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 79,
@@ -564,7 +564,7 @@ export const hidKeyCode = [
         "word": "+",
         "dec": "46",
         "hex": "2E",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 81,
@@ -578,7 +578,7 @@ export const hidKeyCode = [
         "word": "{",
         "dec": "47",
         "hex": "2F",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 83,
@@ -592,11 +592,11 @@ export const hidKeyCode = [
         "word": "}",
         "dec": "48",
         "hex": "30",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 85,
-        "word": "",
+        "word": '\\',
         "dec": "49",
         "hex": "31",
         "kind": 1
@@ -606,11 +606,11 @@ export const hidKeyCode = [
         "word": "|",
         "dec": "49",
         "hex": "31",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 87,
-        "word": "Non-US#",
+        "word": "`",
         "dec": "50",
         "hex": "32",
         "kind": 1
@@ -620,7 +620,7 @@ export const hidKeyCode = [
         "word": "~",
         "dec": "50",
         "hex": "32",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 89,
@@ -634,7 +634,7 @@ export const hidKeyCode = [
         "word": ":",
         "dec": "51",
         "hex": "33",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 91,
@@ -648,21 +648,21 @@ export const hidKeyCode = [
         "word": '"',
         "dec": "52",
         "hex": "34",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 93,
-        "word": "GraveAccent",
+        "word": "GraveAccent(`)",
         "dec": "53",
         "hex": "35",
         "kind": 1
     },
     {
         "key": 94,
-        "word": "Tilde",
+        "word": "Tilde(~)",
         "dec": "53",
         "hex": "35",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 95,
@@ -676,7 +676,7 @@ export const hidKeyCode = [
         "word": "<",
         "dec": "54",
         "hex": "36",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 97,
@@ -690,7 +690,7 @@ export const hidKeyCode = [
         "word": ">",
         "dec": "55",
         "hex": "37",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 99,
@@ -704,7 +704,7 @@ export const hidKeyCode = [
         "word": "?",
         "dec": "56",
         "hex": "38",
-        "kind": 1
+        "kind": 2
     },
     {
         "key": 101,
@@ -902,7 +902,7 @@ export const hidKeyCode = [
         "hex": "53",
         "kind": 1
     },
-    {
+    /*{
         "key": 129,
         "word": "/",
         "dec": "84",
@@ -930,7 +930,7 @@ export const hidKeyCode = [
         "hex": "57",
         "kind": 1
     },
-    {
+     {
         "key": 133,
         "word": "Enter",
         "dec": "88",
@@ -1118,7 +1118,7 @@ export const hidKeyCode = [
         "dec": "103",
         "hex": "67",
         "kind": 0
-    },
+    }, */
     {
         "key": 160,
         "word": "F13",
