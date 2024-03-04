@@ -78,6 +78,7 @@ const commit = () => {
     count += specialKeyCode[x.spId]
     userKeyStr += x.spName + ' + '
   })
+  
   try {
     // 处理键值索引
     for(let i of keyValue.value) {

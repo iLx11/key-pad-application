@@ -18,10 +18,13 @@ watch(
     if (textCount.value > 255) textValue.value = textValue.value.substring(0, 255)
   }
 )
-
+// 提交
 const commit = () => {
-  if (textValue.value == '') return
-  let genkeyStr: string = ''
+  if (textValue.value == '') {
+    configStore.notice('没有输入任何内容')
+    return
+  }
+  let genKeyStr: string = ''
   let state: number = 0
   let tempStr: string = ''
   let keyCount: number = 0
@@ -32,7 +35,7 @@ const commit = () => {
       if (!/\r|\n/.test(textValue.value[i])) {
         if (/[A-Z]/.test(textValue.value[i]) || getStringMap().get(textValue.value[i]).kind > 1) {
           if (state != 3 && state != 0) {
-            genkeyStr += `00${toHexStr(tempStr.length / 2)}${tempStr}`
+            genKeyStr += `00${toHexStr(tempStr.length / 2)}${tempStr}`
             tempStr = ''
             keyCount++
           }
@@ -43,7 +46,7 @@ const commit = () => {
       }
       // 普通键值
       if (state != 2 && state != 0) {
-        genkeyStr += `02${toHexStr(tempStr.length / 2)}${tempStr}`
+        genKeyStr += `02${toHexStr(tempStr.length / 2)}${tempStr}`
         tempStr = ''
         keyCount++
       }
@@ -55,20 +58,20 @@ const commit = () => {
       tempStr += getStringMap().get(textValue.value[i]).hex
     }
     if (state == 2) {
-      genkeyStr += `00${toHexStr(tempStr.length / 2)}${tempStr}`
+      genKeyStr += `00${toHexStr(tempStr.length / 2)}${tempStr}`
     }
     if (state == 3) {
-      genkeyStr += `02${toHexStr(tempStr.length / 2)}${tempStr}`
+      genKeyStr += `02${toHexStr(tempStr.length / 2)}${tempStr}`
     }
-    genkeyStr = `1${toHexStr(++keyCount)}${genkeyStr}`
+    genKeyStr = `1${toHexStr(++keyCount)}${genKeyStr}`
   } catch (error) {
     configStore.notice('有错误产生，可能有不支持的字符')
     return
   }
-  console.info(genkeyStr)
+  console.info(genKeyStr)
   configStore.keyConfig[configStore.curEvent] = {
     userKey: textValue.value,
-    genKey: genkeyStr
+    genKey: genKeyStr
   }
   console.info(configStore.keyConfig[configStore.curEvent])
   configStore.setFuncShow(false)
