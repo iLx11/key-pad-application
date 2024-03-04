@@ -165,12 +165,30 @@ const _CreateWindow = class _CreateWindow2 {
 _CreateWindow.group = [];
 _CreateWindow.main = null;
 let CreateWindow = _CreateWindow;
+const { dialog } = require("electron");
+const getFilePath = async () => {
+  let filePath = await dialog.showOpenDialog({
+    title: "选择一个文件",
+    buttonLabel: "确认选择",
+    // defaultPath: app.getPath('pictures'),
+    // 多选文件
+    // properties: ["multiSelections"],
+    filters: [
+      // 文件类型
+      { name: "应用/文件", extensions: ["exe", "txt", "c"] }
+    ]
+  });
+  return filePath;
+};
 const { app, protocol, BrowserWindow, ipcMain } = require("electron");
 require("path");
 windowControlListener();
 ipcMain.on("window-create", (event, optionObj, configObj) => {
   let cw = new CreateWindow();
   cw.createWindow(optionObj, configObj);
+});
+ipcMain.handle("select-file", async () => {
+  return await getFilePath();
 });
 ipcMain.on("store-set", (event, objData) => {
   for (const cur of BrowserWindow.getAllWindows()) {

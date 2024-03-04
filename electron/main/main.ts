@@ -4,6 +4,7 @@ const path = require('path')
 
 import { windowControlListener } from '../controller/windowControl'
 import CreateWindow from '../controller/createWindow'
+import { getFilePath } from '../controller/fileDialog'
 
 // 窗口监听
 windowControlListener()
@@ -14,6 +15,9 @@ ipcMain.on('window-create', (event, optionObj: object, configObj: object) => {
   cw.createWindow(optionObj, configObj)
 })
 
+ipcMain.handle('select-file', async () => {
+  return await getFilePath()
+})
 
 // pinia
 ipcMain.on('store-set', (event, objData) => {

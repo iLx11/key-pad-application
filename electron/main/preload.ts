@@ -1,9 +1,14 @@
-const { contextBridge, ipcRenderer } = require('electron')
+const { contextBridge, ipcRenderer, dialog } = require('electron')
 
 // Pinia store 设置主动更改同步
 const setConfigStore = (obj: object) => {
   // console.log(obj)
   ipcRenderer.send('store-set', obj)
+}
+
+const getFilePath = async () => {
+  let filePath = await ipcRenderer.invoke('select-file')
+  return filePath
 }
 
 // 打开新窗口
@@ -32,6 +37,7 @@ contextBridge.exposeInMainWorld('myApi', {
   closeWindow,
   createNewWindow,
   setConfigStore,
+  getFilePath,
   // Pinia store 设置被动同步监听
   storeChangeListen: (callbacka) =>
     ipcRenderer.on('store-get', (event, data) => {
