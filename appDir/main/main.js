@@ -175,7 +175,7 @@ const getFilePath = async () => {
     // properties: ["multiSelections"],
     filters: [
       // 文件类型
-      { name: "应用/文件", extensions: ["exe", "txt", "c"] }
+      { name: "应用/文件" }
     ]
   });
   return filePath;

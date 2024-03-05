@@ -96,7 +96,7 @@ const commit = () => {
     userKeyStr = userKeyStr.replace(/\+\s$/, '-> ') + keyValue.value
     genKeyStr = `101${ toHexStr(count) }${ toHexStr(keyValue.value.length) }${genKeyStr}`
   }
-  // console.info(genKeyStr)
+  console.info(genKeyStr)
   configStore.keyConfig[configStore.curEvent] = {
     userKey: userKeyStr,
     genKey: genKeyStr
