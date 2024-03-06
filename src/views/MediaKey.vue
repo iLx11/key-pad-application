@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { reactive } from "vue";
+import { toHexStr } from "../utils/strTools"
+import { useConfigStore } from '../stores/configStore'
 
+const configStore = useConfigStore()
+
+const mediaKeyArray = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80]
 const mediaArray = reactive([
   {
     mediaId: 0,
@@ -107,24 +112,39 @@ const setHover = (index: number) => {
 const resetHover = (index: number) => {
   mediaArray[index].isHover = false
 }
+
+const commit = (index: number) => {
+  let genKeyStr: string = ''
+  if(index > 7) {
+    genKeyStr = `500${toHexStr(mediaKeyArray[index - 8])}`
+  } else {
+    genKeyStr = `5${toHexStr(mediaKeyArray[index])}00`
+  }
+  // console.info(genKeyStr)
+  configStore.keyConfig[configStore.curEvent] = {
+    userKey: mediaArray[index].mediaName,
+    genKey: genKeyStr
+  }
+  console.info(configStore.keyConfig[configStore.curEvent])
+  configStore.setFuncShow(false)
+}
 </script>
 
 <template>
   <div id="media-key-content">
     <ul>
-      <li v-for="(v, k) in mediaArray" :key="v.mediaId" @mouseenter="setHover(k)" @mouseleave="resetHover(k)">
+      <li v-for="(v, k) in mediaArray" :key="v.mediaId" @click="commit(k)" @mouseenter="setHover(k)" @mouseleave="resetHover(k)">
         <span v-if="v.isHover">{{ v.mediaName }}</span>
         <div v-if="!v.isHover" v-html="v.mediaSvg"></div>
       </li>
     </ul>
-    <div id="commit-box">确认</div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 #media-key-content {
-  width: 60%;
-  height: 50%;
+  width: 70%;
+  height: 60%;
   max-width: 600px;
   max-height: 500px;
   position: absolute;

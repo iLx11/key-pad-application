@@ -249,7 +249,7 @@ const commit = () => {
     genKey: genKeyStr
   }
   console.info(configStore.keyConfig[configStore.curEvent])
-  // configStore.setFuncShow(false)
+  configStore.setFuncShow(false)
 }
 </script>
 
