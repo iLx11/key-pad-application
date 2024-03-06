@@ -36,8 +36,11 @@ export const useConfigStore = defineStore('config', () => {
   }
 
   // 单键配置
-  const keyConfig = reactive<IConfigKey>(new Array(6))
-  // 当前配置事件
+  const keyConfig = reactive<IConfigKey>(new Array(6).fill({
+    userKey: '',
+    genKey: ''
+  }))
+  // 当前硬件的配置事件
   const curEvent = ref<number>(0)
   const setCurEvent = (cur: number) => {
     curEvent.value = cur

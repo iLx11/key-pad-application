@@ -19,6 +19,10 @@ const commit = () => {
     return
   }
   let compStr = genCompStr(filePathStr.value)
+  if((/error/g).test(compStr)) {
+    configStore.notice(compStr)
+    return
+  }
   let genKeyStr = `1${compStr.substring(0, 2)}080115${compStr.substring(2)}`
   // console.info(genKeyStr)
   configStore.keyConfig[configStore.curEvent] = {

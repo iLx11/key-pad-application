@@ -38,7 +38,7 @@ const selectChange = (state: boolean) => {
 const commit = () => {
   let genKeyStr: string = ''
   let userKeyStr: string = ''
-  if (menuValue.value !== '0') {
+  if (menuValue.value !== '0' && menuValue.value !== '') {
     genKeyStr = `60${Number(menuValue.value)}`
     userKeyStr = `指定跳转到菜单 ${Number(menuValue.value)}`
   } else {
@@ -55,7 +55,7 @@ const commit = () => {
     userKey: userKeyStr,
     genKey: genKeyStr
   }
-  console.info(configStore.keyConfig[configStore.curEvent])
+  console.info(configStore.keyConfig)
   configStore.setFuncShow(false)
 }
 </script>

@@ -21,31 +21,31 @@ const router = createRouter({
       children: [
         {
           path: '/config/0',
-          component: () => import('../views/CompKey.vue')
+          component: () => import('../views/MenuFunc.vue')
         },
         {
           path: '/config/1',
-          component: () => import('../views/SendText.vue')
+          component: () => import('../views/CompKey.vue')
         },
         {
           path: '/config/2',
-          component: () => import('../views/CompDelay.vue')
+          component: () => import('../views/SendText.vue')
         },
         {
           path: '/config/3',
-          component: () => import('../views/FilePath.vue')
+          component: () => import('../views/CompDelay.vue')
         },
         {
           path: '/config/4',
-          component: () => import('../views/MediaKey.vue')
+          component: () => import('../views/FilePath.vue')
         },
         {
           path: '/config/5',
-          component: () => import('../views/MouseFunc.vue')
+          component: () => import('../views/MediaKey.vue')
         },
         {
           path: '/config/6',
-          component: () => import('../views/MenuFunc.vue')
+          component: () => import('../views/MouseFunc.vue')
         }
       ]
     }
