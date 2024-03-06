@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
-import { getStringMap } from '../utils/hidKeyCode'
 import { toHexStr } from '../utils/strTools'
 
 const configStore = useConfigStore()
