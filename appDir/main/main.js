@@ -191,11 +191,11 @@ _SerialConnect.connectHardware = async () => {
     portLists = await SerialPort.list();
   } catch (err) {
     console.info(err);
-    return;
+    return new Promise((resolve2) => resolve2(1));
   }
   if (portLists.length == 0) {
     console.info("no serial port");
-    return;
+    return new Promise((resolve2) => resolve2(1));
   }
   let connectCount = 3;
   while (!_SerialConnect.connectState && connectCount > 0) {
@@ -204,17 +204,19 @@ _SerialConnect.connectHardware = async () => {
       let port = new SerialPort({ path: portLists[i].path, baudRate: 115200 }, (err) => {
         if (err) {
           console.log("port open failed");
-          return;
+          return new Promise((resolve2) => resolve2(1));
         }
         console.log("port open success");
       });
       port.on("error", (err) => {
         console.info(err);
       });
-      port.on("data", (data) => {
-        console.info(data, "---------------");
-        _SerialConnect.HardwarePort = port;
-        _SerialConnect.connectState = true;
+      port.on("data", (buff) => {
+        if (buff[0] == 170 && buff[1] == 187 && buff[2] == 204) {
+          _SerialConnect.HardwarePort = port;
+          _SerialConnect.connectState = true;
+        }
+        _SerialConnect.dataHandle(buff);
       });
       port.write(new Uint8Array([170, 187, 204]));
       port.drain((err) => {
@@ -233,10 +235,12 @@ _SerialConnect.connectHardware = async () => {
       }
     }
   }
-  if (_SerialConnect.connectState == true)
+  if (_SerialConnect.connectState == true) {
     console.info("connect success");
-  else {
+    return new Promise((resolve2) => resolve2(0));
+  } else {
     console.info("no hardware input");
+    return new Promise((resolve2) => resolve2(1));
   }
 };
 _SerialConnect.sendMessage = (data) => {
@@ -249,6 +253,9 @@ _SerialConnect.sendMessage = (data) => {
       console.info("send ok");
     });
   }
+};
+_SerialConnect.dataHandle = (buff) => {
+  console.info(buff);
 };
 let SerialConnect = _SerialConnect;
 const { app, protocol, BrowserWindow, ipcMain } = require("electron");
@@ -268,6 +275,9 @@ ipcMain.on("store-set", (event, objData) => {
     }
   }
 });
+ipcMain.handle("connection-state", async () => {
+  return await SerialConnect.connectHardware();
+});
 const createMainWindow = async () => {
   let mainW = new CreateWindow();
   mainW.createWindow({
@@ -278,9 +288,7 @@ const createMainWindow = async () => {
     height: 500,
     maxWidth: 680,
     maxHeight: 500
-  }).webContents.send("test", "sdfasdf");
-  await SerialConnect.connectHardware();
-  SerialConnect.sendMessage();
+  });
 };
 app.commandLine.appendSwitch("--ignore-certificate-errors", "true");
 protocol.registerSchemesAsPrivileged([{ scheme: "app", privileges: { secure: true, standard: true } }]);

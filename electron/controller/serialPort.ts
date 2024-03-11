@@ -1,4 +1,4 @@
-import { resolve } from "path"
+import { resolve } from 'path'
 
 const { SerialPort } = require('serialport')
 
@@ -15,11 +15,11 @@ export default class SerialConnect {
       // console.info(portLists)
     } catch (err) {
       console.info(err)
-      return
+      return new Promise(resolve => resolve(0x01) )
     }
     if (portLists.length == 0) {
       console.info('no serial port')
-      return
+      return new Promise(resolve => resolve(0x01) )
     }
     // 连接硬件端口
     let connectCount = 3
@@ -30,7 +30,7 @@ export default class SerialConnect {
         let port = new SerialPort({ path: portLists[i].path, baudRate: 115200 }, (err) => {
           if (err) {
             console.log('port open failed')
-            return
+            return new Promise(resolve => resolve(0x01) )
           }
           console.log('port open success')
         })
@@ -41,44 +41,52 @@ export default class SerialConnect {
         port.on('error', (err) => {
           console.info(err)
         })
-        port.on('data', (data) => {
-          console.info(data, '---------------')
-          this.HardwarePort = port
-          // 连接成功
-          this.connectState = true
-          // 信息回调
+        port.on('data', (buff) => {
+          // 硬件应答连接
+          if (buff[0] == 0xaa && buff[1] == 0xbb && buff[2] == 0xcc) {
+            this.HardwarePort = port
+            // 连接成功
+            this.connectState = true
+          }
+          // 处理数据
+          this.dataHandle(buff)
         })
         port.write(new Uint8Array([0xaa, 0xbb, 0xcc]))
         port.drain((err) => {
           if (err) return
           console.info('send ok')
         })
-        await new Promise(resolve => setTimeout(resolve, 500))
-        connectCount --
+        await new Promise((resolve) => setTimeout(resolve, 500))
+        connectCount--
         // 如果没有连接就关闭
-        if(!this.connectState) {
-          port.close(err => {
-            if(err) 
-              console.info('close failed')
+        if (!this.connectState) {
+          port.close((err) => {
+            if (err) console.info('close failed')
             console.info('close success')
           })
         }
       }
     }
-    if(this.connectState == true)
-      console.info('connect success')
-    else {
+    if (this.connectState == true)  {
+      console.info('connect success') 
+      return new Promise(resolve => resolve(0x00) )
+    } else {
       console.info('no hardware input')
+      return new Promise(resolve => resolve(0x01) )
     }
   }
   // 发送数据
   public static sendMessage = (data: string) => {
-    if(this.connectState && Object.keys(this.HardwarePort).length != 0) {
+    if (this.connectState && Object.keys(this.HardwarePort).length != 0) {
       this.HardwarePort?.write(Buffer.from(data))
       this.HardwarePort?.drain((err) => {
         if (err) return
         console.info('send ok')
       })
     }
+  }
+  // 数据处理
+  private static dataHandle = (buff: Buffer) => {
+    console.info(buff)
   }
 }

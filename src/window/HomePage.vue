@@ -11,7 +11,10 @@ const router = useRouter()
 const win = window as any
 const configStore = useConfigStore()
 
-onMounted(() => {
+onMounted(async () => {
+  // 连接硬件
+  let conStore = await win.myApi.connectHardware()
+  if(conStore === 0) console.info('连接成功') 
   // 主页面监听
   win.myApi.storeChangeListen((objData: object) => {
     console.info('homePage listening', objData)
