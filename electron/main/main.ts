@@ -5,7 +5,7 @@ const path = require('path')
 import { windowControlListener } from '../controller/windowControl'
 import CreateWindow from '../controller/createWindow'
 import { getFilePath } from '../controller/fileDialog'
-
+import SerialConnect from '../controller/serialPort'
 // 窗口监听
 windowControlListener()
 
@@ -42,6 +42,8 @@ const createMainWindow = async () => {
     maxWidth: 680,
     maxHeight: 500,
   }).webContents.send('test', 'sdfasdf')
+  await SerialConnect.connectHardware()
+  SerialConnect.sendMessage()
 }
 
 app.commandLine.appendSwitch('--ignore-certificate-errors', 'true')

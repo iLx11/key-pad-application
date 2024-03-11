@@ -180,6 +180,77 @@ const getFilePath = async () => {
   });
   return filePath;
 };
+const { SerialPort } = require("serialport");
+const _SerialConnect = class _SerialConnect2 {
+};
+_SerialConnect.connectState = false;
+_SerialConnect.HardwarePort = {};
+_SerialConnect.connectHardware = async () => {
+  let portLists = [];
+  try {
+    portLists = await SerialPort.list();
+  } catch (err) {
+    console.info(err);
+    return;
+  }
+  if (portLists.length == 0) {
+    console.info("no serial port");
+    return;
+  }
+  let connectCount = 3;
+  while (!_SerialConnect.connectState && connectCount > 0) {
+    console.info(connectCount);
+    for (let i = 0; i < portLists.length; i++) {
+      let port = new SerialPort({ path: portLists[i].path, baudRate: 115200 }, (err) => {
+        if (err) {
+          console.log("port open failed");
+          return;
+        }
+        console.log("port open success");
+      });
+      port.on("error", (err) => {
+        console.info(err);
+      });
+      port.on("data", (data) => {
+        console.info(data, "---------------");
+        _SerialConnect.HardwarePort = port;
+        _SerialConnect.connectState = true;
+      });
+      port.write(new Uint8Array([170, 187, 204]));
+      port.drain((err) => {
+        if (err)
+          return;
+        console.info("send ok");
+      });
+      await new Promise((resolve2) => setTimeout(resolve2, 500));
+      connectCount--;
+      if (!_SerialConnect.connectState) {
+        port.close((err) => {
+          if (err)
+            console.info("close failed");
+          console.info("close success");
+        });
+      }
+    }
+  }
+  if (_SerialConnect.connectState == true)
+    console.info("connect success");
+  else {
+    console.info("no hardware input");
+  }
+};
+_SerialConnect.sendMessage = (data) => {
+  var _a, _b;
+  if (_SerialConnect.connectState && Object.keys(_SerialConnect.HardwarePort).length != 0) {
+    (_a = _SerialConnect.HardwarePort) == null ? void 0 : _a.write(Buffer.from(data));
+    (_b = _SerialConnect.HardwarePort) == null ? void 0 : _b.drain((err) => {
+      if (err)
+        return;
+      console.info("send ok");
+    });
+  }
+};
+let SerialConnect = _SerialConnect;
 const { app, protocol, BrowserWindow, ipcMain } = require("electron");
 require("path");
 windowControlListener();
@@ -208,6 +279,8 @@ const createMainWindow = async () => {
     maxWidth: 680,
     maxHeight: 500
   }).webContents.send("test", "sdfasdf");
+  await SerialConnect.connectHardware();
+  SerialConnect.sendMessage();
 };
 app.commandLine.appendSwitch("--ignore-certificate-errors", "true");
 protocol.registerSchemesAsPrivileged([{ scheme: "app", privileges: { secure: true, standard: true } }]);
