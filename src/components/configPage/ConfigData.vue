@@ -2,8 +2,8 @@
 import { watch, ref } from 'vue';
 import { useConfigStore } from '../../stores/configStore'
 
+const win = window as any
 const configStore = useConfigStore()
-
 const configStr = ref<string>('ConfigData')
 
 watch(() => configStore.curEvent, () => {
@@ -14,6 +14,9 @@ watch(() => configStore.keyConfig, () => {
   // console.info(configStore.keyConfig[configStore.curEvent])
   configStr.value = configStore.keyConfig[configStore.curEvent].userKey
   // 发送到主页面进行同步
+  let tempObj: object = {}
+  tempObj['keyConfig'] = JSON.stringify(configStore.keyConfig[configStore.curEvent])
+  win.myApi.setConfigStore(tempObj)
 }, {
   deep: true
 })

@@ -59,7 +59,9 @@ watch(() => configStore.isTextShow, () => {
   <PopBox ref="popBoxRef" />
   <div class="container">
     <WindowTitle>
-      <div>KeyConfig</div>
+      <template #title>
+        KeyConfig
+      </template>
     </WindowTitle>
     <div id="key-config-content">
       <div class="div1">

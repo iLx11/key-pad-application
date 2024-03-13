@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import WindowTools from '../components/tools/WindowTools.vue'
 import WindowTitle from '../components/tools/WindowTitle.vue'
-import { onMounted, nextTick, ref, watch } from 'vue'
+import { onMounted, nextTick, ref, watch, reactive } from 'vue'
 import PopBox from '../components/tools/PopBox.vue'
 import { useRouter } from 'vue-router'
 import { getStringMap } from '../utils/hidKeyCode'
@@ -10,11 +10,11 @@ import { useConfigStore } from '../stores/configStore'
 const router = useRouter()
 const win = window as any
 const configStore = useConfigStore()
+const popBoxRef = ref<HTMLElement | null>(null)
 
 onMounted(async () => {
   // 连接硬件
-  let conStore = await win.myApi.connectHardware()
-  if(conStore === 0) console.info('连接成功') 
+  await testConnection()
   // 主页面监听
   win.myApi.storeChangeListen((objData: object) => {
     console.info('homePage listening', objData)
@@ -34,11 +34,26 @@ onMounted(async () => {
         // 设置对应 store 的值
         configStore[`set${key.replace(key.charAt(0), key.charAt(0).toUpperCase())}`](objData[key])
       }
+      console.info(configStore.keyConfig)
     } catch (error) {
       console.error(error)
     }
   })
 })
+// 测试连接
+const testConnection = async () => {
+  let conStore = await win.myApi.connectHardware()
+  console.info(conStore)
+  if (conStore === 0)  {
+    configStore.notice('连接成功')
+    conState.value = true
+  } else {
+    configStore.notice('连接失败，请查看硬件连接')
+    conState.value = false
+  }
+}
+
+
 // 打开键值编辑窗口
 const openConfigWindow = async (index: number) => {
   configStore.setConfigIndex(index)
@@ -58,17 +73,53 @@ const createWindow = () => {
       width: 900,
       height: 700,
       minWidth: 800,
-      minHeight: 630,
+      minHeight: 630
     }
   )
 }
+
+// 连接状态
+const conState = ref<boolean>(false)
+const stateMes = reactive([
+  {
+    text: '未连接',
+    bgStyle: 'rgba(51, 51, 51, 0.2)'
+  },
+  {
+    text: '已连接',
+    bgStyle: 'rgba(171, 242, 187, 0.3)'
+  }
+])
+
+const titleClick = async () => {
+  await testConnection()
+}
+
+watch(() => configStore.isTextShow, () => {
+  if(configStore.isTextShow == true) {
+    configStore.setIsTextShow(false)
+    popBoxRef.value['showPop'](configStore.noticeText)
+  }
+}, {
+  immediate: true,
+  deep: true
+})
 </script>
 
 <template>
   <PopBox ref="popBoxRef" />
   <div class="container">
     <WindowTitle>
-      <div>MuiltKey</div>
+      <template #title>
+        <div id="window-title" @click="titleClick">
+          <div>MultiPad</div>
+          <div id="con-state" :style="{background: conState ? stateMes[1].bgStyle : stateMes[0].bgStyle}">{{ conState ? stateMes[1].text : stateMes[0].text }}
+            <div id="mes-box">
+              点击连接状态或窗口标题可以手动连接
+            </div>
+          </div>
+        </div>
+      </template>
     </WindowTitle>
     <div id="home-cotent">
       <div class="div1">
@@ -105,6 +156,61 @@ const createWindow = () => {
 </template>
 
 <style lang="scss">
+#window-title{
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  // align-items: center;
+  -webkit-app-region: drag;
+  font-size: 20px;
+  -webkit-app-region: no-drag !important;
+  cursor: pointer;
+}
+#con-state {
+  width: 80px;
+  height: 30px;
+  word-break: keep-all;
+  background: rgba(51, 51, 51, 0.2);
+  // background: rgba(171, 242, 187, 0.3);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 17px;
+  border-radius: 12px;
+  position: relative;
+  #mes-box {
+    width: 150px;
+    height: 70px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -84px;
+    background: rgba(103, 109, 115, 1);
+    padding: 10px;
+    word-break: break-all;
+    display: none;
+    border-radius: 9px;
+  }
+  #mes-box::after {
+    content: '';
+    width: 30px;
+    height: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -10px;
+    background: rgba(103, 109, 115, 1);
+    clip-path: polygon(0 100%, 50% 0, 100% 100%, 0 100%);
+  }
+}
+#con-state:hover {
+    #mes-box {
+      display: block;
+    }
+  }
+
 #cover {
   width: 100%;
   height: 100%;

@@ -191,10 +191,12 @@ _SerialConnect.connectHardware = async () => {
     portLists = await SerialPort.list();
   } catch (err) {
     console.info(err);
+    _SerialConnect.connectState = false;
     return new Promise((resolve2) => resolve2(1));
   }
   if (portLists.length == 0) {
     console.info("no serial port");
+    _SerialConnect.connectState = false;
     return new Promise((resolve2) => resolve2(1));
   }
   let connectCount = 3;
@@ -204,12 +206,15 @@ _SerialConnect.connectHardware = async () => {
       let port = new SerialPort({ path: portLists[i].path, baudRate: 115200 }, (err) => {
         if (err) {
           console.log("port open failed");
+          _SerialConnect.connectState = false;
           return new Promise((resolve2) => resolve2(1));
         }
         console.log("port open success");
       });
       port.on("error", (err) => {
         console.info(err);
+        _SerialConnect.connectState = falseb;
+        return new Promise((resolve2) => resolve2(1));
       });
       port.on("data", (buff) => {
         if (buff[0] == 170 && buff[1] == 187 && buff[2] == 204) {
@@ -218,10 +223,16 @@ _SerialConnect.connectHardware = async () => {
         }
         _SerialConnect.dataHandle(buff);
       });
+      port.on("close", () => {
+        _SerialConnect.connectState = false;
+        return new Promise((resolve2) => resolve2(1));
+      });
       port.write(new Uint8Array([170, 187, 204]));
       port.drain((err) => {
-        if (err)
-          return;
+        if (err) {
+          _SerialConnect.connectState = false;
+          return new Promise((resolve2) => resolve2(1));
+        }
         console.info("send ok");
       });
       await new Promise((resolve2) => setTimeout(resolve2, 500));
@@ -230,6 +241,7 @@ _SerialConnect.connectHardware = async () => {
         port.close((err) => {
           if (err)
             console.info("close failed");
+          _SerialConnect.connectState = false;
           console.info("close success");
         });
       }

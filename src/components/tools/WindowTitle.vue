@@ -8,7 +8,7 @@ const win = window as any
 <template>
   <div class="top-title">
     <div id="window-sign"></div>
-    <slot> </slot>
+    <slot name="title"> </slot>
     <WindowTools />
   </div>
 </template>

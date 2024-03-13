@@ -15,11 +15,13 @@ export default class SerialConnect {
       // console.info(portLists)
     } catch (err) {
       console.info(err)
-      return new Promise(resolve => resolve(0x01) )
+      this.connectState = false
+      return new Promise(resolve => resolve(0x01))
     }
     if (portLists.length == 0) {
       console.info('no serial port')
-      return new Promise(resolve => resolve(0x01) )
+      this.connectState = false
+      return new Promise(resolve => resolve(0x01))
     }
     // 连接硬件端口
     let connectCount = 3
@@ -30,7 +32,8 @@ export default class SerialConnect {
         let port = new SerialPort({ path: portLists[i].path, baudRate: 115200 }, (err) => {
           if (err) {
             console.log('port open failed')
-            return new Promise(resolve => resolve(0x01) )
+            this.connectState = false
+            return new Promise(resolve => resolve(0x01))
           }
           console.log('port open success')
         })
@@ -40,7 +43,10 @@ export default class SerialConnect {
         // 以 flowing mode 监听收到的数据
         port.on('error', (err) => {
           console.info(err)
+          this.connectState = falseb
+          return new Promise(resolve => resolve(0x01))
         })
+        // 数据监听
         port.on('data', (buff) => {
           // 硬件应答连接
           if (buff[0] == 0xaa && buff[1] == 0xbb && buff[2] == 0xcc) {
@@ -51,9 +57,17 @@ export default class SerialConnect {
           // 处理数据
           this.dataHandle(buff)
         })
+        // 窗口关闭监听
+        port.on('close', () => {
+          this.connectState = false
+          return new Promise(resolve => resolve(0x01))
+        })
         port.write(new Uint8Array([0xaa, 0xbb, 0xcc]))
         port.drain((err) => {
-          if (err) return
+          if (err)  {
+            this.connectState = false
+            return new Promise(resolve => resolve(0x01))
+          }
           console.info('send ok')
         })
         await new Promise((resolve) => setTimeout(resolve, 500))
@@ -62,6 +76,7 @@ export default class SerialConnect {
         if (!this.connectState) {
           port.close((err) => {
             if (err) console.info('close failed')
+            this.connectState = false
             console.info('close success')
           })
         }

@@ -45,6 +45,10 @@ export const useConfigStore = defineStore('config', () => {
   const setCurEvent = (cur: number) => {
     curEvent.value = cur
   }
+  
+  const setKeyConfig = (objData: any) => {
+    keyConfig[curEvent.value] = JSON.parse(objData)
+  }
   return { 
     noticeText,
     isTextShow,
@@ -52,6 +56,7 @@ export const useConfigStore = defineStore('config', () => {
     setNoticeText,
     notice,
     keyConfig,
+    setKeyConfig,
     curEvent,
     setCurEvent,
     configIndex, 
