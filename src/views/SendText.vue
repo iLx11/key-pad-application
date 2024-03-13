@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { start } from 'repl'
 import { ref, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
 import { getStringMap } from '../utils/hidKeyCode'

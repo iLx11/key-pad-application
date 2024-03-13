@@ -3,6 +3,7 @@ import WindowTools from '../components/tools/WindowTools.vue'
 import WindowTitle from '../components/tools/WindowTitle.vue'
 import { onMounted, nextTick, ref, watch, reactive } from 'vue'
 import PopBox from '../components/tools/PopBox.vue'
+import ProgressBox from '../components/homePage/ProgressBox.vue'
 import { useRouter } from 'vue-router'
 import { getStringMap } from '../utils/hidKeyCode'
 import { useConfigStore } from '../stores/configStore'
@@ -136,7 +137,9 @@ watch(() => configStore.isTextShow, () => {
         <div class="div7">
           <div></div>
         </div>
-        <div class="div8"></div>
+        <div class="div8">
+          <div>发送</div>
+        </div>
       </div>
       <div class="div3">
         <div>
@@ -152,10 +155,13 @@ watch(() => configStore.isTextShow, () => {
       </div>
       <div class="div4" @click.stop="openConfigWindow(2)"></div>
     </div>
+    <ProgressBox />
   </div>
 </template>
 
 <style lang="scss">
+
+
 #window-title{
   width: 30%;
   height: 100%;
@@ -308,6 +314,22 @@ watch(() => configStore.isTextShow, () => {
   }
   .div8 {
     grid-area: 3 / 4 / 4 / 8;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px;
+    color: rgba(255, 255, 255, 1);
+    div {
+      width: 90px;
+      height: 100%;
+      background: rgba(51, 51, 51, 0.5);
+      border-radius: 1px;
+      word-break: keep-all;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 15px;
+    }
   }
 }
 .div3 {
