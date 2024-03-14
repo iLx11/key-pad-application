@@ -3,6 +3,7 @@ import { customRef, onMounted, reactive, watch } from 'vue'
 import { useConfigStore } from '../../stores/configStore'
 
 const configStore = useConfigStore()
+const win = window as any
 
 const eventObjArray: Array<object> = [
   {
@@ -49,7 +50,7 @@ watch(
   () => {
     console.log(configStore.configIndex)
     eventShowArray.length = 0
-    if (configStore.configIndex > 2) {
+    if (configStore.configIndex < 8) {
       let tempArray: Array<object> = eventObjArray.filter((o) => o.eventId < 2)
       eventShowArray.push(...tempArray)
       return
@@ -60,6 +61,16 @@ watch(
     immediate: true
   }
 )
+const closeWindow = () => {
+  // 发送到主页面进行同步
+  for (let i = 0; i < 6; i++) {
+    let tempObj: object = {}
+    tempObj['curEvent'] = i
+    tempObj['keyConfig'] = JSON.stringify(configStore.keyConfig[i])
+    win.myApi.setConfigStore(tempObj)
+    win.myApi.closeWindow()
+  }
+}
 </script>
 
 <template>
@@ -72,7 +83,7 @@ watch(
         <div class="color-box3" v-if="v.isSelect"></div>
       </div>
     </div>
-    <div id="commit-box">确认</div>
+    <div id="commit-box" @click="closeWindow">确认</div>
   </div>
 </template>
 
@@ -97,7 +108,7 @@ watch(
     padding: 6px;
     grid-column-gap: 12px;
     grid-row-gap: 12px;
-    >div {
+    > div {
       cursor: pointer;
       // background: rgba(43, 48, 57, 0.8);
       background: rgba(43, 48, 57, 0.8);
@@ -110,11 +121,13 @@ watch(
       position: relative;
       overflow: hidden;
     }
-    >div:hover {
+    > div:hover {
       background: rgba(255, 255, 255, 0.8);
       color: rgba(43, 48, 57, 0.8);
     }
-    .color-box1, .color-box2, .color-box3 {
+    .color-box1,
+    .color-box2,
+    .color-box3 {
       width: 60px;
       height: 60px;
       border-radius: 50%;
@@ -155,5 +168,4 @@ watch(
   background: rgba(255, 255, 255, 0.8) !important;
   color: rgba(43, 48, 57, 0.8) !important;
 }
-
 </style>

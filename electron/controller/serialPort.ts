@@ -91,11 +91,11 @@ export default class SerialConnect {
     }
   }
   // 发送数据
-  public static sendMessage = (data: string) => {
+  public static sendData = async (data: string) => {
     if (this.connectState && Object.keys(this.HardwarePort).length != 0) {
       this.HardwarePort?.write(Buffer.from(data))
       this.HardwarePort?.drain((err) => {
-        if (err) return
+        if (err) return new Promise(resolve => resolve(0x01))
         console.info('send ok')
       })
     }

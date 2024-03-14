@@ -2,39 +2,40 @@
 import { onMounted, reactive, ref, watch } from 'vue'
 import { useConfigStore } from '../../stores/configStore'
 
-onMounted(() => {
-  let begin = 0
-  setInterval(() => {
-    begin > 50 ? progressData.color = `rgba(255, 255, 255, 0.8)`: progressData.color = `rgba(51, 51, 51, 0.7)`
-    progressData.text = `${begin}%`
-    if(begin % 10 == 0)
-      progressData.top = `${100 - begin}%`
-    begin ++
-    if(begin > 100) begin = 0
-  }, 400)
-})
-
 const configStore = useConfigStore()
+
 const progressData = reactive({
   text: '0%',
   top: '100%',
   color: 'rgba(51, 51, 51, 0.7)'
 })
-
+watch(
+  () => configStore.progressMes,
+  () => {
+    let begin = configStore.progressMes
+    console.info(begin)
+    begin > 50 ? (progressData.color = `rgba(255, 255, 255, 0.8)`) : (progressData.color = `rgba(51, 51, 51, 0.7)`)
+    progressData.text = `${begin}%`
+    if (begin % 10 == 0) progressData.top = `${100 - begin}%`
+    if (begin > 100) return
+  }, {
+    immediate: true
+  }
+)
 </script>
 
 <template>
   <div id="download-cover">
     <div id="download-back">
       <div id="progress-ball">
-        <div id="wave-box" :style="{top: progressData.top}">
+        <div id="wave-box" :style="{ top: progressData.top }">
           <div class="g-wave"></div>
           <div class="g-wave"></div>
           <div class="g-wave"></div>
         </div>
       </div>
-      <div id="progress-text" :style="{color: progressData.color}">{{progressData.text}}</div>
-      <div id="progress-notice">数据正在传输中...</div>
+      <div id="progress-text" :style="{ color: progressData.color }">{{ progressData.text }}</div>
+      <div id="progress-notice">数据传输中...</div>
     </div>
   </div>
 </template>
@@ -64,7 +65,7 @@ const progressData = reactive({
   justify-content: center;
   align-items: center;
   // color: rgba(51, 51, 51, 0.6);
-  transition: all .8s ease-in-out;
+  transition: all 0.8s ease-in-out;
 }
 #download-cover {
   width: 100%;
@@ -101,7 +102,7 @@ const progressData = reactive({
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: all .9s ease-in-out;
+    transition: all 0.9s ease-in-out;
   }
 
   .g-wave {
@@ -143,6 +144,6 @@ const progressData = reactive({
       transform: translate(-50%, 0px) rotate(780deg);
     }
   }
-  // translate(-50%, -160px) 
+  // translate(-50%, -160px)
 }
 </style>

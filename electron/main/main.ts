@@ -37,6 +37,11 @@ ipcMain.handle('connection-state', async () => {
   return await SerialConnect.connectHardware()
 })
 
+// 发送数据
+ipcMain.handle('send-data', async (event, dataStr: string) => {
+  return await SerialConnect.sendData(dataStr)
+})
+
 
 // 创建主窗口
 const createMainWindow = async () => {

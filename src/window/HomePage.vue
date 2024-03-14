@@ -18,7 +18,7 @@ onMounted(async () => {
   await testConnection()
   // 主页面监听
   win.myApi.storeChangeListen((objData: object) => {
-    console.info('homePage listening', objData)
+    // console.info('homePage listening', objData)
     // 有 get 属性
     if (objData.get) {
       let storeValue = objData.get
@@ -35,9 +35,9 @@ onMounted(async () => {
         // 设置对应 store 的值
         configStore[`set${key.replace(key.charAt(0), key.charAt(0).toUpperCase())}`](objData[key])
       }
-      console.info(configStore.keyConfig)
     } catch (error) {
       console.error(error)
+      configStore.notice('同步信息错误')
     }
   })
 })
@@ -45,15 +45,15 @@ onMounted(async () => {
 const testConnection = async () => {
   let conStore = await win.myApi.connectHardware()
   console.info(conStore)
-  if (conStore === 0)  {
+  if (conStore === 0) {
     configStore.notice('连接成功')
     conState.value = true
+    return
   } else {
-    configStore.notice('连接失败，请查看硬件连接')
+    configStore.notice('连接失败，请检查硬件连接')
     conState.value = false
   }
 }
-
 
 // 打开键值编辑窗口
 const openConfigWindow = async (index: number) => {
@@ -96,15 +96,77 @@ const titleClick = async () => {
   await testConnection()
 }
 
-watch(() => configStore.isTextShow, () => {
-  if(configStore.isTextShow == true) {
-    configStore.setIsTextShow(false)
-    popBoxRef.value['showPop'](configStore.noticeText)
+watch(
+  () => configStore.isTextShow,
+  () => {
+    if (configStore.isTextShow == true) {
+      configStore.setIsTextShow(false)
+      popBoxRef.value['showPop'](configStore.noticeText)
+    }
+  },
+  {
+    immediate: true,
+    deep: true
   }
-}, {
-  immediate: true,
-  deep: true
-})
+)
+
+// 同步一层配置的功能
+watch(
+  () => configStore.keyConfig,
+  () => {
+    configStore.setLayerKeyConfig(JSON.stringify(configStore.keyConfig))
+    console.info('layerKeyConfig', configStore.layerKeyConfig)
+  },
+  {
+    deep: true
+  }
+)
+
+const progressShow = ref<boolean>(false)
+const sendConfigData = async () => {
+  // 测试连接
+  await testConnection()
+  if (conState.value == false) {
+    configStore.notice('硬件未连接')
+    // return
+  }
+  // 显示过程页面，发送到硬件
+  progressShow.value = true
+  // 开始拼接数据并发送
+  configStore.setProgressMes(0)
+  let tempObj = {}
+  let beginIndex = 0
+  configStore.layerKeyConfig.forEach((o, i) => {
+    if (o.length != 0) {
+      o.forEach((x, j) => {
+        if (x.genKey != '') tempObj[`${beginIndex > 9 ? beginIndex : '0' + beginIndex}`] = x.genKey
+        if (i < 8 && j < 2) beginIndex++
+        if (i > 7) beginIndex++
+      })
+    } else {
+      if (i < 8) beginIndex += 2
+      else beginIndex += 6
+    }
+  })
+  let dataStr = JSON.stringify(tempObj)
+  console.info('tempObj', dataStr)
+  let left = 0,
+    right = 60
+  while (right < dataStr.length) {
+    // win.myApi.sendData(dataStr.substring(left, right))
+    console.info(dataStr.substring(left, right))
+    left = right
+    if (dataStr.length - 1 - right < 60) {
+      right = dataStr.length
+      console.info(dataStr.substring(left, right))
+      configStore.setProgressMes((right / dataStr.length) * 100)
+      break
+    } else right += 60
+    configStore.setProgressMes((right / dataStr.length) * 100)
+  }
+  progressShow.value = false
+  configStore.notice('数据传输完成')
+}
 </script>
 
 <template>
@@ -114,18 +176,17 @@ watch(() => configStore.isTextShow, () => {
       <template #title>
         <div id="window-title" @click="titleClick">
           <div>MultiPad</div>
-          <div id="con-state" :style="{background: conState ? stateMes[1].bgStyle : stateMes[0].bgStyle}">{{ conState ? stateMes[1].text : stateMes[0].text }}
-            <div id="mes-box">
-              点击连接状态或窗口标题可以手动连接
-            </div>
+          <div id="con-state" :style="{ background: conState ? stateMes[1].bgStyle : stateMes[0].bgStyle }">
+            {{ conState ? stateMes[1].text : stateMes[0].text }}
+            <div id="mes-box">点击连接状态或窗口标题可以手动连接</div>
           </div>
         </div>
       </template>
     </WindowTitle>
     <div id="home-cotent">
       <div class="div1">
-        <div @click.stop="openConfigWindow(0)"></div>
-        <div @click.stop="openConfigWindow(1)"></div>
+        <div @click.stop="openConfigWindow(8)"></div>
+        <div @click.stop="openConfigWindow(9)"></div>
       </div>
       <div class="div2">
         <div class="div5">
@@ -138,31 +199,29 @@ watch(() => configStore.isTextShow, () => {
           <div></div>
         </div>
         <div class="div8">
-          <div>发送</div>
+          <div @click="sendConfigData">发送</div>
         </div>
       </div>
       <div class="div3">
         <div>
+          <div @click.stop="openConfigWindow(0)"></div>
+          <div @click.stop="openConfigWindow(1)"></div>
+          <div @click.stop="openConfigWindow(2)"></div>
           <div @click.stop="openConfigWindow(3)"></div>
           <div @click.stop="openConfigWindow(4)"></div>
           <div @click.stop="openConfigWindow(5)"></div>
           <div @click.stop="openConfigWindow(6)"></div>
           <div @click.stop="openConfigWindow(7)"></div>
-          <div @click.stop="openConfigWindow(8)"></div>
-          <div @click.stop="openConfigWindow(9)"></div>
-          <div @click.stop="openConfigWindow(10)"></div>
         </div>
       </div>
-      <div class="div4" @click.stop="openConfigWindow(2)"></div>
+      <div class="div4" @click.stop="openConfigWindow(10)"></div>
     </div>
-    <ProgressBox />
+    <ProgressBox v-if="progressShow" />
   </div>
 </template>
 
 <style lang="scss">
-
-
-#window-title{
+#window-title {
   width: 30%;
   height: 100%;
   display: flex;
@@ -212,10 +271,10 @@ watch(() => configStore.isTextShow, () => {
   }
 }
 #con-state:hover {
-    #mes-box {
-      display: block;
-    }
+  #mes-box {
+    display: block;
   }
+}
 
 #cover {
   width: 100%;
@@ -322,8 +381,8 @@ watch(() => configStore.isTextShow, () => {
     div {
       width: 90px;
       height: 100%;
-      background: rgba(51, 51, 51, 0.5);
-      border-radius: 1px;
+      background: rgba(191, 205, 211, 0.909);
+      border-radius: 2px;
       word-break: keep-all;
       display: flex;
       justify-content: center;

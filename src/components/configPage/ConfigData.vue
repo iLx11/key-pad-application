@@ -6,17 +6,16 @@ const win = window as any
 const configStore = useConfigStore()
 const configStr = ref<string>('ConfigData')
 
+// 切换不同事件
 watch(() => configStore.curEvent, () => {
   // console.info(configStore.keyConfig[configStore.curEvent])
   configStr.value = configStore.keyConfig[configStore.curEvent].userKey && configStore.keyConfig[configStore.curEvent].userKey
 })
+
+// 同步编辑的功能
 watch(() => configStore.keyConfig, () => {
   // console.info(configStore.keyConfig[configStore.curEvent])
   configStr.value = configStore.keyConfig[configStore.curEvent].userKey
-  // 发送到主页面进行同步
-  let tempObj: object = {}
-  tempObj['keyConfig'] = JSON.stringify(configStore.keyConfig[configStore.curEvent])
-  win.myApi.setConfigStore(tempObj)
 }, {
   deep: true
 })

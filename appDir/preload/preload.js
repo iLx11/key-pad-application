@@ -9,6 +9,9 @@ const getFilePath = async () => {
 const connectHardware = async () => {
   return await ipcRenderer.invoke("connection-state");
 };
+const sendData = async (dataStr) => {
+  return await ipcRenderer.invoke("send-data", dataStr);
+};
 const createNewWindow = (optionObj, configObj) => {
   ipcRenderer.send("window-create", optionObj, configObj);
 };
@@ -29,6 +32,7 @@ contextBridge.exposeInMainWorld("myApi", {
   setConfigStore,
   getFilePath,
   connectHardware,
+  sendData,
   // Pinia store 设置被动同步监听
   storeChangeListen: (callbacka) => ipcRenderer.on("store-get", (event, data) => {
     callbacka(data);

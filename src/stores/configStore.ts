@@ -45,9 +45,20 @@ export const useConfigStore = defineStore('config', () => {
   const setCurEvent = (cur: number) => {
     curEvent.value = cur
   }
-  
+  // 设置单键配置的功能
   const setKeyConfig = (objData: any) => {
     keyConfig[curEvent.value] = JSON.parse(objData)
+  }
+
+  // 一层配置的功能数据
+  const layerKeyConfig = reactive(new Array(11).fill([]))
+  const setLayerKeyConfig = (ArrData) => {
+    layerKeyConfig[configIndex.value] = JSON.parse(ArrData)
+  }
+  
+  const progressMes = ref<number>(0)
+  const setProgressMes = (mes: number) => {
+    progressMes.value = mes
   }
   return { 
     noticeText,
@@ -63,5 +74,9 @@ export const useConfigStore = defineStore('config', () => {
     setConfigIndex,
     funcShow,
     setFuncShow,
+    layerKeyConfig,
+    setLayerKeyConfig,
+    progressMes,
+    setProgressMes
    }
 })

@@ -255,13 +255,13 @@ _SerialConnect.connectHardware = async () => {
     return new Promise((resolve2) => resolve2(1));
   }
 };
-_SerialConnect.sendMessage = (data) => {
+_SerialConnect.sendData = async (data) => {
   var _a, _b;
   if (_SerialConnect.connectState && Object.keys(_SerialConnect.HardwarePort).length != 0) {
     (_a = _SerialConnect.HardwarePort) == null ? void 0 : _a.write(Buffer.from(data));
     (_b = _SerialConnect.HardwarePort) == null ? void 0 : _b.drain((err) => {
       if (err)
-        return;
+        return new Promise((resolve2) => resolve2(1));
       console.info("send ok");
     });
   }
@@ -289,6 +289,9 @@ ipcMain.on("store-set", (event, objData) => {
 });
 ipcMain.handle("connection-state", async () => {
   return await SerialConnect.connectHardware();
+});
+ipcMain.handle("send-data", async (event, dataStr) => {
+  return await SerialConnect.sendData(dataStr);
 });
 const createMainWindow = async () => {
   let mainW = new CreateWindow();
