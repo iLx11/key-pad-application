@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
-import { genCompStr } from '../utils/strTools'
+import { genCompStr, toHexStr } from '../utils/strTools'
 import { useConfigStore } from '../stores/configStore'
 
 const win = window as any
@@ -23,8 +23,12 @@ const commit = () => {
     configStore.notice(compStr)
     return
   }
-  let genKeyStr = `1${compStr.substring(0, 2)}080115${compStr.substring(2)}`
-  // console.info(genKeyStr)
+  let strLen = toHexStr(parseInt(`0x${compStr.substring(0, 2)}`))
+  // 31010801150300 03000404050607020404050607000404050607
+  // 31010801150300 0B 0202 0733 0001 31 0201 18 0005 1608151631 0201 04 000D 07100C110C1617150417121531 0201 07 0007 08160E17121331 0207 0B0C072E060706 0004 37130709
+  let genKeyStr = `31010801150300${strLen}${compStr.substring(2)}000128`
+  console.info(genKeyStr)
+
   configStore.keyConfig[configStore.curEvent] = {
     userKey: filePathStr.value,
     genKey: genKeyStr

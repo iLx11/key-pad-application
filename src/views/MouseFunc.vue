@@ -146,10 +146,10 @@ const commit = () => {
     userKeyStr += `向左移动 -> ${mouseMove.mouseLeft}\r\n`
   }
   if(mouseMove.mouseUp != '0') {
-    genKeyStr += `1${toHexStr(Number(mouseMove.mouseUp))}`
+    genKeyStr += `0${toHexStr(Number(mouseMove.mouseUp))}`
     userKeyStr += `向上移动 -> ${mouseMove.mouseUp}\r\n`
   } else {
-    genKeyStr += `0${toHexStr(Number(mouseMove.mouseDown))}`
+    genKeyStr += `1${toHexStr(Number(mouseMove.mouseDown))}`
     userKeyStr += `向下移动 -> ${mouseMove.mouseDown}\r\n`
   }
   if(rollMove.rollUp != '0') {
