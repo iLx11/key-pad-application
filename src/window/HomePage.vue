@@ -7,6 +7,8 @@ import ProgressBox from '../components/homePage/ProgressBox.vue'
 import { useRouter } from 'vue-router'
 import { getStringMap } from '../utils/hidKeyCode'
 import { useConfigStore } from '../stores/configStore'
+import { resolve } from 'dns'
+import { describe } from 'node:test'
 
 const router = useRouter()
 const win = window as any
@@ -128,8 +130,9 @@ const sendConfigData = async () => {
   await testConnection()
   if (conState.value == false) {
     configStore.notice('硬件未连接')
-    // return
+    return
   }
+  await new Promise(resolve => setTimeout(resolve, 1))
   // 显示过程页面，发送到硬件
   progressShow.value = true
   // 开始拼接数据并发送
@@ -151,19 +154,17 @@ const sendConfigData = async () => {
   let dataStr = JSON.stringify(tempObj)
   console.info('tempObj', dataStr)
   let left = 0,
-    right = 60
-  while (right < dataStr.length) {
-    // win.myApi.sendData(dataStr.substring(left, right))
+    right = 0
+  do {
+    right = dataStr.length > 60 ? right += 60 : dataStr.length 
     console.info(dataStr.substring(left, right))
+    let res = await win.myApi.sendData(dataStr.substring(left, right))
+    if(res != 0) {
+      configStore.notice('发送数据出错')
+    }
+    configStore.setProgressMes(Math.ceil((right / dataStr.length) * 100))
     left = right
-    if (dataStr.length - 1 - right < 60) {
-      right = dataStr.length
-      console.info(dataStr.substring(left, right))
-      configStore.setProgressMes((right / dataStr.length) * 100)
-      break
-    } else right += 60
-    configStore.setProgressMes((right / dataStr.length) * 100)
-  }
+  } while (right < dataStr.length) 
   progressShow.value = false
   configStore.notice('数据传输完成')
 }
@@ -205,12 +206,13 @@ const sendConfigData = async () => {
       <div class="div3">
         <div>
           <div @click.stop="openConfigWindow(0)"></div>
-          <div @click.stop="openConfigWindow(1)"></div>
           <div @click.stop="openConfigWindow(2)"></div>
-          <div @click.stop="openConfigWindow(3)"></div>
           <div @click.stop="openConfigWindow(4)"></div>
-          <div @click.stop="openConfigWindow(5)"></div>
           <div @click.stop="openConfigWindow(6)"></div>
+
+          <div @click.stop="openConfigWindow(1)"></div>
+          <div @click.stop="openConfigWindow(3)"></div>
+          <div @click.stop="openConfigWindow(5)"></div>
           <div @click.stop="openConfigWindow(7)"></div>
         </div>
       </div>

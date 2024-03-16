@@ -96,8 +96,10 @@ export default class SerialConnect {
       this.HardwarePort?.write(Buffer.from(data))
       this.HardwarePort?.drain((err) => {
         if (err) return new Promise(resolve => resolve(0x01))
+        return new Promise(resolve => resolve(0x00))
         console.info('send ok')
       })
+      return new Promise(resolve => resolve(0x00))
     }
   }
   // 数据处理

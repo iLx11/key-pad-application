@@ -94,10 +94,11 @@ const keyCommit = () => {
     configStore.notice('有错误产生，可能有不支持的字符')
     return
   }
+  
   // 没有快捷键按普通按键处理
   if (count == 0) {
     userKeyStr = keyValue.value
-    genKeyStr = `${genKeyStr}`
+    genKeyStr = `00${toHexStr(keyValue.value.length)}${genKeyStr}`
   } else {
     userKeyStr = userKeyStr.replace(/\+\s$/, '-> ') + keyValue.value
     genKeyStr = `${toHexStr(count)}${toHexStr(keyValue.value.length)}${genKeyStr}`
@@ -237,7 +238,7 @@ const commit = () => {
         compCount ++
       }
       genKeyStr += `${toHexStr(compCount)}${tempStr}`
-      if(i < delayCompList.length &&delayCompList[i].kind == 1) {
+      if(i < delayCompList.length && delayCompList[i].kind == 1) {
         genKeyStr += `${delayCompList[i].listGenStr}`
       }
     }

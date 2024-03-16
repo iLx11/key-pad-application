@@ -262,8 +262,9 @@ _SerialConnect.sendData = async (data) => {
     (_b = _SerialConnect.HardwarePort) == null ? void 0 : _b.drain((err) => {
       if (err)
         return new Promise((resolve2) => resolve2(1));
-      console.info("send ok");
+      return new Promise((resolve2) => resolve2(0));
     });
+    return new Promise((resolve2) => resolve2(0));
   }
 };
 _SerialConnect.dataHandle = (buff) => {
