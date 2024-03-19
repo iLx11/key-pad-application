@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 interface IConfigKey {
   [eventIndex: number]: {
-    userKey: string,
+    userKey: string
     genKey: string
   }
 }
@@ -17,12 +17,12 @@ export const useConfigStore = defineStore('config', () => {
   }
   const setIsTextShow = (state: boolean) => {
     isTextShow.value = state
-  } 
+  }
   const notice = (text: string) => {
     setNoticeText(text)
     setIsTextShow(true)
   }
-  
+
   // 编辑的索引（一层中哪一个硬件）
   const configIndex = ref<number>(0)
   const setConfigIndex = (index: number) => {
@@ -36,10 +36,12 @@ export const useConfigStore = defineStore('config', () => {
   }
 
   // 单键配置
-  const keyConfig = reactive<IConfigKey>(new Array(6).fill({
-    userKey: '',
-    genKey: ''
-  }))
+  const keyConfig = reactive<IConfigKey>(
+    new Array(6).fill({
+      userKey: '',
+      genKey: ''
+    })
+  )
   // 当前硬件的配置事件
   const curEvent = ref<number>(0)
   const setCurEvent = (cur: number) => {
@@ -55,12 +57,26 @@ export const useConfigStore = defineStore('config', () => {
   const setLayerKeyConfig = (ArrData) => {
     layerKeyConfig[configIndex.value] = JSON.parse(ArrData)
   }
-  
+  // 发送流程数据
   const progressMes = ref<number>(0)
   const setProgressMes = (mes: number) => {
     progressMes.value = mes
   }
-  return { 
+  // 当前编辑的屏幕
+  const curScreen = ref<number>()
+  const setCurScreen = (cur: number) => {
+    curScreen.value = cur
+  }
+  // 编辑图片的数据
+  const screenData = reactive(
+    new Array(3).fill(
+      new Object({
+        baseData: '',
+        buffData: ''
+      })
+    )
+  )
+  return {
     noticeText,
     isTextShow,
     setIsTextShow,
@@ -70,13 +86,16 @@ export const useConfigStore = defineStore('config', () => {
     setKeyConfig,
     curEvent,
     setCurEvent,
-    configIndex, 
+    configIndex,
     setConfigIndex,
     funcShow,
     setFuncShow,
     layerKeyConfig,
     setLayerKeyConfig,
     progressMes,
-    setProgressMes
-   }
+    setProgressMes,
+    curScreen,
+    setCurScreen,
+    screenData
+  }
 })

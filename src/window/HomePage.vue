@@ -5,10 +5,8 @@ import { onMounted, nextTick, ref, watch, reactive } from 'vue'
 import PopBox from '../components/tools/PopBox.vue'
 import ProgressBox from '../components/homePage/ProgressBox.vue'
 import { useRouter } from 'vue-router'
-import { getStringMap } from '../utils/hidKeyCode'
 import { useConfigStore } from '../stores/configStore'
-import { resolve } from 'dns'
-import { describe } from 'node:test'
+
 
 const router = useRouter()
 const win = window as any
@@ -61,16 +59,16 @@ const testConnection = async () => {
 const openConfigWindow = async (index: number) => {
   configStore.setConfigIndex(index)
   console.log(configStore.configIndex)
-  createWindow()
+  createWindow('/config')
   // await new Promise(resolve => setTimeout(resolve, 1000));
 }
 
-const createWindow = () => {
+const createWindow = (route: string) => {
   // console.log(router)
   // console.log(router.currentRoute.value.path)
   win.myApi.createNewWindow(
     {
-      route: '/config'
+      route: route
     },
     {
       width: 900,
@@ -132,7 +130,7 @@ const sendConfigData = async () => {
     configStore.notice('硬件未连接')
     return
   }
-  await new Promise(resolve => setTimeout(resolve, 1))
+  await new Promise((resolve) => setTimeout(resolve, 1))
   // 显示过程页面，发送到硬件
   progressShow.value = true
   // 开始拼接数据并发送
@@ -156,17 +154,35 @@ const sendConfigData = async () => {
   let left = 0,
     right = 0
   do {
-    right = dataStr.length > 60 ? right += 60 : dataStr.length 
+    right = dataStr.length > 60 ? (right += 60) : dataStr.length
     console.info(dataStr.substring(left, right))
     let res = await win.myApi.sendData(dataStr.substring(left, right))
-    if(res != 0) {
+    if (res != 0) {
       configStore.notice('发送数据出错')
     }
     configStore.setProgressMes(Math.ceil((right / dataStr.length) * 100))
     left = right
-  } while (right < dataStr.length) 
+  } while (right < dataStr.length)
   progressShow.value = false
   configStore.notice('数据传输完成')
+}
+
+// 菜单切换
+const menuIndex = ref<number>(1)
+const menuChange = (func: number) => {
+  if(func) {
+    menuIndex.value += 1
+    if(menuIndex.value > 10) menuIndex.value = 1 
+  } else {
+    menuIndex.value -= 1
+    if(menuIndex.value < 1) menuIndex.value = 10
+  }
+}
+
+// 显示屏幕编辑
+const openScreenPage = (curScreen: number) => {
+  configStore.setCurScreen(curScreen)
+  createWindow('/screen')
 }
 </script>
 
@@ -191,16 +207,39 @@ const sendConfigData = async () => {
       </div>
       <div class="div2">
         <div class="div5">
-          <div></div>
+          <div @click="openScreenPage(0)"></div>
         </div>
         <div class="div6">
-          <div></div>
+          <div @click="openScreenPage(1)"></div>
         </div>
         <div class="div7">
-          <div></div>
+          <div @click="openScreenPage(2)"></div>
         </div>
         <div class="div8">
-          <div @click="sendConfigData">发送</div>
+          <div id="send-box" @click="sendConfigData">发送</div>
+          <div id="menu-box">
+            <div @click="menuChange(0)">
+              <svg t="1710603270811" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7687" width="20" height="20">
+                <path
+                  d="M659.748571 245.272381l-51.687619-51.687619-318.439619 318.585905 318.415238 318.268952 51.712-51.736381-266.703238-266.556952z"
+                  p-id="7688"
+                  class="sweezy-custom-cursor-hover"
+                  style='null;cursor: url("data:image/png;base64,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") 7 1, pointer !important;'
+                  data-spm-anchor-id="a313x.collections_detail.0.i0.62783a81stkprB"
+                  fill="#e6e6e6"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <span>{{menuIndex}}</span>
+              <div id="menu-text">MENU</div>
+            </div>
+            <div @click="menuChange(1)">
+              <svg t="1710603414798" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8201" width="20" height="20">
+                <path d="M605.086476 512.146286L338.358857 245.272381l51.760762-51.687619 318.415238 318.585905L390.095238 830.415238l-51.687619-51.736381z" p-id="8202" fill="#e6e6e6"></path>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
       <div class="div3">
@@ -380,7 +419,8 @@ const sendConfigData = async () => {
     justify-content: flex-start;
     padding: 5px;
     color: rgba(255, 255, 255, 1);
-    div {
+    user-select: none;
+    #send-box {
       width: 90px;
       height: 100%;
       background: rgba(191, 205, 211, 0.909);
@@ -390,6 +430,35 @@ const sendConfigData = async () => {
       justify-content: center;
       align-items: center;
       font-size: 15px;
+      margin-right: 15px;
+    }
+    #menu-box {
+      width: 170px;
+      height: 100%;
+      background: rgba(191, 205, 211, 0.7);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      > div {
+        width: 30%;
+        height: 100%;
+        background: rgba(51, 51, 51, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        position: relative;
+      }
+      #menu-text {
+        // width: 40px;
+        // height: 20px;
+        font-size: 9px;
+        transform:rotate(-90deg);
+        position: absolute;
+        bottom: 11px;
+        left: -5px;
+        background: rgba(51, 51, 51, 0);
+      }
     }
   }
 }

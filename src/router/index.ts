@@ -15,6 +15,10 @@ const router = createRouter({
       // component: HomePage
     },
     {
+      path: '/screen',
+      component: () => import('../window/ScreenEditorPage.vue')
+    },
+    {
       path: '/config',
       component: () => import('../window/KeyConfigPage.vue'),
       // component: KeyConfigPage,
