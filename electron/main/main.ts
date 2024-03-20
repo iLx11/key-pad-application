@@ -6,9 +6,12 @@ import { windowControlListener } from '../controller/windowControl'
 import CreateWindow from '../controller/createWindow'
 import { getFilePath } from '../controller/fileDialog'
 import SerialConnect from '../controller/serialPort'
-import { eventNames } from 'process'
+import { picDataListener } from '../controller/picDataEditor'
 // 窗口监听
 windowControlListener()
+// 图片处理监听
+picDataListener()
+
 
 // 创建其他窗口
 ipcMain.on('window-create', (event, optionObj: object, configObj: object) => {

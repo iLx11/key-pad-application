@@ -54,7 +54,7 @@ export const useConfigStore = defineStore('config', () => {
 
   // 一层配置的功能数据
   const layerKeyConfig = reactive(new Array(11).fill([]))
-  const setLayerKeyConfig = (ArrData) => {
+  const setLayerKeyConfig = (ArrData: string) => {
     layerKeyConfig[configIndex.value] = JSON.parse(ArrData)
   }
   // 发送流程数据
@@ -63,7 +63,7 @@ export const useConfigStore = defineStore('config', () => {
     progressMes.value = mes
   }
   // 当前编辑的屏幕
-  const curScreen = ref<number>()
+  const curScreen = ref<number>(0)
   const setCurScreen = (cur: number) => {
     curScreen.value = cur
   }
@@ -76,6 +76,9 @@ export const useConfigStore = defineStore('config', () => {
       })
     )
   )
+  const setScreenData = (objData: string) => {
+    screenData[curScreen.value] = JSON.parse(objData)
+  }
   return {
     noticeText,
     isTextShow,
@@ -96,6 +99,7 @@ export const useConfigStore = defineStore('config', () => {
     setProgressMes,
     curScreen,
     setCurScreen,
-    screenData
+    screenData,
+    setScreenData
   }
 })

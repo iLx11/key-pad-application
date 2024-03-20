@@ -24,6 +24,14 @@ const maximizeWindow = () => {
 const closeWindow = () => {
   ipcRenderer.send("window-close");
 };
+const resizeImage = async (resizeWidth, resizeHeight, editorPicData, colorMode) => {
+  const data = await ipcRenderer.invoke("pic-data-editor", resizeWidth, resizeHeight, editorPicData, colorMode);
+  return data;
+};
+const generateResultArray = async (picData, threshold = 120, ...configArray) => {
+  const data = ipcRenderer.invoke("pic-data-parse", picData, threshold, ...configArray);
+  return data;
+};
 contextBridge.exposeInMainWorld("myApi", {
   minimizeWindow,
   maximizeWindow,
@@ -33,6 +41,8 @@ contextBridge.exposeInMainWorld("myApi", {
   getFilePath,
   connectHardware,
   sendData,
+  resizeImage,
+  generateResultArray,
   // Pinia store 设置被动同步监听
   storeChangeListen: (callbacka) => ipcRenderer.on("store-get", (event, data) => {
     callbacka(data);

@@ -19,7 +19,9 @@
     "fs-extra": "^11.1.0",
     "pinia": "^2.1.6",
     "serialport": "^12.0.0",
-    "tui-image-editor": "^3.15.3"
+    "tui-image-editor": "^3.15.3",
+    "pngparse": "^2.0.1",
+    "sharp": "0.32.6"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",

@@ -6,9 +6,25 @@ import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
 import { useRouter } from 'vue-router'
 
-const win = window as any
 const router = useRouter()
+const win = window as any
+const configStore = useConfigStore()
 
+onMounted(() => {
+  win.myApi.storeChangeListen((objData: object) => {
+    console.info('keyConfigPage listening')
+    const keys = Object.keys(objData)
+    for(let key of keys) {
+      // 设置对应 store 的
+      configStore[`set${key.replace(key.charAt(0), key.charAt(0).toUpperCase())}`](objData[key])
+    }
+    console.info(configStore.curScreen)
+  })
+  // 获取 配置的索引
+  win.myApi.setConfigStore({
+    get: 'curScreen'
+  })
+})
 </script>
 
 <template>

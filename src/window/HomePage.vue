@@ -7,7 +7,6 @@ import ProgressBox from '../components/homePage/ProgressBox.vue'
 import { useRouter } from 'vue-router'
 import { useConfigStore } from '../stores/configStore'
 
-
 const router = useRouter()
 const win = window as any
 const configStore = useConfigStore()
@@ -35,6 +34,9 @@ onMounted(async () => {
         // 设置对应 store 的值
         configStore[`set${key.replace(key.charAt(0), key.charAt(0).toUpperCase())}`](objData[key])
       }
+      console.info(configStore.screenData)
+      //
+      imgOneRef.value.src = `data:image/png;base64,${configStore.screenData[configStore.curScreen].baseData}`
     } catch (error) {
       console.error(error)
       configStore.notice('同步信息错误')
@@ -170,12 +172,12 @@ const sendConfigData = async () => {
 // 菜单切换
 const menuIndex = ref<number>(1)
 const menuChange = (func: number) => {
-  if(func) {
+  if (func) {
     menuIndex.value += 1
-    if(menuIndex.value > 10) menuIndex.value = 1 
+    if (menuIndex.value > 10) menuIndex.value = 1
   } else {
     menuIndex.value -= 1
-    if(menuIndex.value < 1) menuIndex.value = 10
+    if (menuIndex.value < 1) menuIndex.value = 10
   }
 }
 
@@ -184,6 +186,11 @@ const openScreenPage = (curScreen: number) => {
   configStore.setCurScreen(curScreen)
   createWindow('/screen')
 }
+
+// 屏幕图片组件
+const imgOneRef = ref<HTMLElement | null>(null)
+const imgTwoRef = ref<HTMLElement | null>(null)
+const imgThreeRef = ref<HTMLElement | null>(null)
 </script>
 
 <template>
@@ -207,13 +214,19 @@ const openScreenPage = (curScreen: number) => {
       </div>
       <div class="div2">
         <div class="div5">
-          <div @click="openScreenPage(0)"></div>
+          <div @click="openScreenPage(0)">
+            <img src="" alt="" ref="imgOneRef" />
+          </div>
         </div>
         <div class="div6">
-          <div @click="openScreenPage(1)"></div>
+          <div @click="openScreenPage(1)">
+            <img src="" alt="" ref="imgTwoRef" />
+          </div>
         </div>
         <div class="div7">
-          <div @click="openScreenPage(2)"></div>
+          <div @click="openScreenPage(2)">
+            <img src="" alt="" ref="imgThreeRef" />
+          </div>
         </div>
         <div class="div8">
           <div id="send-box" @click="sendConfigData">发送</div>
@@ -231,7 +244,7 @@ const openScreenPage = (curScreen: number) => {
               </svg>
             </div>
             <div>
-              <span>{{menuIndex}}</span>
+              <span>{{ menuIndex }}</span>
               <div id="menu-text">MENU</div>
             </div>
             <div @click="menuChange(1)">
@@ -388,6 +401,13 @@ const openScreenPage = (curScreen: number) => {
     background: rgba(255, 255, 255, 0.5);
     cursor: pointer;
   }
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  img[src=''] {
+    opacity: 0;
+  }
   .div5 {
     grid-area: 1 / 1 / 4 / 4;
     div {
@@ -453,7 +473,7 @@ const openScreenPage = (curScreen: number) => {
         // width: 40px;
         // height: 20px;
         font-size: 9px;
-        transform:rotate(-90deg);
+        transform: rotate(-90deg);
         position: absolute;
         bottom: 11px;
         left: -5px;

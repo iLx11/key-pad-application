@@ -26,7 +26,7 @@ const switchBack = () => {
   ;(instance as any).value.loadImageFromURL(img, 'blank').then((result) => {
     ;(instance as any).value.addText('', {
       position: {},
-      styles: { 
+      styles: {
         fill: color,
         fontSize: 85,
         fontFamily: '',
@@ -37,20 +37,29 @@ const switchBack = () => {
     })
   })
 }
+
 // 编辑信息提交
 const editorCommit = async () => {
   const picBase64Str = (instance as any).value.toDataURL()
-  // 缩放图片
-
-  // 获取取模数据
-  
-  let tempObj = {
-    baseData: picBase64Str,
-    buffData: '234'
+  let data, arrData
+  if(configStore.curScreen < 1) {
+    // 缩放图片（1 为单色屏幕）
+    data = await win.myApi.resizeImage(320, 172, picBase64Str, 0)
+    // 获取取模数据
+    arrData = await win.myApi.generateResultArray(data, 120, 1, 2, 0, 0, 0)
+  } else {
+    // 缩放图片（1 为单色屏幕）
+    data = await win.myApi.resizeImage(70, 40, picBase64Str, 1)
+    // 获取取模数据
+    arrData = await win.myApi.generateResultArray(data, 120, 1, 2, 0, 0, 1)
   }
+  console.info(arrData) 
+  let tempObj: object = {}
+  tempObj['screenData'] = JSON.stringify({
+    baseData: data,
+    buffData: arrData
+  })
   win.myApi.setConfigStore(tempObj)
-  // 更改裁剪状态
-  // screenStore.setResized(false)
 }
 </script>
 
