@@ -72,7 +72,7 @@ export const useConfigStore = defineStore('config', () => {
     new Array(3).fill(
       new Object({
         baseData: '',
-        buffData: ''
+        buffData: []
       })
     )
   )

@@ -6,6 +6,7 @@ import PopBox from '../components/tools/PopBox.vue'
 import ProgressBox from '../components/homePage/ProgressBox.vue'
 import { useRouter } from 'vue-router'
 import { useConfigStore } from '../stores/configStore'
+import { testConnection, sendColorScreen } from '../utils/dataHandle'
 
 const router = useRouter()
 const win = window as any
@@ -14,7 +15,7 @@ const popBoxRef = ref<HTMLElement | null>(null)
 
 onMounted(async () => {
   // 连接硬件
-  await testConnection()
+  conState.value = await testConnection()
   // 主页面监听
   win.myApi.storeChangeListen((objData: object) => {
     // console.info('homePage listening', objData)
@@ -34,28 +35,13 @@ onMounted(async () => {
         // 设置对应 store 的值
         configStore[`set${key.replace(key.charAt(0), key.charAt(0).toUpperCase())}`](objData[key])
       }
-      console.info(configStore.screenData)
-      //
-      imgOneRef.value.src = `data:image/png;base64,${configStore.screenData[configStore.curScreen].baseData}`
     } catch (error) {
       console.error(error)
       configStore.notice('同步信息错误')
     }
   })
 })
-// 测试连接
-const testConnection = async () => {
-  let conStore = await win.myApi.connectHardware()
-  console.info(conStore)
-  if (conStore === 0) {
-    configStore.notice('连接成功')
-    conState.value = true
-    return
-  } else {
-    configStore.notice('连接失败，请检查硬件连接')
-    conState.value = false
-  }
-}
+
 
 // 打开键值编辑窗口
 const openConfigWindow = async (index: number) => {
@@ -124,50 +110,21 @@ watch(
   }
 )
 
+// 数据上传页面显示
 const progressShow = ref<boolean>(false)
-const sendConfigData = async () => {
+
+// 发送最终数据
+const sendFinalData = async () => {
   // 测试连接
-  await testConnection()
-  if (conState.value == false) {
-    configStore.notice('硬件未连接')
-    return
-  }
+  conState.value = await testConnection()
+  
   await new Promise((resolve) => setTimeout(resolve, 1))
   // 显示过程页面，发送到硬件
-  progressShow.value = true
-  // 开始拼接数据并发送
-  configStore.setProgressMes(0)
-  let tempObj = {}
-  let beginIndex = 0
-  configStore.layerKeyConfig.forEach((o, i) => {
-    if (o.length != 0) {
-      o.forEach((x, j) => {
-        if (x.genKey != '') tempObj[`${beginIndex > 9 ? beginIndex : '0' + beginIndex}`] = x.genKey
-        if (i < 8 && j < 2) beginIndex++
-        if (i > 7) beginIndex++
-      })
-    } else {
-      if (i < 8) beginIndex += 2
-      else beginIndex += 6
-    }
-  })
-  let dataStr = JSON.stringify(tempObj)
-  console.info('tempObj', dataStr)
-  let left = 0,
-    right = 0
-  do {
-    right = dataStr.length > 60 ? (right += 60) : dataStr.length
-    console.info(dataStr.substring(left, right))
-    let res = await win.myApi.sendData(dataStr.substring(left, right))
-    if (res != 0) {
-      configStore.notice('发送数据出错')
-    }
-    configStore.setProgressMes(Math.ceil((right / dataStr.length) * 100))
-    left = right
-  } while (right < dataStr.length)
-  progressShow.value = false
-  configStore.notice('数据传输完成')
+  // progressShow.value = true
+  await sendColorScreen()
 }
+
+
 
 // 菜单切换
 const menuIndex = ref<number>(1)
@@ -191,6 +148,17 @@ const openScreenPage = (curScreen: number) => {
 const imgOneRef = ref<HTMLElement | null>(null)
 const imgTwoRef = ref<HTMLElement | null>(null)
 const imgThreeRef = ref<HTMLElement | null>(null)
+
+watch(
+  () => configStore.screenData,
+  () => {
+    const imgList: HTMLElement[] = new Array(imgOneRef.value, imgTwoRef.value, imgThreeRef.value)
+    if (imgList[configStore.curScreen] != null) imgList[configStore.curScreen].src = `data:image/png;base64,${configStore.screenData[configStore.curScreen].baseData}`
+  },
+  {
+    deep: true
+  }
+)
 </script>
 
 <template>
@@ -229,7 +197,7 @@ const imgThreeRef = ref<HTMLElement | null>(null)
           </div>
         </div>
         <div class="div8">
-          <div id="send-box" @click="sendConfigData">发送</div>
+          <div id="send-box" @click="sendFinalData">发送</div>
           <div id="menu-box">
             <div @click="menuChange(0)">
               <svg t="1710603270811" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7687" width="20" height="20">
@@ -398,7 +366,7 @@ const imgThreeRef = ref<HTMLElement | null>(null)
   padding-bottom: 20px;
   padding-left: 10px;
   div {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.6);
     cursor: pointer;
   }
   img {
@@ -414,6 +382,8 @@ const imgThreeRef = ref<HTMLElement | null>(null)
       width: 200px;
       height: 108px;
       margin: 10px auto;
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0.1px 0px 5.3px rgba(0, 0, 0, 0.016), 0.4px 0px 17.9px rgba(0, 0, 0, 0.027), 2px 0px 80px rgba(0, 0, 0, 0.05);
     }
   }
   .div6 {
@@ -422,6 +392,8 @@ const imgThreeRef = ref<HTMLElement | null>(null)
       width: 120px;
       height: 66px;
       margin: 10px auto;
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0.1px 0px 5.3px rgba(0, 0, 0, 0.016), 0.4px 0px 17.9px rgba(0, 0, 0, 0.027), 2px 0px 80px rgba(0, 0, 0, 0.05);
     }
   }
   .div7 {
@@ -430,6 +402,8 @@ const imgThreeRef = ref<HTMLElement | null>(null)
       width: 120px;
       height: 66px;
       margin: 10px auto;
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0.1px 0px 5.3px rgba(0, 0, 0, 0.016), 0.4px 0px 17.9px rgba(0, 0, 0, 0.027), 2px 0px 80px rgba(0, 0, 0, 0.05);
     }
   }
   .div8 {
@@ -518,3 +492,4 @@ const imgThreeRef = ref<HTMLElement | null>(null)
   cursor: pointer;
 }
 </style>
+../utils/dataHandle

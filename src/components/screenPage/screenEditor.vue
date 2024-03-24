@@ -5,6 +5,7 @@ import { editorConfig } from '../../utils/theme'
 import 'tui-image-editor/dist/tui-image-editor.css'
 import { useConfigStore } from '../../stores/configStore'
 import ImageEditor from 'tui-image-editor/dist/tui-image-editor.js'
+import { config } from 'process'
 
 const win = window as any
 const emits = defineEmits(['editorCancle', 'editorCommit'])
@@ -60,6 +61,7 @@ const editorCommit = async () => {
     buffData: arrData
   })
   win.myApi.setConfigStore(tempObj)
+  win.myApi.closeWindow()
 }
 </script>
 

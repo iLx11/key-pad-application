@@ -8,7 +8,7 @@ export default class SerialConnect {
   // 正确的下位机串口
   private static HardwarePort = {}
   // 连接硬件
-  public static connectHardware = async () => {
+  public static connectHardware = async (): Promise<boolean> => {
     let portLists: Array<object> = []
     try {
       portLists = await SerialPort.list()
@@ -16,12 +16,12 @@ export default class SerialConnect {
     } catch (err) {
       console.info(err)
       this.connectState = false
-      return new Promise(resolve => resolve(0x01))
+      return new Promise(resolve => resolve(false))
     }
     if (portLists.length == 0) {
       console.info('no serial port')
       this.connectState = false
-      return new Promise(resolve => resolve(0x01))
+      return new Promise(resolve => resolve(false))
     }
     // 连接硬件端口
     let connectCount = 3
@@ -33,7 +33,7 @@ export default class SerialConnect {
           if (err) {
             console.log('port open failed')
             this.connectState = false
-            return new Promise(resolve => resolve(0x01))
+            return new Promise(resolve => resolve(false))
           }
           console.log('port open success')
         })
@@ -43,8 +43,8 @@ export default class SerialConnect {
         // 以 flowing mode 监听收到的数据
         port.on('error', (err) => {
           console.info(err)
-          this.connectState = falseb
-          return new Promise(resolve => resolve(0x01))
+          this.connectState = false
+          return new Promise(resolve => resolve(false))
         })
         // 数据监听
         port.on('data', (buff) => {
@@ -60,13 +60,13 @@ export default class SerialConnect {
         // 窗口关闭监听
         port.on('close', () => {
           this.connectState = false
-          return new Promise(resolve => resolve(0x01))
+          return new Promise(resolve => resolve(false))
         })
         port.write(new Uint8Array([0xaa, 0xbb, 0xcc]))
         port.drain((err) => {
           if (err)  {
             this.connectState = false
-            return new Promise(resolve => resolve(0x01))
+            return new Promise(resolve => resolve(false))
           }
           console.info('send ok')
         })
@@ -84,22 +84,21 @@ export default class SerialConnect {
     }
     if (this.connectState == true)  {
       console.info('connect success') 
-      return new Promise(resolve => resolve(0x00) )
+      return new Promise(resolve => resolve(true) )
     } else {
       console.info('no hardware input')
-      return new Promise(resolve => resolve(0x01) )
+      return new Promise(resolve => resolve(false) )
     }
   }
   // 发送数据
-  public static sendData = async (data: string) => {
+  public static sendData = async (data: string): Promise<boolean> => {
     if (this.connectState && Object.keys(this.HardwarePort).length != 0) {
       this.HardwarePort?.write(Buffer.from(data))
       this.HardwarePort?.drain((err) => {
-        if (err) return new Promise(resolve => resolve(0x01))
-        return new Promise(resolve => resolve(0x00))
-        console.info('send ok')
+        if (err) return new Promise(resolve => resolve(false))
+        return new Promise(resolve => resolve(true))
       })
-      return new Promise(resolve => resolve(0x00))
+      return new Promise(resolve => resolve(true))
     }
   }
   // 数据处理
