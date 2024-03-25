@@ -15,6 +15,23 @@ export const testConnection = async (): Promise<boolean> => {
   }
 }
 
+// 发送单色图片数据
+export const sendOledScreen = async () => {
+  let oledArr = new Uint8Array(configStore.screenData[1].buffData.concat(configStore.screenData[2].buffData))
+
+  // console.info(u8Arr)
+  await win.myApi.sendData(new Uint8Array([0xaa, 0xbb, 0xee]))
+  await new Promise((resolve) => setTimeout(resolve, 1))
+  // 分包数据
+  await subpackageImageData(oledArr, 62, async (dataArr: any) => {
+    for (let i = 0; i < dataArr.length; i++) {
+      await win.myApi.sendData(dataArr[i])
+      await new Promise((resolve) => setTimeout(resolve, 1))
+    }
+  })
+  await new Promise((resolve) => setTimeout(resolve, 100))
+}
+
 // 发送彩色屏幕
 export const sendColorScreen = async () => {
   let u8Arr = new Uint8Array(configStore.screenData[0].buffData)

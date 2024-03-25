@@ -50,7 +50,7 @@ const editorCommit = async () => {
     arrData = await win.myApi.generateResultArray(data, 120, 1, 2, 0, 0, 0)
   } else {
     // 缩放图片（1 为单色屏幕）
-    data = await win.myApi.resizeImage(70, 40, picBase64Str, 1)
+    data = await win.myApi.resizeImage(72, 40, picBase64Str, 1)
     // 获取取模数据
     arrData = await win.myApi.generateResultArray(data, 120, 1, 2, 0, 0, 1)
   }
@@ -63,6 +63,10 @@ const editorCommit = async () => {
   win.myApi.setConfigStore(tempObj)
   win.myApi.closeWindow()
 }
+
+const closeWindow = () => {
+  win.myApi.closeWindow()
+}
 </script>
 
 <template>
@@ -73,7 +77,7 @@ const editorCommit = async () => {
         <div @click="switchBack">切换</div>
       </li>
       <li>
-        <div @click="emits('editorCancle')">取消</div>
+        <div @click="closeWindow">取消</div>
       </li>
       <li>
         <div @click="editorCommit">确认</div>

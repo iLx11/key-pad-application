@@ -6,7 +6,7 @@ import PopBox from '../components/tools/PopBox.vue'
 import ProgressBox from '../components/homePage/ProgressBox.vue'
 import { useRouter } from 'vue-router'
 import { useConfigStore } from '../stores/configStore'
-import { testConnection, sendColorScreen } from '../utils/dataHandle'
+import { testConnection, sendColorScreen, sendOledScreen } from '../utils/dataHandle'
 
 const router = useRouter()
 const win = window as any
@@ -121,6 +121,9 @@ const sendFinalData = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1))
   // 显示过程页面，发送到硬件
   // progressShow.value = true
+  // 发送单色屏幕
+  await sendOledScreen()
+  // 发送彩色屏幕
   await sendColorScreen()
 }
 
