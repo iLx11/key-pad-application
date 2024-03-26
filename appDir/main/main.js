@@ -266,6 +266,7 @@ _SerialConnect.sendData = async (data) => {
     });
     return new Promise((resolve2) => resolve2(true));
   }
+  return new Promise((resolve2) => resolve2(false));
 };
 _SerialConnect.dataHandle = (buff) => {
   console.info(buff);

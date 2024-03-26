@@ -29,7 +29,7 @@ export const sendOledScreen = async () => {
       await new Promise((resolve) => setTimeout(resolve, 1))
     }
   })
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  await new Promise((resolve) => setTimeout(resolve, 10))
 }
 
 // 发送彩色屏幕
@@ -49,7 +49,6 @@ export const sendColorScreen = async () => {
           await new Promise((resolve) => setTimeout(resolve, 1))
         }
       })
-      console.info('4096 ---------> done')
       await new Promise((resolve) => setTimeout(resolve, 110))
     }
   })
@@ -67,7 +66,6 @@ const subpackageImageData = async (dataArr: Uint8Array, subSize: number, callBac
 // 发送配置的数据到硬件，键值与图片用 (4096) 分隔，再用 (60) 分包
 export const sendConfigData = async () => {
   // 开始拼接单层的键值数据并发送
-  configStore.setProgressMes(0)
   let tempObj = {}
   let beginIndex = 0
   configStore.layerKeyConfig.forEach((o, i) => {
@@ -83,19 +81,20 @@ export const sendConfigData = async () => {
     }
   })
   let dataStr = JSON.stringify(tempObj)
-  console.info('tempObj', dataStr)
+  // console.info('tempObj', dataStr)
   // 分割为（4096）
   await subpackageSend(4096, dataStr, async (reduceStr: string) => {
     // 分包（60）发送
     await subpackageSend(62, reduceStr, async (str: string) => {
       console.info(str)
-      let res = await win.myApi.sendData(str)
-      if (res != 0) {
+      let state = await win.myApi.sendData(str)
+      if (!state) {
         configStore.notice('发送数据出错')
       }
       // configStore.setProgressMes(Math.ceil((right / dataStr.length) * 100))
     })
   })
+  await new Promise((resolve) => setTimeout(resolve, 1200))
 }
 // 分包发送函数
 const subpackageSend = async (dataLimit: number, dataStr: string, callBack: Function) => {

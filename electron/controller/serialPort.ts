@@ -100,6 +100,7 @@ export default class SerialConnect {
       })
       return new Promise(resolve => resolve(true))
     }
+    return new Promise(resolve => resolve(false))
   }
   // 数据处理
   private static dataHandle = (buff: Buffer) => {
