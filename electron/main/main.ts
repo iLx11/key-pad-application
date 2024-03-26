@@ -34,6 +34,11 @@ ipcMain.on('store-set', (event, objData) => {
   }
 })
 
+// 等待信号
+ipcMain.handle('wait-sign', async () => {
+  return await SerialConnect.waitSign()
+})
+
 // 硬件连接
 ipcMain.handle('connection-state', async () => {
   // 创建窗口之后连接硬件

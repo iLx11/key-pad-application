@@ -3,6 +3,9 @@ import { resolve } from 'path'
 const { SerialPort } = require('serialport')
 
 export default class SerialConnect {
+  private static wait = null
+  // 等待状态
+  private static waitState: boolean = false
   // 连接状态
   private static connectState: boolean = false
   // 正确的下位机串口
@@ -104,6 +107,26 @@ export default class SerialConnect {
   }
   // 数据处理
   private static dataHandle = (buff: Buffer) => {
-    console.info(buff)
+    if(buff[0] == 0x68) {
+      this.waitState = true
+    }
+    // console.info(buff[0] == 0x68)
+  }
+  // 等待回应
+  public static waitSign = async ():Promise<boolean> => {
+    await new Promise(resolve => {
+      if(this.wait) return
+       this.wait = setInterval(() => {
+        if(this.waitState) {
+          clearInterval(this.wait)
+          this.wait = null
+          resolve(this.waitState)
+          this.waitState = false
+        }
+      }, 2) 
+    }).catch(() => {
+      return new Promise(resolve => resolve(false))
+    })
+    return new Promise(resolve => resolve(true))
   }
 }

@@ -5,9 +5,15 @@ const setConfigStore = (obj: object) => {
   // console.log(obj)
   ipcRenderer.send('store-set', obj)
 }
+
 //获取文件路径
 const getFilePath = async () => {
   return await ipcRenderer.invoke('select-file')
+}
+
+// 等待信号
+const waitSign = async () => {
+  return await ipcRenderer.invoke('wait-sign')
 }
 
 // 连接硬件
@@ -59,6 +65,7 @@ contextBridge.exposeInMainWorld('myApi', {
   createNewWindow,
   setConfigStore,
   getFilePath,
+  waitSign,
   connectHardware,
   sendData,
   resizeImage,

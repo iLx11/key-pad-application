@@ -183,6 +183,8 @@ const getFilePath = async () => {
 const { SerialPort } = require("serialport");
 const _SerialConnect = class _SerialConnect2 {
 };
+_SerialConnect.wait = null;
+_SerialConnect.waitState = false;
 _SerialConnect.connectState = false;
 _SerialConnect.HardwarePort = {};
 _SerialConnect.connectHardware = async () => {
@@ -269,7 +271,26 @@ _SerialConnect.sendData = async (data) => {
   return new Promise((resolve2) => resolve2(false));
 };
 _SerialConnect.dataHandle = (buff) => {
-  console.info(buff);
+  if (buff[0] == 104) {
+    _SerialConnect.waitState = true;
+  }
+};
+_SerialConnect.waitSign = async () => {
+  await new Promise((resolve2) => {
+    if (_SerialConnect.wait)
+      return;
+    _SerialConnect.wait = setInterval(() => {
+      if (_SerialConnect.waitState) {
+        clearInterval(_SerialConnect.wait);
+        _SerialConnect.wait = null;
+        resolve2(_SerialConnect.waitState);
+        _SerialConnect.waitState = false;
+      }
+    }, 2);
+  }).catch(() => {
+    return new Promise((resolve2) => resolve2(false));
+  });
+  return new Promise((resolve2) => resolve2(true));
 };
 let SerialConnect = _SerialConnect;
 const os$1 = require("os");
@@ -563,6 +584,9 @@ ipcMain.on("store-set", (event, objData) => {
       cur.webContents.send("store-get", objData);
     }
   }
+});
+ipcMain.handle("wait-sign", async () => {
+  return await SerialConnect.waitSign();
 });
 ipcMain.handle("connection-state", async () => {
   return await SerialConnect.connectHardware();

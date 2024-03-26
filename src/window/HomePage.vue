@@ -13,6 +13,14 @@ const win = window as any
 const configStore = useConfigStore()
 const popBoxRef = ref<HTMLElement | null>(null)
 
+const test = async () => {
+  console.info('test begin')
+  let start = await win.myApi.waitSign()
+  console.info(start)
+  console.info('test end')
+}
+
+
 onMounted(async () => {
   // 连接硬件
   conState.value = await testConnection()

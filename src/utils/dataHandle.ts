@@ -2,6 +2,11 @@ import { useConfigStore } from '../stores/configStore'
 
 const configStore = useConfigStore()
 const win = window as any
+let signState = false
+
+const waitSign = async ():Promise<boolean>  => {
+  return await win.myApi.waitSign()
+}
 
 // 测试连接
 export const testConnection = async (): Promise<boolean> => {
@@ -29,7 +34,8 @@ export const sendOledScreen = async () => {
       await new Promise((resolve) => setTimeout(resolve, 1))
     }
   })
-  await new Promise((resolve) => setTimeout(resolve, 10))
+  signState = await waitSign()
+  if(!signState) return
 }
 
 // 发送彩色屏幕
@@ -49,7 +55,9 @@ export const sendColorScreen = async () => {
           await new Promise((resolve) => setTimeout(resolve, 1))
         }
       })
-      await new Promise((resolve) => setTimeout(resolve, 110))
+      // await new Promise((resolve) => setTimeout(resolve, 110))
+      signState = await waitSign()
+      if(!signState) return
     }
   })
 }
@@ -94,7 +102,9 @@ export const sendConfigData = async () => {
       // configStore.setProgressMes(Math.ceil((right / dataStr.length) * 100))
     })
   })
-  await new Promise((resolve) => setTimeout(resolve, 1200))
+  // await new Promise((resolve) => setTimeout(resolve, 1200))
+  signState = await waitSign()
+  if(!signState) return
 }
 // 分包发送函数
 const subpackageSend = async (dataLimit: number, dataStr: string, callBack: Function) => {

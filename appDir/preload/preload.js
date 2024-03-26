@@ -6,6 +6,9 @@ const setConfigStore = (obj) => {
 const getFilePath = async () => {
   return await ipcRenderer.invoke("select-file");
 };
+const waitSign = async () => {
+  return await ipcRenderer.invoke("wait-sign");
+};
 const connectHardware = async () => {
   return await ipcRenderer.invoke("connection-state");
 };
@@ -39,6 +42,7 @@ contextBridge.exposeInMainWorld("myApi", {
   createNewWindow,
   setConfigStore,
   getFilePath,
+  waitSign,
   connectHardware,
   sendData,
   resizeImage,
