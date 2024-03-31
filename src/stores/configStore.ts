@@ -23,6 +23,22 @@ export const useConfigStore = defineStore('config', () => {
     setIsTextShow(true)
   }
 
+  // 菜单配置
+  const curMenu = ref<number>(0)
+  const setCurMenu = (menuIndex: number) => {
+    curMenu.value = menuIndex
+  }
+  // 全十层的配置
+  const menuConfig = reactive(
+    new Array(10).fill({
+      keyConfig: [],
+      screenConfig: []
+    })
+  )
+  const setMenuConfig = (configData: string) => {
+    menuConfig[curMenu.value] = JSON.parse(configData)
+  } 
+
   // 编辑的索引（一层中哪一个硬件）
   const configIndex = ref<number>(0)
   const setConfigIndex = (index: number) => {
@@ -48,7 +64,7 @@ export const useConfigStore = defineStore('config', () => {
     curEvent.value = cur
   }
   // 设置单键配置的功能
-  const setKeyConfig = (objData: any) => {
+  const setKeyConfig = (objData: string) => {
     keyConfig[curEvent.value] = JSON.parse(objData)
   }
 
@@ -85,6 +101,10 @@ export const useConfigStore = defineStore('config', () => {
     setIsTextShow,
     setNoticeText,
     notice,
+    curMenu,
+    setCurMenu,
+    menuConfig,
+    setMenuConfig,
     keyConfig,
     setKeyConfig,
     curEvent,

@@ -18,7 +18,20 @@ onMounted(() => {
   win.myApi.storeChangeListen((objData: object) => {
     console.info('keyConfigPage listening')
     const keys = Object.keys(objData)
-    for(let key of keys) {
+    // 复制单键配置
+    if (keys[0] == 'keyConfig') {
+      let tempArr = JSON.parse(objData[keys[0]])
+      for (let i = 0; i < 6; i++) {
+        configStore.setCurEvent(i)
+        let temp = {
+          userKey: tempArr[i].userKey,
+          genKey: tempArr[i].genKey
+        }
+        configStore.setKeyConfig(JSON.stringify(temp))
+      }
+      return
+    }
+    for (let key of keys) {
       // 设置对应 store 的
       configStore[`set${key.replace(key.charAt(0), key.charAt(0).toUpperCase())}`](objData[key])
     }
@@ -26,6 +39,9 @@ onMounted(() => {
   // 获取 配置的索引
   win.myApi.setConfigStore({
     get: 'configIndex'
+  })
+  win.myApi.setConfigStore({
+    get: 'keyConfig'
   })
 })
 
@@ -37,31 +53,32 @@ watch(
   () => {
     if (configStore.funcShow == true) {
       funcShow.value = true
-    }else {
+    } else {
       funcShow.value = false
       router.push(`/config`)
     }
   }
 )
-watch(() => configStore.isTextShow, () => {
-  if(configStore.isTextShow == true) {
-    configStore.setIsTextShow(false)
-    popBoxRef.value['showPop'](configStore.noticeText)
+watch(
+  () => configStore.isTextShow,
+  () => {
+    if (configStore.isTextShow == true) {
+      configStore.setIsTextShow(false)
+      popBoxRef.value['showPop'](configStore.noticeText)
+    }
+  },
+  {
+    immediate: true,
+    deep: true
   }
-}, {
-  immediate: true,
-  deep: true
-})
-
+)
 </script>
 
 <template>
   <PopBox ref="popBoxRef" />
   <div class="container">
     <WindowTitle>
-      <template #title>
-        KeyConfig
-      </template>
+      <template #title> KeyConfig </template>
     </WindowTitle>
     <div id="key-config-content">
       <div class="div1">

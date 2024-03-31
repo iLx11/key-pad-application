@@ -20,6 +20,14 @@ export const testConnection = async (): Promise<boolean> => {
   }
 }
 
+// 发送菜单
+export const sendMenu = async () => {
+  await win.myApi.sendData(new Uint8Array([0xaa, 0xbb, 0xdd]))
+  await new Promise((resolve) => setTimeout(resolve, 1))
+  
+}
+
+
 // 发送单色图片数据
 export const sendOledScreen = async () => {
   let oledArr = new Uint8Array(configStore.screenData[1].buffData.concat(configStore.screenData[2].buffData))
