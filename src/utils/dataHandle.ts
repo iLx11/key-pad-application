@@ -4,7 +4,7 @@ const configStore = useConfigStore()
 const win = window as any
 let signState = false
 
-const waitSign = async ():Promise<boolean>  => {
+const waitSign = async (): Promise<boolean> => {
   return await win.myApi.waitSign()
 }
 
@@ -13,10 +13,10 @@ export const testConnection = async (): Promise<boolean> => {
   // console.info(conStore)
   if (await win.myApi.connectHardware()) {
     configStore.notice('连接成功')
-    return new Promise(resolve => resolve(true))
+    return new Promise((resolve) => resolve(true))
   } else {
     configStore.notice('连接失败，请检查硬件连接')
-    return new Promise(resolve => resolve(false))
+    return new Promise((resolve) => resolve(false))
   }
 }
 
@@ -24,9 +24,35 @@ export const testConnection = async (): Promise<boolean> => {
 export const sendMenu = async () => {
   await win.myApi.sendData(new Uint8Array([0xaa, 0xbb, 0xdd]))
   await new Promise((resolve) => setTimeout(resolve, 1))
-  
+  let resultArr = new Uint8Array(31)
+  resultArr[0] = 1
+  // 获取是否配置数据
+  let isData = 0
+  for (let i = 0; i < 10; i++) {
+    if (configStore.menuConfig[i].keyConfig.length == 0 || configStore.menuConfig[i].screenConfig.length == 0) {
+      resultArr[i + 1] = 0
+    } else {
+      configStore.menuConfig[i].keyConfig.forEach((o) => {
+        o.forEach((x) => {
+          if (x.userKey != '' || x.genKey != '') isData = 1
+        })
+      })
+      // console.info(configStore.menuConfig[i].screenConfig)
+      configStore.menuConfig[i].screenConfig.forEach(o => {
+        if (o.baseData != '' || o.buffData.length != 0) isData = 1
+      })
+    }
+    resultArr[i + 1] = isData
+    configStore.setActiveMenu(i, isData)
+    isData = 0
+  }
+  // console.info(resultArr)
+  // console.info(configStore.activeMenu)
+  await win.myApi.sendData(resultArr)
+  await new Promise((resolve) => setTimeout(resolve, 1))
+  signState = await waitSign()
+  if (!signState) return
 }
-
 
 // 发送单色图片数据
 export const sendOledScreen = async () => {
@@ -43,7 +69,7 @@ export const sendOledScreen = async () => {
     }
   })
   signState = await waitSign()
-  if(!signState) return
+  if (!signState) return
 }
 
 // 发送彩色屏幕
@@ -65,7 +91,7 @@ export const sendColorScreen = async () => {
       })
       // await new Promise((resolve) => setTimeout(resolve, 110))
       signState = await waitSign()
-      if(!signState) return
+      if (!signState) return
     }
   })
 }
@@ -112,7 +138,7 @@ export const sendConfigData = async () => {
   })
   // await new Promise((resolve) => setTimeout(resolve, 1200))
   signState = await waitSign()
-  if(!signState) return
+  if (!signState) return
 }
 // 分包发送函数
 const subpackageSend = async (dataLimit: number, dataStr: string, callBack: Function) => {
@@ -124,3 +150,48 @@ const subpackageSend = async (dataLimit: number, dataStr: string, callBack: Func
     left = right
   } while (right < dataStr.length)
 }
+
+// 重置数据
+export const resetData = () => {
+  // 清空屏幕配置数组
+  for (let i = 0; i < 3; i++) {
+    configStore.setCurScreen(i)
+    let temp = {
+      baseData: '',
+      buffData: []
+    }
+    configStore.setScreenData(JSON.stringify(temp))
+  }
+  // 清空键值配置数组
+  for (let i = 0; i < 11; i++) {
+    configStore.setConfigIndex(i)
+    configStore.setLayerKeyConfig(JSON.stringify([]))
+  }
+}
+
+// 赋值数据
+export const loadMenu = () => {
+  // 赋值数据
+  if (configStore.menuConfig[configStore.curMenu].screenConfig) {
+    let temp = {
+      screenData: configStore.menuConfig[configStore.curMenu].screenConfig,
+      keyData: configStore.menuConfig[configStore.curMenu].keyConfig
+    }
+    // console.info(temp.screenData)
+    if (temp.screenData.length != 0) {
+      for (let i = 0; i < 3; i++) {
+        configStore.setCurScreen(i)
+        let curScreen = temp.screenData[i]
+        configStore.setScreenData(JSON.stringify(curScreen))
+      }
+    }
+    if (temp.keyData.length != 0) {
+      for (let i = 0; i < 11; i++) {
+        configStore.setConfigIndex(i)
+        let curKey = temp.keyData[i]
+        configStore.setLayerKeyConfig(JSON.stringify(curKey))
+      }
+    }
+  }
+}
+

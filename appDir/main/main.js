@@ -271,9 +271,10 @@ _SerialConnect.sendData = async (data) => {
   return new Promise((resolve2) => resolve2(false));
 };
 _SerialConnect.dataHandle = (buff) => {
-  if (buff[0] == 104) {
+  if (buff[0].toString(16) == "68") {
     _SerialConnect.waitState = true;
   }
+  console.info(buff[0].toString(16));
 };
 _SerialConnect.waitSign = async () => {
   await new Promise((resolve2) => {
@@ -286,7 +287,7 @@ _SerialConnect.waitSign = async () => {
         resolve2(_SerialConnect.waitState);
         _SerialConnect.waitState = false;
       }
-    }, 2);
+    }, 5);
   }).catch(() => {
     return new Promise((resolve2) => resolve2(false));
   });

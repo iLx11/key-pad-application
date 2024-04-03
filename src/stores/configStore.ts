@@ -37,7 +37,13 @@ export const useConfigStore = defineStore('config', () => {
   )
   const setMenuConfig = (configData: string) => {
     menuConfig[curMenu.value] = JSON.parse(configData)
-  } 
+  }
+  
+  // 菜单的激活状态
+  const activeMenu = reactive(new Array(10).fill(0))
+  const setActiveMenu = (index: number, state: number) => {
+    activeMenu[index] = state
+  }
 
   // 编辑的索引（一层中哪一个硬件）
   const configIndex = ref<number>(0)
@@ -105,6 +111,8 @@ export const useConfigStore = defineStore('config', () => {
     setCurMenu,
     menuConfig,
     setMenuConfig,
+    activeMenu,
+    setActiveMenu,
     keyConfig,
     setKeyConfig,
     curEvent,

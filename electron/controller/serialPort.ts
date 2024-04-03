@@ -107,10 +107,10 @@ export default class SerialConnect {
   }
   // 数据处理
   private static dataHandle = (buff: Buffer) => {
-    if(buff[0] == 0x68) {
+    if(buff[0].toString(16) == '68') {
       this.waitState = true
     }
-    // console.info(buff[0] == 0x68)
+    console.info(buff[0].toString(16))
   }
   // 等待回应
   public static waitSign = async ():Promise<boolean> => {
@@ -123,7 +123,7 @@ export default class SerialConnect {
           resolve(this.waitState)
           this.waitState = false
         }
-      }, 2) 
+      }, 5) 
     }).catch(() => {
       return new Promise(resolve => resolve(false))
     })

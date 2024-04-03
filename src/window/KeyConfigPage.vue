@@ -29,6 +29,7 @@ onMounted(() => {
         }
         configStore.setKeyConfig(JSON.stringify(temp))
       }
+      configStore.setCurEvent(0)
       return
     }
     for (let key of keys) {

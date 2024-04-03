@@ -6,7 +6,7 @@ import PopBox from '../components/tools/PopBox.vue'
 import ProgressBox from '../components/homePage/ProgressBox.vue'
 import { useRouter } from 'vue-router'
 import { useConfigStore } from '../stores/configStore'
-import { testConnection, sendMenu, sendColorScreen, sendOledScreen, sendConfigData } from '../utils/dataHandle'
+import { testConnection, sendMenu, sendColorScreen, sendOledScreen, sendConfigData, loadMenu, resetData } from '../utils/dataHandle'
 
 const router = useRouter()
 const win = window as any
@@ -31,7 +31,7 @@ onMounted(async () => {
       let storeValue = objData.get
       let tempObj = {}
       tempObj[storeValue] = configStore[storeValue]
-      if(typeof configStore[storeValue] == 'object') {
+      if (typeof configStore[storeValue] == 'object') {
         tempObj[storeValue] = JSON.stringify(configStore[storeValue])
       }
       // 发送其他窗口同步
@@ -74,7 +74,7 @@ const openConfigWindow = async (index: number) => {
       configStore.setKeyConfig(JSON.stringify(temp))
     }
   }
-  console.info(configStore.keyConfig)
+  // console.info(configStore.keyConfig)
   createWindow('/config')
   // await new Promise(resolve => setTimeout(resolve, 1000));
 }
@@ -108,8 +108,9 @@ const stateMes = reactive([
   }
 ])
 
+// 点击标题手动连接
 const titleClick = async () => {
-  await testConnection()
+  conState.value = await testConnection()
 }
 
 watch(
@@ -131,7 +132,7 @@ watch(
   () => configStore.keyConfig,
   () => {
     configStore.setLayerKeyConfig(JSON.stringify(configStore.keyConfig))
-    // console.info('layerKeyConfig', configStore.layerKeyConfig)
+    storageCurMenu()
   },
   {
     deep: true
@@ -145,32 +146,45 @@ const progressShow = ref<boolean>(false)
 const sendFinalData = async () => {
   // 测试连接
   conState.value = await testConnection()
-
+  if (!conState.value) return
   await new Promise((resolve) => setTimeout(resolve, 1))
   // 显示过程页面，发送到硬件
   // progressShow.value = true
+  // 记录当前菜单
+  let curMenu = configStore.curMenu
   // 发送菜单
   await sendMenu()
+  // for(let i = 0; i < 10; i ++) {
+  //   if(configStore.activeMenu[i]) {
+  //     resetData()
+  //     configStore.setCurMenu(i)
+  //     loadMenu()
+  //     // 发送键值
+  //     await sendConfigData()
+  //     // 发送单色屏幕
+  //     await sendOledScreen()
+  //     // 发送彩色屏幕
+  //     await sendColorScreen()
+  //   }
+  // }
   // 发送键值
   await sendConfigData()
   // 发送单色屏幕
   await sendOledScreen()
   // 发送彩色屏幕
   await sendColorScreen()
+  resetData()
+  configStore.setCurMenu(curMenu)
+  loadMenu()
 }
 
 // 菜单切换
 const menuIndex = ref<number>(1)
 const menuChange = (func: number) => {
-  let tempObj = {
-    keyConfig: configStore.layerKeyConfig,
-    screeConfig: configStore.screenData
-  }
-  // 存储在全层数据
-  configStore.setMenuConfig(JSON.stringify(tempObj))
+  // 存储当前菜单
+  storageCurMenu()
   // 重置数据
   resetData()
-
   // console.info(configStore.menuConfig)
   if (func) {
     // 修改菜单索引
@@ -179,27 +193,9 @@ const menuChange = (func: number) => {
     menuIndex.value <= 1 ? (menuIndex.value = 10) : (menuIndex.value -= 1)
   }
   configStore.setCurMenu(menuIndex.value - 1)
-
   // 赋值数据
-  if (configStore.menuConfig[configStore.curMenu].screeConfig) {
-    let temp = {
-      screenData: configStore.menuConfig[configStore.curMenu].screeConfig,
-      keyData: configStore.menuConfig[configStore.curMenu].keyConfig
-    }
-    // console.info(temp.screenData)
-    for (let i = 0; i < 3; i++) {
-      configStore.setCurScreen(i)
-      let curScreen = temp.screenData[i]
-      configStore.setScreenData(JSON.stringify(curScreen))
-    }
-    for (let i = 0; i < 11; i++) {
-      configStore.setConfigIndex(i)
-      let curKey = temp.keyData[i]
-      configStore.setLayerKeyConfig(JSON.stringify(curKey))
-    }
-  }
+  loadMenu()
   // console.info(configStore.layerKeyConfig)
-
   // 显示图片
   const imgList: HTMLElement[] = new Array(imgOneRef.value, imgTwoRef.value, imgThreeRef.value)
   for (let i = 0; i < 3; i++) {
@@ -209,22 +205,14 @@ const menuChange = (func: number) => {
   }
 }
 
-// 重置数据
-const resetData = () => {
-  // 清空屏幕配置数组
-  for (let i = 0; i < 3; i++) {
-    configStore.setCurScreen(i)
-    let temp = {
-      baseData: '',
-      buffData: []
-    }
-    configStore.setScreenData(JSON.stringify(temp))
+// 存储当前菜单配置
+const storageCurMenu = () => {
+  let tempObj = {
+    keyConfig: configStore.layerKeyConfig,
+    screenConfig: configStore.screenData
   }
-  // 清空键值配置数组
-  for (let i = 0; i < 11; i++) {
-    configStore.setConfigIndex(i)
-    configStore.setLayerKeyConfig(JSON.stringify([]))
-  }
+  // 存储在全层数据
+  configStore.setMenuConfig(JSON.stringify(tempObj))
 }
 
 // 显示屏幕编辑
@@ -245,6 +233,7 @@ watch(
     let baseStr = configStore.screenData[configStore.curScreen].baseData
     if (imgList[configStore.curScreen] != null && baseStr != '' && baseStr != undefined) imgList[configStore.curScreen].src = `data:image/png;base64,${baseStr}`
     else imgList[configStore.curScreen].src = ''
+    storageCurMenu()
   },
   {
     deep: true
