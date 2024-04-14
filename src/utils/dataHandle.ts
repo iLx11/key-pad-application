@@ -23,7 +23,7 @@ export const testConnection = async (): Promise<boolean> => {
 // 发送菜单
 export const sendMenu = async () => {
   await win.myApi.sendData(new Uint8Array([0xaa, 0xbb, 0xdd]))
-  await new Promise((resolve) => setTimeout(resolve, 1))
+  await new Promise((resolve) => setTimeout(resolve, 2))
   let resultArr = new Uint8Array(31)
   resultArr[0] = 1
   // 获取是否配置数据
@@ -38,7 +38,7 @@ export const sendMenu = async () => {
         })
       })
       // console.info(configStore.menuConfig[i].screenConfig)
-      configStore.menuConfig[i].screenConfig.forEach(o => {
+      configStore.menuConfig[i].screenConfig.forEach((o) => {
         if (o.baseData != '' || o.buffData.length != 0) isData = 1
       })
     }
@@ -46,18 +46,17 @@ export const sendMenu = async () => {
     configStore.setActiveMenu(i, isData)
     isData = 0
   }
-  // console.info(resultArr)
+  console.info(resultArr)
   // console.info(configStore.activeMenu)
   await win.myApi.sendData(resultArr)
-  await new Promise((resolve) => setTimeout(resolve, 1))
-  signState = await waitSign()
-  if (!signState) return
+  await new Promise((resolve) => setTimeout(resolve, 150))
+  // signState = await waitSign()
+  // if (!signState) return
 }
 
 // 发送单色图片数据
 export const sendOledScreen = async () => {
   let oledArr = new Uint8Array(configStore.screenData[1].buffData.concat(configStore.screenData[2].buffData))
-
   // console.info(u8Arr)
   await win.myApi.sendData(new Uint8Array([0xaa, 0xbb, 0xee]))
   await new Promise((resolve) => setTimeout(resolve, 1))
@@ -68,8 +67,9 @@ export const sendOledScreen = async () => {
       await new Promise((resolve) => setTimeout(resolve, 1))
     }
   })
-  signState = await waitSign()
-  if (!signState) return
+  await new Promise((resolve) => setTimeout(resolve, 110))
+  // signState = await waitSign()
+  // if (!signState) return
 }
 
 // 发送彩色屏幕
@@ -89,11 +89,12 @@ export const sendColorScreen = async () => {
           await new Promise((resolve) => setTimeout(resolve, 1))
         }
       })
-      // await new Promise((resolve) => setTimeout(resolve, 110))
-      signState = await waitSign()
-      if (!signState) return
+      await new Promise((resolve) => setTimeout(resolve, 130))
+      // signState = await waitSign()
+      // if (!signState) return
     }
   })
+  await new Promise((resolve) => setTimeout(resolve, 2000))
 }
 
 // 分包图片数据(4096) -> (60)
@@ -130,15 +131,16 @@ export const sendConfigData = async () => {
     await subpackageSend(62, reduceStr, async (str: string) => {
       console.info(str)
       let state = await win.myApi.sendData(str)
+      // await new Promise((resolve) => setTimeout(resolve, 1))
       if (!state) {
         configStore.notice('发送数据出错')
       }
       // configStore.setProgressMes(Math.ceil((right / dataStr.length) * 100))
     })
+    await new Promise((resolve) => setTimeout(resolve, 1200))
+    // signState = await waitSign()
+    // if (!signState) return
   })
-  // await new Promise((resolve) => setTimeout(resolve, 1200))
-  signState = await waitSign()
-  if (!signState) return
 }
 // 分包发送函数
 const subpackageSend = async (dataLimit: number, dataStr: string, callBack: Function) => {
@@ -194,4 +196,3 @@ export const loadMenu = () => {
     }
   }
 }
-

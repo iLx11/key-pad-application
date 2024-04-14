@@ -188,12 +188,15 @@ _SerialConnect.waitState = false;
 _SerialConnect.connectState = false;
 _SerialConnect.HardwarePort = {};
 _SerialConnect.connectHardware = async () => {
+  if (_SerialConnect.connectState)
+    return new Promise((resolve2) => resolve2(true));
   let portLists = [];
   try {
     portLists = await SerialPort.list();
   } catch (err) {
     console.info(err);
     _SerialConnect.connectState = false;
+    _SerialConnect.HardwarePort = {};
     return new Promise((resolve2) => resolve2(false));
   }
   if (portLists.length == 0) {
@@ -206,56 +209,63 @@ _SerialConnect.connectHardware = async () => {
     console.info(connectCount);
     for (let i = 0; i < portLists.length; i++) {
       let port = new SerialPort({ path: portLists[i].path, baudRate: 115200 }, (err) => {
-        if (err) {
-          console.log("port open failed");
-          _SerialConnect.connectState = false;
-          return new Promise((resolve2) => resolve2(false));
-        }
+        if (err)
+          return _SerialConnect.errorHandle(err);
         console.log("port open success");
       });
       port.on("error", (err) => {
-        console.info(err);
-        _SerialConnect.connectState = false;
-        return new Promise((resolve2) => resolve2(false));
+        return _SerialConnect.errorHandle(err);
       });
       port.on("data", (buff) => {
         if (buff[0] == 170 && buff[1] == 187 && buff[2] == 204) {
           _SerialConnect.HardwarePort = port;
           _SerialConnect.connectState = true;
+          return;
         }
         _SerialConnect.dataHandle(buff);
       });
       port.on("close", () => {
-        _SerialConnect.connectState = false;
-        return new Promise((resolve2) => resolve2(false));
+        console.info("serial close listen");
+        return _SerialConnect.errorHandle();
       });
       port.write(new Uint8Array([170, 187, 204]));
       port.drain((err) => {
-        if (err) {
-          _SerialConnect.connectState = false;
-          return new Promise((resolve2) => resolve2(false));
-        }
+        if (err)
+          return _SerialConnect.errorHandle(err);
         console.info("send ok");
       });
       await new Promise((resolve2) => setTimeout(resolve2, 500));
       connectCount--;
       if (!_SerialConnect.connectState) {
+        _SerialConnect.HardwarePort = {};
         port.close((err) => {
           if (err)
-            console.info("close failed");
-          _SerialConnect.connectState = false;
+            return _SerialConnect.errorHandle(err);
           console.info("close success");
         });
       }
     }
   }
-  if (_SerialConnect.connectState == true) {
+  if (_SerialConnect.connectState) {
     console.info("connect success");
     return new Promise((resolve2) => resolve2(true));
   } else {
     console.info("no hardware input");
     return new Promise((resolve2) => resolve2(false));
   }
+};
+_SerialConnect.errorHandle = async (err) => {
+  var _a;
+  if (_SerialConnect.connectState) {
+    (_a = _SerialConnect.HardwarePort) == null ? void 0 : _a.close((err2) => {
+      if (err2)
+        return _SerialConnect.errorHandle(err2);
+      console.info("close success");
+    });
+  }
+  _SerialConnect.connectState = false;
+  _SerialConnect.HardwarePort = {};
+  return new Promise((resolve2) => resolve2(false));
 };
 _SerialConnect.sendData = async (data) => {
   var _a, _b;
@@ -271,24 +281,19 @@ _SerialConnect.sendData = async (data) => {
   return new Promise((resolve2) => resolve2(false));
 };
 _SerialConnect.dataHandle = (buff) => {
-  if (buff[0].toString(16) == "68") {
-    _SerialConnect.waitState = true;
+  if (buff[0] == 119) {
+    console.info("data send");
   }
-  console.info(buff[0].toString(16));
 };
 _SerialConnect.waitSign = async () => {
-  await new Promise((resolve2) => {
-    if (_SerialConnect.wait)
-      return;
-    _SerialConnect.wait = setInterval(() => {
+  await new Promise(
+    (resolve2) => setInterval(() => {
       if (_SerialConnect.waitState) {
-        clearInterval(_SerialConnect.wait);
-        _SerialConnect.wait = null;
-        resolve2(_SerialConnect.waitState);
         _SerialConnect.waitState = false;
+        resolve2(true);
       }
-    }, 5);
-  }).catch(() => {
+    }, 1)
+  ).catch(() => {
     return new Promise((resolve2) => resolve2(false));
   });
   return new Promise((resolve2) => resolve2(true));

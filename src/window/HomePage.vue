@@ -139,42 +139,66 @@ watch(
   }
 )
 
+const testPro = async () => {
+  // 发送菜单
+  await sendMenu()
+  let activerNum = configStore.activeMenu.filter(o => o).length
+  let count = 0
+  count += 20
+  console.info(Math.ceil(count / activerNum * 10))
+}
+
 // 数据上传页面显示
 const progressShow = ref<boolean>(false)
-
 // 发送最终数据
 const sendFinalData = async () => {
+  configStore.setProgressMes(0)
+  progressShow.value = true
   // 测试连接
-  conState.value = await testConnection()
-  if (!conState.value) return
+  conState.value = await win.myApi.connectHardware()
+  if (!conState.value) {
+    configStore.notice("硬件已经断开连接")
+    configStore.setProgressMes(0)
+    progressShow.value = false
+    return
+  }
   await new Promise((resolve) => setTimeout(resolve, 1))
   // 显示过程页面，发送到硬件
-  // progressShow.value = true
+  progressShow.value = true
   // 记录当前菜单
   let curMenu = configStore.curMenu
   // 发送菜单
   await sendMenu()
-  // for(let i = 0; i < 10; i ++) {
-  //   if(configStore.activeMenu[i]) {
-  //     resetData()
-  //     configStore.setCurMenu(i)
-  //     loadMenu()
-  //     // 发送键值
-  //     await sendConfigData()
-  //     // 发送单色屏幕
-  //     await sendOledScreen()
-  //     // 发送彩色屏幕
-  //     await sendColorScreen()
-  //   }
-  // }
-  // 发送键值
-  await sendConfigData()
-  // 发送单色屏幕
-  await sendOledScreen()
-  // 发送彩色屏幕
-  await sendColorScreen()
+  let activerNum = configStore.activeMenu.filter(o => o).length
+  let count = 0
+  console.info(configStore.activeMenu)
+
+  for(let i = 0; i < 10; i ++) {
+    if(configStore.activeMenu[i]) {
+      setMenu(i)
+      // 发送键值
+      await sendConfigData()
+      count += 3
+      configStore.setProgressMes(Math.ceil(count / activerNum * 10))
+      // 发送单色屏幕
+      await sendOledScreen()
+      count += 3
+      configStore.setProgressMes(Math.ceil(count / activerNum * 10))
+      // 发送彩色屏幕
+      await sendColorScreen()
+      count += 4
+      configStore.setProgressMes(Math.ceil(count / activerNum * 10))
+    }
+  }
+  configStore.setProgressMes(100)
+  progressShow.value = false
+  setMenu(curMenu)
+}
+
+// 切换菜单
+const setMenu = (index: number) => {
   resetData()
-  configStore.setCurMenu(curMenu)
+  configStore.setCurMenu(index)
   loadMenu()
 }
 
