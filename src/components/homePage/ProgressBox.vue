@@ -3,21 +3,25 @@ import { onMounted, reactive, ref, watch } from 'vue'
 import { useConfigStore } from '../../stores/configStore'
 
 const configStore = useConfigStore()
+const proStateStr = ref<string>('数据传输中...')
+
 
 const progressData = reactive({
   text: '0%',
   top: '100%',
   color: 'rgba(51, 51, 51, 0.7)'
 })
+
 watch(
   () => configStore.progressMes,
   () => {
-    let begin = configStore.progressMes
-    console.info(begin)
-    begin > 52 ? (progressData.color = `rgba(255, 255, 255, 0.8)`) : (progressData.color = `rgba(51, 51, 51, 0.7)`)
-    progressData.text = `${begin}%`
-    if (begin % 10 == 0) progressData.top = `${100 - begin}%`
-    if (begin > 100) return
+      let begin = configStore.progressMes
+      console.info(begin)
+      if(begin > 100) return
+      if(begin == 100) proStateStr.value = '数据传输完成'
+      begin > 52 ? (progressData.color = `rgba(255, 255, 255, 0.8)`) : (progressData.color = `rgba(51, 51, 51, 0.7)`)
+      progressData.text = `${begin}%`
+      progressData.top = `${100 - begin}%`
   }, {
     immediate: true
   }
@@ -35,7 +39,7 @@ watch(
         </div>
       </div>
       <div id="progress-text" :style="{ color: progressData.color }">{{ progressData.text }}</div>
-      <div id="progress-notice">数据传输中...</div>
+      <div id="progress-notice">{{ proStateStr }}</div>
     </div>
   </div>
 </template>

@@ -121,8 +121,10 @@ export default class SerialConnect {
   // 等待回应
   public static waitSign = async (): Promise<boolean> => {
     await new Promise((resolve) =>
-      setInterval(() => {
+      this.wait = setInterval(() => {
         if (this.waitState) {
+          clearInterval(this.wait)
+          this.wait = null
           this.waitState = false
           resolve(true)
         }

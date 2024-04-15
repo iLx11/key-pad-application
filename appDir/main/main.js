@@ -288,8 +288,10 @@ _SerialConnect.dataHandle = (buff) => {
 };
 _SerialConnect.waitSign = async () => {
   await new Promise(
-    (resolve2) => setInterval(() => {
+    (resolve2) => _SerialConnect.wait = setInterval(() => {
       if (_SerialConnect.waitState) {
+        clearInterval(_SerialConnect.wait);
+        _SerialConnect.wait = null;
         _SerialConnect.waitState = false;
         resolve2(true);
       }

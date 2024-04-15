@@ -191,6 +191,7 @@ const sendFinalData = async () => {
     }
   }
   configStore.setProgressMes(100)
+  await new Promise((resolve) => setTimeout(resolve, 110))
   progressShow.value = false
   setMenu(curMenu)
 }
