@@ -171,7 +171,7 @@ const sendFinalData = async () => {
   await sendMenu()
   let activerNum = configStore.activeMenu.filter(o => o).length
   let count = 0
-  console.info(configStore.activeMenu)
+  // console.info(configStore.activeMenu)
 
   for(let i = 0; i < 10; i ++) {
     if(configStore.activeMenu[i]) {

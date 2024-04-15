@@ -114,7 +114,7 @@ export default class SerialConnect {
   private static dataHandle = (buff: Buffer) => {
     if (buff[0] == 0x77) {
       // this.HardwarePort?.write(new Uint8Array([0xaa, 0xbb, 0x11]))
-      // this.waitState = true
+      this.waitState = true
       console.info('data send')
     }
   }

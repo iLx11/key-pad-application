@@ -14,7 +14,7 @@ watch(
   () => {
     let begin = configStore.progressMes
     console.info(begin)
-    begin > 50 ? (progressData.color = `rgba(255, 255, 255, 0.8)`) : (progressData.color = `rgba(51, 51, 51, 0.7)`)
+    begin > 52 ? (progressData.color = `rgba(255, 255, 255, 0.8)`) : (progressData.color = `rgba(51, 51, 51, 0.7)`)
     progressData.text = `${begin}%`
     if (begin % 10 == 0) progressData.top = `${100 - begin}%`
     if (begin > 100) return
@@ -115,7 +115,7 @@ watch(
     left: 50%;
     transform: translate(-50%, 0);
     z-index: 1;
-    animation: move 10s linear infinite;
+    animation: move 6s linear infinite;
   }
 
   .g-wave:nth-child(2) {

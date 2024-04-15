@@ -282,6 +282,7 @@ _SerialConnect.sendData = async (data) => {
 };
 _SerialConnect.dataHandle = (buff) => {
   if (buff[0] == 119) {
+    _SerialConnect.waitState = true;
     console.info("data send");
   }
 };
