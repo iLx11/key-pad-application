@@ -17,15 +17,18 @@ onMounted(() => {
   })
 })
 let instance = ref(null)
-let isBlank = ref<boolean>(false)
 
+const imgArr: Array<string> = ['./img/black.png', './img/blank.png', './img/1.jpg', './img/2.png', './img/3.png', './img/4.png', './img/5.png' ]
+const curImg = ref<number>(0)
 // 切换反色背景
 const switchBack = () => {
-  isBlank.value = !isBlank.value
-  let img = isBlank.value ? './img/blank.png' : './img/black.png'
-  let color = isBlank.value ? '#000000' : '#ffffff'
-  ;(instance as any).value.loadImageFromURL(img, 'blank').then((result) => {
-    ;(instance as any).value.addText('', {
+  curImg.value < 6 ? curImg.value ++ : curImg.value = 0
+  // console.info(curImg.value)
+  let img = imgArr[curImg.value]
+  let color = curImg.value == 1 ? '#000000' : '#ffffff';
+
+  (instance as any).value.loadImageFromURL(img, 'blank').then((result) => {
+    (instance as any).value.addText('', {
       position: {},
       styles: {
         fill: color,
