@@ -32,7 +32,7 @@ watch(
 )
 
 const menuFunc = (index: number) => {
-  console.info(index)
+  // console.info(index)
   if (index == 0) {
   } else if (index == 1) {
     resetCurMenu()
