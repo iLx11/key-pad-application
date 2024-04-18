@@ -9,6 +9,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const win = window as any
 const configStore = useConfigStore()
+const popBoxRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   win.myApi.storeChangeListen((objData: object) => {
@@ -25,6 +26,20 @@ onMounted(() => {
     get: 'curScreen'
   })
 })
+
+watch(
+  () => configStore.isTextShow,
+  () => {
+    if (configStore.isTextShow == true) {
+      configStore.setIsTextShow(false)
+      popBoxRef.value['showPop'](configStore.noticeText)
+    }
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
 </script>
 
 <template>

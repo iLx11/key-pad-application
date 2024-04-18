@@ -4,13 +4,16 @@ import WindowTitle from '../components/tools/WindowTitle.vue'
 import { onMounted, nextTick, ref, watch, reactive } from 'vue'
 import PopBox from '../components/tools/PopBox.vue'
 import ProgressBox from '../components/homePage/ProgressBox.vue'
+import ContextMenu from '../views/contextMenu.vue'
 import { useRouter } from 'vue-router'
 import { useConfigStore } from '../stores/configStore'
+import { useMenuStore } from '../stores/menuStore'
 import { testConnection, sendMenu, sendColorScreen, sendOledScreen, sendConfigData, loadMenu, resetData } from '../utils/dataHandle'
 
 const router = useRouter()
 const win = window as any
 const configStore = useConfigStore()
+const menuStore = useMenuStore()
 const popBoxRef = ref<HTMLElement | null>(null)
 
 const test = async () => {
@@ -50,6 +53,23 @@ onMounted(async () => {
       configStore.notice('同步信息错误')
     }
   })
+  // 右键菜单
+  win.oncontextmenu = function (e) {
+    e.preventDefault()
+    // console.info(e)
+    let topData = e.clientY
+    let leftData = e.clientX
+    if (topData > 250) topData = 250
+    if (leftData > 450) leftData = 450
+    menuStore.setPosition(topData, leftData)
+    menuStore.setMenuShow(true)
+    // console.info(menuStore.menuShow)
+  }
+  window.onclick = function (e) {
+    // console.info(e)
+    menuStore.setPosition('', '')
+    menuStore.setMenuShow(false)
+  }
 })
 
 // 打开键值编辑窗口
@@ -139,15 +159,6 @@ watch(
   }
 )
 
-const testPro = async () => {
-  // 发送菜单
-  await sendMenu()
-  let activerNum = configStore.activeMenu.filter(o => o).length
-  let count = 0
-  count += 20
-  console.info(Math.ceil(count / activerNum * 10))
-}
-
 // 数据上传页面显示
 const progressShow = ref<boolean>(false)
 // 发送最终数据
@@ -157,7 +168,7 @@ const sendFinalData = async () => {
   // 测试连接
   conState.value = await win.myApi.connectHardware()
   if (!conState.value) {
-    configStore.notice("硬件已经断开连接")
+    configStore.notice('硬件已经断开连接')
     configStore.setProgressMes(0)
     progressShow.value = false
     return
@@ -169,25 +180,25 @@ const sendFinalData = async () => {
   let curMenu = configStore.curMenu
   // 发送菜单
   await sendMenu()
-  let activerNum = configStore.activeMenu.filter(o => o).length
+  let activerNum = configStore.activeMenu.filter((o) => o).length
   let count = 0
   // console.info(configStore.activeMenu)
 
-  for(let i = 0; i < 10; i ++) {
-    if(configStore.activeMenu[i]) {
+  for (let i = 0; i < 10; i++) {
+    if (configStore.activeMenu[i]) {
       setMenu(i)
       // 发送键值
       await sendConfigData()
       count += 3
-      configStore.setProgressMes(Math.ceil(count / activerNum * 10))
+      configStore.setProgressMes(Math.ceil((count / activerNum) * 10))
       // 发送单色屏幕
       await sendOledScreen()
       count += 3
-      configStore.setProgressMes(Math.ceil(count / activerNum * 10))
+      configStore.setProgressMes(Math.ceil((count / activerNum) * 10))
       // 发送彩色屏幕
       await sendColorScreen()
       count += 4
-      configStore.setProgressMes(Math.ceil(count / activerNum * 10))
+      configStore.setProgressMes(Math.ceil((count / activerNum) * 10))
     }
   }
   configStore.setProgressMes(100)
@@ -251,8 +262,7 @@ const imgOneRef = ref<HTMLElement | null>(null)
 const imgTwoRef = ref<HTMLElement | null>(null)
 const imgThreeRef = ref<HTMLElement | null>(null)
 
-watch(
-  () => configStore.screenData,
+watch( configStore.screenData,
   () => {
     const imgList: HTMLElement[] = new Array(imgOneRef.value, imgTwoRef.value, imgThreeRef.value)
     let baseStr = configStore.screenData[configStore.curScreen].baseData
@@ -267,6 +277,7 @@ watch(
 </script>
 
 <template>
+  <ContextMenu />
   <PopBox ref="popBoxRef" />
   <div class="container">
     <WindowTitle>

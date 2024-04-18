@@ -46,6 +46,8 @@ const switchBack = () => {
 const editorCommit = async () => {
   const picBase64Str = (instance as any).value.toDataURL()
   let data, arrData
+  configStore.notice('处理数据中...')
+  coverShow.value = true
   if(configStore.curScreen < 1) {
     // 缩放图片（1 为单色屏幕）
     data = await win.myApi.resizeImage(320, 172, picBase64Str, 0)
@@ -64,15 +66,19 @@ const editorCommit = async () => {
     buffData: arrData
   })
   win.myApi.setConfigStore(tempObj)
+  coverShow.value = false
   win.myApi.closeWindow()
 }
 
 const closeWindow = () => {
   win.myApi.closeWindow()
 }
+
+const coverShow = ref<boolean>(false)
 </script>
 
 <template>
+  <div id="cover" v-if="coverShow"></div>
   <div id="editor"></div>
   <div id="tools-bar">
     <ul>
@@ -90,6 +96,18 @@ const closeWindow = () => {
 </template>
 
 <style scoped lang="scss">
+#cover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(51, 51, 51, 0.2);
+  border-radius: 15px;
+  z-index: 9999998;
+}
+
 .editor-tools {
   width: 50px;
   height: 30px;
