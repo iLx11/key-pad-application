@@ -8,7 +8,8 @@ import ContextMenu from '../views/contextMenu.vue'
 import { useRouter } from 'vue-router'
 import { useConfigStore } from '../stores/configStore'
 import { useMenuStore } from '../stores/menuStore'
-import { testConnection, sendMenu, sendColorScreen, sendOledScreen, sendConfigData, loadMenu, resetData } from '../utils/dataHandle'
+import { parseMenuConfig, testConnection, sendMenu, sendColorScreen, sendOledScreen, sendConfigData, loadMenu, resetData } from '../utils/dataHandle'
+// import { setItem, getItem } from '@/utils/storage'
 
 const router = useRouter()
 const win = window as any
@@ -24,6 +25,11 @@ const test = async () => {
 }
 
 onMounted(async () => {
+  // 获取解析菜单
+  let jsonStr = await win.myApi.getMenu('configData')
+  if(jsonStr != '' && jsonStr != undefined && jsonStr != null)
+    parseMenuConfig(jsonStr)
+  // console.info(jsonStr)
   // 连接硬件
   conState.value = await testConnection()
   // 主页面监听
@@ -249,6 +255,7 @@ const storageCurMenu = () => {
   }
   // 存储在全层数据
   configStore.setMenuConfig(JSON.stringify(tempObj))
+  
 }
 
 // 显示屏幕编辑
@@ -274,15 +281,19 @@ watch( configStore.screenData,
     deep: true
   }
 )
+const closeStorage = () => {
+  // 存储全层菜单
+  win.myApi.storageMenu('configData', JSON.stringify(configStore.menuConfig))
+}
 </script>
 
 <template>
   <ContextMenu />
   <PopBox ref="popBoxRef" />
   <div class="container">
-    <WindowTitle>
+    <WindowTitle @click="closeStorage">
       <template #title>
-        <div id="window-title" @click="titleClick">
+        <div id="window-title" @click.stop="titleClick">
           <div>MultiPad</div>
           <div id="con-state" :style="{ background: conState ? stateMes[1].bgStyle : stateMes[0].bgStyle }">
             {{ conState ? stateMes[1].text : stateMes[0].text }}

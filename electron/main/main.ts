@@ -1,17 +1,26 @@
-const { app, protocol, BrowserWindow, ipcMain } = require('electron')
+const { app, protocol, BrowserWindow, ipcMain, dialog } = require('electron')
 // 需在当前文件内开头引入 Node.js 的 'path' 模块
 const path = require('path')
 
 import { windowControlListener } from '../controller/windowControl'
 import CreateWindow from '../controller/createWindow'
-import { getFilePath } from '../controller/fileDialog'
+import { getFilePath, getConfigFile, writeConfigFile } from '../controller/fileDialog'
 import SerialConnect from '../controller/serialPort'
 import { picDataListener } from '../controller/picDataEditor'
+import { setItem, getItem } from "../controller/storage"
+
 // 窗口监听
 windowControlListener()
 // 图片处理监听
 picDataListener()
 
+ipcMain.on('set-item', (event, name: string, item: string) => {
+  setItem(name, item)
+})
+
+ipcMain.handle('get-item', async (event, name: string) => {
+  return await getItem(name)
+})
 
 // 创建其他窗口
 ipcMain.on('window-create', (event, optionObj: object, configObj: object) => {
@@ -19,9 +28,19 @@ ipcMain.on('window-create', (event, optionObj: object, configObj: object) => {
   cw.createWindow(optionObj, configObj)
 })
 
+// 选择文件夹
+ipcMain.handle('write-config', async (event, fileName: string, context: string) => {
+  return await writeConfigFile(fileName, context)
+})
+
 // 选取文件
 ipcMain.handle('select-file', async () => {
   return await getFilePath()
+})
+
+// 选取配置文件 
+ipcMain.handle('get-config', async () => {
+  return await getConfigFile()
 })
 
 // pinia
@@ -49,7 +68,6 @@ ipcMain.handle('connection-state', async () => {
 ipcMain.handle('send-data', async (event, dataStr: string) => {
   return await SerialConnect.sendData(dataStr)
 })
-
 
 // 创建主窗口
 const createMainWindow = async () => {

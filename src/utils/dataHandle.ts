@@ -216,3 +216,28 @@ export const loadMenu = () => {
     }
   }
 }
+
+// 解析配置文件并赋值
+export const parseMenuConfig = (jsonStr: string) => {
+  let jsonObj = JSON.parse(jsonStr)
+  for(let i = 0; i < 10; i ++) {
+    configStore.setCurMenu(i)
+    let tempObj = {
+      keyConfig: jsonObj[i].keyConfig || [],
+      screenConfig: jsonObj[i].screenConfig || []
+    }
+    // 存储在全层数据
+    configStore.setMenuConfig(JSON.stringify(tempObj))
+  }
+  // 显示菜单
+  resetData()
+  configStore.setCurMenu(0)
+  loadMenu()
+  // 显示图片
+  let img = document.querySelectorAll('img')
+  for (let i = 0; i < 3; i++) {
+    let baseStr = configStore.screenData[i].baseData
+    if (baseStr != '') img[i].src = `data:image/png;base64,${baseStr}`
+    else img[i].src = ''
+  }
+}

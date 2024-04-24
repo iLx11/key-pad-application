@@ -8,6 +8,7 @@ const configStore = useConfigStore()
 
 const getFilePath = async () => {
   let filePath = await win.myApi.getFilePath()
+  if(filePath != undefined)
   filePathStr.value = filePath.filePaths[0]
 }
 

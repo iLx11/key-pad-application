@@ -1,9 +1,29 @@
 const { contextBridge, ipcRenderer, dialog } = require('electron')
 
+const storageMenu = (name: string, item: string) => {
+  ipcRenderer.send('set-item', name, item)
+  // setItem(name, item)
+}
+
+const getMenu = async (name: string) => {
+  // return getItem(name)
+  return await ipcRenderer.invoke('get-item', name)
+}
+
 // Pinia store 设置主动更改同步
 const setConfigStore = (obj: object) => {
   // console.log(obj)
   ipcRenderer.send('store-set', obj)
+}
+
+// 获取文件目录
+const writeConfigFile = async (fileName: string, context: string) => {
+  return await ipcRenderer.invoke('write-config', fileName,  context)
+}
+
+// 获取配置文件
+const getConfigFile = async () => {
+  return await ipcRenderer.invoke('get-config')
 }
 
 //获取文件路径
@@ -59,6 +79,10 @@ const generateResultArray = async ( picData, threshold = 120, ...configArray) =>
 }
 
 contextBridge.exposeInMainWorld('myApi', {
+  storageMenu, 
+  getMenu,
+  getConfigFile,
+  writeConfigFile,
   minimizeWindow,
   maximizeWindow,
   closeWindow,
