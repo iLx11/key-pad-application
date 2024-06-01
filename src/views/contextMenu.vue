@@ -124,20 +124,16 @@ const writeFile = async () => {
 
 <style lang="scss" scoped>
 #file-name {
-  width: 100%;
-  height: 100%;
+  @include full_wh;
   position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex_center;
   z-index: 8;
   border-radius: 32px;
   input {
-    width: 100%;
-    height: 100%;
+    @include full_wh;
     border: none;
     text-align: center;
     font-size: 25px;
@@ -146,26 +142,18 @@ const writeFile = async () => {
   div {
     width: 300px;
     height: 60px;
-    background: rgba(255, 255, 255, 1);
-    border-radius: 22px;
+    @include style_common(22px, rgba(255, 255, 255, 1));
     z-index: 8;
     overflow: hidden;
   }
   #cover {
     width: 70%;
     height: 60%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    @include ab_center;
     background: rgba(51, 51, 51, 0.9);
     font-size: 28px;
     color: rgb(210, 207, 207);
-    padding: 0.2em;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-evenly;
-    align-items: center;
+    @include flex_config(1, space-evenly);
     padding: 1em;
     cursor: pointer;
   }
@@ -173,9 +161,7 @@ const writeFile = async () => {
 #context-menu {
   width: 200px;
   height: 220px;
-  border-radius: 25px;
-  background: rgb(252, 252, 252);
-  border: 2px solid rgba(215, 220, 231, 1);
+  @include style_common(25px, rgb(252, 252, 252), 2px solid rgba(215, 220, 231, 1));
   position: absolute;
   // top: 0;
   // left: 0;
@@ -184,20 +170,16 @@ const writeFile = async () => {
   opacity: 0;
   padding: 0.4em;
   ul {
-    width: 100%;
-    height: 100%;
+    @include full_wh;
     overflow-y: scroll;
     padding: 0.3em;
 
     li {
       width: 100%;
       height: 40px;
-      border-radius: 11px;
-      background: rgb(131, 141, 145);
+      @include style_common(11px, rgb(131, 141, 145));
       margin-bottom: 9px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
+      @include flex_config(0, flex_start);
       padding: 0.3em;
       cursor: pointer;
 
@@ -213,9 +195,7 @@ const writeFile = async () => {
         height: 100%;
       }
       div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex_center;
       }
     }
     li:hover {

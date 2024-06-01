@@ -198,50 +198,32 @@ const commit = () => {
 
 <style lang="scss" scoped>
 .isSelect {
-  background:rgba($color: #494c54, $alpha: 1) !important;
   color: rgb(219, 141, 141) !important;
-  border: 2px solid rgba(217, 224, 226, 1);
+  @include style_common(null, rgba($color: #494c54, $alpha: 1) !important, 2px solid rgba(217, 224, 226, 1));
 }
 #mouse-func-content {
-  width: 600px;
-  height: 600px;
-  max-width: 600px;
-  max-height: 600px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  @include wh(600px, 600px, 600px, 600px);
+  @include ab_center;
   z-index: 66;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 50%;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  grid-column-gap: 15px;
-  grid-row-gap: 16px;
+  @include style_common(50%, rgba(255, 255, 255, 1));
+  @include grid_config(8, 8, 15px, 16px);
   padding: 25px;
-  color: rgba(255, 255, 255, 1);
-  font-size: 1.4em;
+  @include font_config(1.4em, rgba(255, 255, 255, 1));
   div {
-    border-radius: 39px;
-    background: rgba($color: #494c54, $alpha: 1);
+    @include style_common(39px, rgba($color: #494c54, $alpha: 1));
     cursor: pointer;
   }
   input {
-    width: 100%;
-    height: 100%;
+    @include full_wh;
     background: rgba(255, 255, 255, 0);
     outline: none;
     border: none;
     text-align: center;
-    font-size: 35px;
-    color: rgba(255, 255, 255, 1);
+    @include font_config(35px, rgba(255, 255, 255, 1));
   }
   .div1 {
     grid-area: 2 / 2 / 8 / 8;
-    background: rgba(255, 255, 255, 1);
-    border-radius: 50%;
-    box-shadow: 0 0 0 2px #494c54;
+    @include style_common(50%, rgba(255, 255, 255, 1), null, 0 0 0 2px #494c54);
   }
   .div2 {
     grid-area: 4 / 1 / 6 / 3;
@@ -257,54 +239,38 @@ const commit = () => {
   }
   .div6 {
     grid-area: 3 / 3 / 5 / 4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex_center;
     text-align: center;
   }
   .div7 {
     grid-area: 3 / 4 / 6 / 6;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-between;
-    align-items: center;
+    @include flex_config(1, space-between);
     overflow: hidden;
-    border: 1.5px solid #494c54;
-    background:  rgba(255, 255, 255, 1);
+    @include style_common(null, rgba(255, 255, 255, 1), 1.5px solid #494c54);
     input {
-      width: 100%;
-      height: 30%;
+      @include wh(100%, 30%);
       background: rgba(255, 255, 255, 1);
       outline: none;
       text-align: center;
-      font-size: 18px;
-      color: rgba(51, 51, 51, 1);
+      @include font_config(18px, rgba(51, 51, 51, 1));
     }
     span {
-      width: 100%;
-      height: 30%;
+      @include wh(100%, 30%);
       background: rgba($color: #494c54, $alpha: 1);
       color: rgba(255, 255, 255, 1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include flex_center;
     }
   }
   .div8 {
     grid-area: 3 / 6 / 5 / 7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex_center;
     text-align: center;
   }
   .div9 {
     grid-area: 6 / 4 / 7 / 6;
     background: rgba(210, 168, 169, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    color: rgba(255, 255, 255, 1);
+    @include flex_center;
+    @include font_config(20px, rgba(255, 255, 255, 1));
     cursor: pointer;
   }
 }

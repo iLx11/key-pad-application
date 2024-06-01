@@ -9,12 +9,14 @@ const configStore = useConfigStore()
 const textCount = ref<number>(0)
 const textValue = ref<string>('')
 
+const COUNT_VALUE = 100
+
 // 文本字数限制
 watch(
   () => textValue.value,
   () => {
     textCount.value = textValue.value.length
-    if (textCount.value > 255) textValue.value = textValue.value.substring(0, 255)
+    if (textCount.value > COUNT_VALUE) textValue.value = textValue.value.substring(0, 255)
   }
 )
 // 提交
@@ -82,32 +84,24 @@ const commit = () => {
     <textarea name="" id="" cols="30" rows="10" v-model="textValue" spellcheck="false"></textarea>
     <div id="commit-box" @click="commit">确认</div>
     <div id="text-limit">
-      <span>{{ textCount }}</span
-      >/255
+      <span>{{ textCount }} </span
+      > / 100
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 #send-text-content {
-  width: 60%;
-  height: 35%;
-  max-width: 600px;
-  max-height: 350px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  @include wh(60%, 35%, 600px, 350px);
+  @include ab_center;
   z-index: 66;
   // background: rgba($color: #000000, $alpha: 0.3);
-  background: rgba(255, 255, 255, 1);
   overflow: hidden;
-  border-radius: 16px;
+  @include style_common(16px, rgba(255, 255, 255, 1));
   padding: 3.5em;
 
   textarea {
-    width: 100%;
-    height: 100%;
+    @include full_wh;
     font-size: 20px;
     outline: none;
     border: none;
@@ -115,30 +109,18 @@ const commit = () => {
     resize: none;
   }
   #commit-box {
-    width: 120px;
-    height: 50px;
-    background: rgba(210, 168, 169, 0.8);
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    border-radius: 12px;
+    @include wh(120px, 50px);
+    @include pos_ab(20px, 20px, 2);
+    @include style_common(12px, rgba(210, 168, 169, 0.8));
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    color: rgba(255, 255, 255, 1);
+    @include flex_center;
+    @include font_config(20px, rgba(255, 255, 255, 1));
   }
   #text-limit {
-    width: 120px;
-    height: 50px;
-    position: absolute;
-    right: 20px;
-    top: 6px;
+    @include wh(120px, 50px);
+    @include pos_ab(6px, 20px, 1);
     border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex_center;
     font-size: 20px;
   }
 }

@@ -147,34 +147,23 @@ const commit = (index: number) => {
   height: 60%;
   max-width: 600px;
   max-height: 500px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  @include ab_center;
   z-index: 66;
-  background: rgba($color: #494c54, $alpha: 1);
-  border-radius: 25px;
+  @include style_common(25px, rgba($color: #494c54, $alpha: 1));
   ul {
-    width: 100%;
-    height: 100%;
+    @include full_wh;
     // margin-right: 10px;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
+    @include flex_config(0, flex-start, wrap);
     overflow: scroll;
     padding: 1.5em;
     li {
       width: 25%;
       height: 100px;
       margin: 4.1%;
-      border-radius: 12px;
       cursor: pointer;
-      background: rgba(255, 255, 255, 1);
       color: rgba(51, 51, 51, 0.8);
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include style_common(12px, rgba(255, 255, 255, 1));
+      @include flex_center;
       font-size: 20px;
       span {
         text-align: center;
@@ -184,17 +173,11 @@ const commit = (index: number) => {
   #commit-box {
     width: 120px;
     height: 50px;
-    background: rgba(210, 168, 169, 1);
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    border-radius: 12px;
+    @include pos_ab(20px, 20px, 2);
+    @include style_common(12px, rgba(210, 168, 169, 1));
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    color: rgba(255, 255, 255, 1);
+    @include flex_center;
+    @include font_config(20px, rgba(255, 255, 255, 1));
   }
 }
 </style>

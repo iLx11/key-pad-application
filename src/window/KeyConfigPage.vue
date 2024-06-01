@@ -102,20 +102,13 @@ watch(
 #cover {
   width: 98%;
   height: 98%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(51, 51, 51, 0.2);
-  border-radius: 15px;
+  @include ab_center;
+  @include style_common(15px, rgba(51, 51, 51, 0.2));
   z-index: 998;
 }
 .container {
-  width: 100%;
-  height: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  @include full_wh;
+  @include ab_center;
   border: 6px solid rgba(15, 16, 23, 1);
   border-radius: 2.5em;
   overflow: hidden;
@@ -130,21 +123,15 @@ watch(
   position: relative;
 }
 #key-config-content {
-  width: 100%;
-  height: 100%;
+  @include full_wh;
   max-width: 950px;
   max-height: 750px;
   margin: 0 auto;
   border-radius: 19px;
   overflow: hidden;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  grid-column-gap: 15px;
-  grid-row-gap: 16px;
+  @include grid_config(5, 6, 15px, 16px);
   > div {
-    border-radius: 9px;
-    background: rgba(114, 106, 109, 0.2);
+    @include style_common(9px, rgba(114, 106, 109, 0.2));
   }
   .div1 {
     grid-area: 1 / 1 / 4 / 4;
@@ -154,8 +141,7 @@ watch(
     grid-area: 4 / 1 / 7 / 4;
     padding: 12px;
     div {
-      width: 100%;
-      height: 100%;
+      @include full_wh;
       // background: rgba(255, 255, 255, 0.7);
       border-radius: 12px;
     }
@@ -166,17 +152,11 @@ watch(
   }
 }
 #func-position {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 66;
-  background: rgba(158, 170, 172, 0.3);
+  @include full_wh;
+  @include pos_ab;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  @include style_common(10px, rgba(158, 170, 172, 0.3), 1px solid rgba(255, 255, 255, 0.18));
   z-index: 88;
 }
 </style>

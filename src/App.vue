@@ -6,7 +6,7 @@ import { RouterLink, RouterView } from 'vue-router'
   <RouterView />
 </template>
 
-<style>
+<style lang="scss">
 @font-face {
   font-family: 'ceyy';
   src: url('./assets/font/ceyy.ttf');
@@ -37,16 +37,7 @@ import { RouterLink, RouterView } from 'vue-router'
   scrollbar-width: none; /* firefox */
 -ms-overflow-style: none; /* IE 10+ */
 }
-html,
-body,
-html, body, #app {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: "ceyy";
-  background: rgba(0, 0, 0, 0);
-}
-li {
-  list-style : none;
-}
+
+@include app_common;
+
 </style>

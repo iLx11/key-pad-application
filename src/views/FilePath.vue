@@ -57,68 +57,43 @@ const commit = () => {
 
 <style lang="scss" scoped>
 #file-path-content {
-  width: 60%;
-  height: 40%;
-  max-width: 600px;
-  max-height: 300px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  @include wh(60%, 40%, 600px, 300px);
+  @include ab_center;
   z-index: 66;
   // background: rgba($color: #000000, $alpha: 0.3);
   #file-text {
-    width: 100%;
-    height: 60%;
-    border-radius: 35px 35px 0 0;
-    background: rgba($color: #494c54, $alpha: 1);
+    @include wh(100%, 60%);
+    @include style_common(35px 35px 0 0, rgba($color: #494c54, $alpha: 1));
     color: rgba(255, 255, 255, 1);
     padding: 1.2em;
     font-size: 20px;
   }
   #key-input-box {
-    width: 100%;
-    height: 70%;
-    border-radius: 30px 30px 12px 12px;
-    background: rgba(255, 255, 255, 1);
-    position: absolute;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include wh(100%, 70%);
+    @include style_common(30px 30px 12px 12px, rgba(255, 255, 255, 1));
+    @include pos_ab(0, 0, 2);
+    @include flex_center;
     overflow: hidden;
     #file-path-show {
-      width: 80%;
-      height: 50%;
+      @include wh(80%, 50%);
       font-size: 35px;
       word-break: break-all;
       cursor: pointer;
-      display: flex;
-      flex-flow: column nowrap;
-      justify-content: space-around;
-      align-items: center;
+      @include flex_config(1, space-around);
       color: rgba(119, 119, 119, 0.8);
       span {
         width: 100%;
         // height: 30px;
-        font-size: 24px !important;
-        color: rgba(73, 76, 84, 0.8);
+        @include font_config(24px !important, rgba(73, 76, 84, 0.8));
       }
     }
     #commit-box {
-      width: 120px;
-      height: 50px;
-      background: rgba(210, 168, 169, 0.8);
-      position: absolute;
-      right: 20px;
-      bottom: 20px;
-      border-radius: 12px;
+      @include wh(120px, 50px);
+      @include pos_ab(20px, 20px, 2);
       cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      color: rgba(255, 255, 255, 1);
+      @include style_common(12px, rgba(210, 168, 169, 0.8));
+      @include flex_center;
+      @include font_config(20px, rgba(255, 255, 255, 1));
     }
   }
 }

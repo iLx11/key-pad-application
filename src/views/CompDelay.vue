@@ -302,41 +302,27 @@ const commit = () => {
   height: 85%;
   max-width: 900px;
   max-height: 700px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  @include ab_center;
   z-index: 66;
-  background: rgb(255, 255, 255);
-
+  @include style_common(25px, rgb(255, 255, 255));
   overflow: hidden;
-  border-radius: 25px;
   padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  grid-column-gap: 25px;
-  grid-row-gap: 25px;
+  @include grid_config(7, 8, 25px, 25px);
   .div1 {
     grid-area: 1 / 1 / 9 / 4;
-    background: rgba(229, 234, 235, 0.8);
-    border-radius: 25px;
+    @include style_common(25px, rgba(229, 234, 235, 0.8));
     ul {
-      width: 100%;
-      height: 100%;
+      @include full_wh;
       overflow: scroll;
       padding: 1.2em;
       li {
         width: 100%;
         height: auto;
         padding: 0.8em;
-        border-radius: 12px;
         margin-bottom: 15px;
-        background: rgba($color: #494c54, $alpha: 1);
         color: rgba(255, 255, 255, 1);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include style_common(12px, rgba($color: #494c54, $alpha: 1));
+        @include flex_center;
         font-size: 20px;
         word-break: break-all;
         position: relative;
@@ -345,14 +331,9 @@ const commit = () => {
         div {
           width: 40px;
           height: 40px;
-          border-radius: 50% 2px 2px 2px;
-          background: rgba(255, 255, 255, 1);
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          @include style_common(50% 2px 2px 2px, rgba(255, 255, 255, 1));
+          @include pos_ab;
+          @include flex_center;
           color: rgba($color: #494c54, $alpha: 1);
           cursor: pointer;
           display: none;
@@ -380,42 +361,30 @@ const commit = () => {
   }
   .div4 {
     grid-area: 8 / 4 / 9 / 8;
-    background: rgba(210, 168, 169, 0.5);
-    border-radius: 12px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include style_common(12px, rgba(210, 168, 169, 0.5));
+    @include flex_center;
     font-size: 20px;
     color: rgba(255, 255, 255, 1);
+    cursor: pointer;
   }
 }
 
 #comp-key-content {
-  width: 100%;
-  height: 100%;
+  @include full_wh;
   // max-width: 600px;
   // max-height: 300px;
   z-index: 66;
   position: relative;
-  // background: rgba($color: #000000, $alpha: 0.3);
   #comp-special {
     width: 100%;
     height: 70%;
-    border-radius: 35px 35px 0 0;
-    background: rgba($color: #494c54, $alpha: 1);
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    @include style_common(35px 35px 0 0, rgba($color: #494c54, $alpha: 1));
+    @include grid_config(4, 2, 15px, 16px);
     grid-template-rows: repeat(2, 25%);
     padding: 20px;
-    grid-column-gap: 15px;
-    grid-row-gap: 16px;
     div {
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include style_common(5px, rgba(255, 255, 255, 1));
+      @include flex_center;
       cursor: pointer;
     }
     div:hover {
@@ -426,14 +395,9 @@ const commit = () => {
   #key-input-box {
     width: 100%;
     height: 55%;
-    border-radius: 30px 30px 20px 20px;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0 0 0 4px rgba(191, 203, 206, 0.6);
-    position: absolute;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include style_common(30px 30px 20px 20px, rgba(255, 255, 255, 1), null, 0 0 0 4px rgba(191, 203, 206, 0.6));
+    @include pos_ab(0, 0, 2);
+    @include flex_center;
     input {
       width: 80%;
       height: 50%;
@@ -447,42 +411,28 @@ const commit = () => {
 #commit-box {
   width: 90px;
   height: 40px;
-  background: rgba(210, 168, 169, 0.5);
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include pos_ab(20px, 20px, 2);
+  @include style_common(12px, rgba(210, 168, 169, 0.5));
+  @include flex_center;
   font-size: 20px;
   color: rgba(255, 255, 255, 1);
+  cursor: pointer;
 }
 #delay-config-box {
-  width: 100%;
-  height: 100%;
-  border-radius: 25px;
-  background: rgba(191, 203, 206, 0.4);
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
+  @include full_wh;
+  @include style_common(25px, rgba(191, 203, 206, 0.4));
+  @include flex_config(0, center);
   div {
     width: 20%;
     height: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex_center;
     font-size: 40px;
   }
   div:nth-child(1),
   div:nth-child(3) {
-    border-radius: 12px;
-    background: rgba($color: #494c54, $alpha: 1);
+    @include style_common(12px, rgba($color: #494c54, $alpha: 1));
     input {
-      width: 100%;
-      height: 100%;
+      @include full_wh;
       outline: none;
       border: none;
       background: rgba(255, 255, 255, 0);

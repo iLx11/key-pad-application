@@ -60,20 +60,13 @@ watch(
 #cover {
   width: 98%;
   height: 98%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(51, 51, 51, 0.2);
-  border-radius: 15px;
+  @include ab_center;
+  @include style_common(15px, rgba(51, 51, 51, 0.2));
   z-index: 998;
 }
 .container {
-  width: 100%;
-  height: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  @include full_wh;
+  @include ab_center;
   border: 6px solid rgba(15, 16, 23, 1);
   border-radius: 2.5em;
   overflow: hidden;
@@ -88,16 +81,14 @@ watch(
   position: relative;
 }
 #key-config-content {
-  width: 100%;
-  height: 100%;
+  @include full_wh;
   max-width: 950px;
   max-height: 750px;
   margin: 0 auto;
   border-radius: 25px;
   overflow: hidden;
   > div {
-    border-radius: 9px;
-    background: rgba(114, 106, 109, 0.2);
+    @include style_common(9px, rgba(114, 106, 109, 0.2));
   } 
 }
 </style>

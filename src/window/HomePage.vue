@@ -385,36 +385,27 @@ const closeStorage = () => {
   width: 80px;
   height: 30px;
   word-break: keep-all;
-  background: rgba(51, 51, 51, 0.2);
-  // background: rgba(171, 242, 187, 0.3);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex_center;
+  @include style_common(12px, rgba(51, 51, 51, 0.2));
   font-size: 17px;
-  border-radius: 12px;
   position: relative;
   #mes-box {
     width: 150px;
     height: 70px;
-    position: absolute;
-    left: 50%;
+    @include pos_ab(-84px, 50%, 3);
     transform: translateX(-50%);
-    bottom: -84px;
-    background: rgba(103, 109, 115, 1);
+
     padding: 10px;
     word-break: break-all;
     display: none;
-    border-radius: 9px;
+    @include style_common(9px, rgba(103, 109, 115, 1));
   }
   #mes-box::after {
     content: '';
     width: 30px;
     height: 10px;
-    position: absolute;
-    left: 50%;
     transform: translateX(-50%);
-    top: -10px;
+    @include pos_ab(-10px, 50%, 0);
     background: rgba(103, 109, 115, 1);
     clip-path: polygon(0 100%, 50% 0, 100% 100%, 0 100%);
   }
@@ -426,23 +417,16 @@ const closeStorage = () => {
 }
 
 #cover {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(51, 51, 51, 0.2);
-  border-radius: 15px;
+  @include full_wh;
+  @include ab_center;
+  @include style_common(15px, rgba(51, 51, 51, 0.2));
   z-index: 998;
 }
 
 .container {
   width: 95%;
   height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  @include pos_ab(50%, 50%, 0);
   transform: translate(-52%, -50%);
   border: 10px solid rgba(15, 16, 23, 1);
   border-radius: 4em;
@@ -459,37 +443,22 @@ const closeStorage = () => {
 }
 
 #home-cotent {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  // background: rgba($color: #000000, $alpha: 1.0);
-  // position: absolute;
+  @include full_wh;
+  @include grid_config(7, 5);
 }
 .div1 {
   grid-area: 1 / 1 / 3 / 2;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-around;
-  align-items: center;
+  @include flex_config(1, space-around);
   div {
     width: 75px;
     height: 75px;
-    border-radius: 50%;
-    background: rgba(12, 14, 20, 1);
+    @include style_common(50%, rgba(12, 14, 20, 1));
     cursor: pointer;
   }
 }
 .div2 {
   grid-area: 1 / 2 / 3 / 8;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  @include grid_config(7, 3, 16px, 16px);
   padding-bottom: 20px;
   padding-left: 10px;
   div {
@@ -497,8 +466,7 @@ const closeStorage = () => {
     cursor: pointer;
   }
   img {
-    width: 100%;
-    height: 100%;
+    @include full_wh;
   }
   img[src=''] {
     opacity: 0;
@@ -535,21 +503,16 @@ const closeStorage = () => {
   }
   .div8 {
     grid-area: 3 / 4 / 4 / 8;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    @include flex_config(0, flex-start);
     padding: 5px;
     color: rgba(255, 255, 255, 1);
     user-select: none;
     #send-box {
       width: 90px;
       height: 100%;
-      background: rgba(191, 205, 211, 0.909);
-      border-radius: 2px;
+      @include style_common(2px, rgba(191, 205, 211, 0.909));
       word-break: keep-all;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include flex_center;
       font-size: 15px;
       margin-right: 15px;
     }
@@ -557,16 +520,12 @@ const closeStorage = () => {
       width: 170px;
       height: 100%;
       background: rgba(191, 205, 211, 0.7);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      @include flex_config(0, space-between);
       > div {
         width: 30%;
         height: 100%;
         background: rgba(51, 51, 51, 0.4);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex_center;
         font-size: 20px;
         position: relative;
       }
@@ -575,9 +534,7 @@ const closeStorage = () => {
         // height: 20px;
         font-size: 9px;
         transform: rotate(-90deg);
-        position: absolute;
-        bottom: 11px;
-        left: -5px;
+        @include pos_ab(11px, -5px, 3);
         background: rgba(51, 51, 51, 0);
       }
     }
@@ -591,19 +548,14 @@ const closeStorage = () => {
   > div {
     width: 100%;
     height: 210px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 15px;
-    grid-row-gap: 15px;
+    @include grid_config(4, 2, 15px, 15px);
     // background: rgba($color: #000000, $alpha: 0.4);
     background-color: #cfaaac;
     background-image: linear-gradient(62deg, #cfaaac 0%, #a9b7c0 100%);
     border-radius: 12px;
     div {
       cursor: pointer;
-      border-radius: 12px;
-      background: rgba($color: #000000, $alpha: 0.4);
+      @include style_common(12px, rgba($color: #000000, $alpha: 0.4));
     }
   }
 }
@@ -611,12 +563,10 @@ const closeStorage = () => {
   grid-area: 3 / 6 / 6 / 8;
   width: 210px;
   height: 210px;
-  border-radius: 50%;
-  background: rgba(12, 14, 20, 1);
+  @include style_common(50%, rgba(12, 14, 20, 1));
   position: fixed;
   right: -40px;
   bottom: 20px;
   cursor: pointer;
 }
 </style>
-../utils/dataHandle
