@@ -156,7 +156,6 @@ const _CreateWindow = class _CreateWindow2 {
     }
     console.info("new window address -> ", winURL);
     win.setMenu(null);
-    win.on("hide", () => win.webContents.closeDevTools());
     electron.globalShortcut.register("CommandOrControl+Shift+i", function() {
       win.webContents.openDevTools();
     });

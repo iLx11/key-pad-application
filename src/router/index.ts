@@ -50,6 +50,10 @@ const router = createRouter({
         {
           path: '/config/6',
           component: () => import('../views/MouseFunc.vue')
+        },
+        {
+          path: '/config/7',
+          component: () => import('../views/SpecialKey.vue')
         }
       ]
     }

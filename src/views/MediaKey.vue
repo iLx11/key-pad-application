@@ -143,10 +143,7 @@ const commit = (index: number) => {
 
 <style lang="scss" scoped>
 #media-key-content {
-  width: 70%;
-  height: 60%;
-  max-width: 600px;
-  max-height: 500px;
+  @include wh(70%, 60%, 600px, 500px);
   @include ab_center;
   z-index: 66;
   @include style_common(25px, rgba($color: #494c54, $alpha: 1));

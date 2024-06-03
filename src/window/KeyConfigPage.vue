@@ -100,8 +100,7 @@ watch(
 
 <style lang="scss" scoped>
 #cover {
-  width: 98%;
-  height: 98%;
+  @include wh(98%, 98%);
   @include ab_center;
   @include style_common(15px, rgba(51, 51, 51, 0.2));
   z-index: 998;

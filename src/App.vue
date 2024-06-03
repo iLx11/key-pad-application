@@ -36,8 +36,14 @@ import { RouterLink, RouterView } from 'vue-router'
   padding: 0;
   scrollbar-width: none; /* firefox */
 -ms-overflow-style: none; /* IE 10+ */
+  box-sizing: border-box !important;
 }
 
+
 @include app_common;
+
+#app {
+  overflow: hidden;
+}
 
 </style>

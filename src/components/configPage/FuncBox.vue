@@ -46,6 +46,11 @@ const funcArray = reactive([
     funcIndex: 6,
     funcName: '鼠标控制',
     funcDesc: '可以设置鼠标上下左右移动的距离，左中右键的点击，以及中键的上下位移'
+  },
+  {
+    funcIndex: 7,
+    funcName: '特殊按键',
+    funcDesc: '特殊的按键类似 F1、方向键、删除键...'
   }
 ])
 </script>

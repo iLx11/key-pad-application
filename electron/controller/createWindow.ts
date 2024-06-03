@@ -153,9 +153,9 @@ export default class CreateWindow {
     }
     console.info('new window address -> ', winURL)
     win.setMenu(null)
-    // 设置路由
+    // 开启开发工具窗口
     // win.webContents.openDevTools()
-    win.on('hide', () => win.webContents.closeDevTools())
+    // win.on('hide', () => win.webContents.closeDevTools())
     // 全局快捷键注册
     globalShortcut.register('CommandOrControl+Shift+i', function () {
       win.webContents.openDevTools()

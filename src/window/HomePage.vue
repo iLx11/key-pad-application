@@ -9,6 +9,7 @@ import { useRouter } from 'vue-router'
 import { useConfigStore } from '../stores/configStore'
 import { useMenuStore } from '../stores/menuStore'
 import { parseMenuConfig, testConnection, sendMenu, sendColorScreen, sendOledScreen, sendConfigData, loadMenu, resetData } from '../utils/dataHandle'
+import { on } from 'events'
 // import { setItem, getItem } from '@/utils/storage'
 
 const router = useRouter()
@@ -285,6 +286,7 @@ const closeStorage = () => {
   // 存储全层菜单
   win.myApi.storageMenu('configData', JSON.stringify(configStore.menuConfig))
 }
+
 </script>
 
 <template>
@@ -438,13 +440,13 @@ const closeStorage = () => {
   padding-bottom: 12px;
   background-color: #e5eae9;
   background-image: linear-gradient(20deg, #e5eae9 0%, #8f9d9f 100%);
-
   // -webkit-app-region: drag;
 }
 
 #home-cotent {
-  @include full_wh;
+  @include wh(100%, 400px);
   @include grid_config(7, 5);
+  overflow: hidden;
 }
 .div1 {
   grid-area: 1 / 1 / 3 / 2;
@@ -459,7 +461,7 @@ const closeStorage = () => {
 .div2 {
   grid-area: 1 / 2 / 3 / 8;
   @include grid_config(7, 3, 16px, 16px);
-  padding-bottom: 20px;
+
   padding-left: 10px;
   div {
     background: rgba(255, 255, 255, 0.6);
@@ -542,8 +544,8 @@ const closeStorage = () => {
 }
 .div3 {
   grid-area: 3 / 1 / 6 / 6;
-  // background: rgba($color: #000000, $alpha: 0.4);
-  margin-bottom: 20px;
+  padding-top: 15px;
+  @include flex_config(0, flex-start);
 
   > div {
     width: 100%;

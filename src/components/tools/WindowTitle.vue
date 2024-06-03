@@ -32,7 +32,7 @@ const win = window as any
   padding: 6px;
   z-index: 4;
   font-size: 20px;
-  margin-bottom: 0.3em;
+  // margin-bottom: 0.3em;
   -webkit-app-region: drag;
   color: rgba(255, 255, 255, 0.9);
 }
