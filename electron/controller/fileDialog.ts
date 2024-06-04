@@ -1,6 +1,5 @@
 const { dialog } = require('electron')
 import { writeJsonSync, readJsonSync } from 'fs-extra'
-import { json } from 'stream/consumers'
 const path = require('path')
 
 export const getFilePath = async () => {

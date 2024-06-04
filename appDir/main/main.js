@@ -2773,10 +2773,19 @@ const setItem = (name, item) => {
 const getItem = (name) => {
   return store.get(name);
 };
+const readShortcutsFile = (filePath) => {
+  return lib.readJsonSync(require$$1.join(__dirname, `../../dist/shortcuts/${filePath}`));
+};
+const fileReadListener = async () => {
+  electron.ipcMain.handle("get-shortcut", async (event, filePath) => {
+    return await readShortcutsFile(filePath);
+  });
+};
 const { app, protocol, BrowserWindow, ipcMain, dialog } = require("electron");
 require("path");
 windowControlListener();
 picDataListener();
+fileReadListener();
 ipcMain.on("set-item", (event, name, item) => {
   setItem(name, item);
 });

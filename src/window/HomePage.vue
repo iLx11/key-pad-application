@@ -9,7 +9,6 @@ import { useRouter } from 'vue-router'
 import { useConfigStore } from '../stores/configStore'
 import { useMenuStore } from '../stores/menuStore'
 import { parseMenuConfig, testConnection, sendMenu, sendColorScreen, sendOledScreen, sendConfigData, loadMenu, resetData } from '../utils/dataHandle'
-import { on } from 'events'
 // import { setItem, getItem } from '@/utils/storage'
 
 const router = useRouter()
@@ -286,6 +285,10 @@ const closeStorage = () => {
   // 存储全层菜单
   win.myApi.storageMenu('configData', JSON.stringify(configStore.menuConfig))
 }
+
+onMounted(() => {
+  console.info(win.myApi.readShortcutsFile('design/ae.json'))
+})
 
 </script>
 

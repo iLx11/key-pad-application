@@ -8,11 +8,13 @@ import { getFilePath, getConfigFile, writeConfigFile } from '../controller/fileD
 import SerialConnect from '../controller/serialPort'
 import { picDataListener } from '../controller/picDataEditor'
 import { setItem, getItem } from "../controller/storage"
-
+import { fileReadListener } from "../controller/fileRead"
 // 窗口监听
 windowControlListener()
 // 图片处理监听
 picDataListener()
+// 文件读取
+fileReadListener()
 
 ipcMain.on('set-item', (event, name: string, item: string) => {
   setItem(name, item)
