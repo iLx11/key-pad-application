@@ -286,9 +286,6 @@ const closeStorage = () => {
   win.myApi.storageMenu('configData', JSON.stringify(configStore.menuConfig))
 }
 
-onMounted(() => {
-  console.info(win.myApi.readShortcutsFile('design/ae.json'))
-})
 
 </script>
 

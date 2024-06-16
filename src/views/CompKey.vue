@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from "vue";
 import { useConfigStore } from '../stores/configStore'
-import { getStringMap } from "../utils/hidKeyCode";
+import { getStringMap } from "../utils/hidKeyCode"
 import { toHexStr } from "../utils/strTools"
 
 const configStore = useConfigStore()
@@ -14,6 +14,7 @@ interface ISpeacialArr {
   }
 }
 const specialKeyCode = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80];
+
 const speacialArr = reactive<ISpeacialArr>([
   {
     spId: 0,
