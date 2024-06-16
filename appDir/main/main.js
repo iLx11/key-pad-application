@@ -156,7 +156,6 @@ const _CreateWindow = class _CreateWindow2 {
     }
     console.info("new window address -> ", winURL);
     win.setMenu(null);
-    win.webContents.openDevTools();
     electron.globalShortcut.register("CommandOrControl+Shift+i", function() {
       win.webContents.openDevTools();
     });
@@ -2782,7 +2781,7 @@ const fileReadListener = async () => {
     return await readShortcutsFile(filePath);
   });
 };
-const { app, protocol, BrowserWindow, ipcMain, dialog } = require("electron");
+const { app, protocol, BrowserWindow, ipcMain, dialog, shell } = require("electron");
 require("path");
 windowControlListener();
 picDataListener();
@@ -2792,6 +2791,9 @@ ipcMain.on("set-item", (event, name, item) => {
 });
 ipcMain.handle("get-item", async (event, name) => {
   return await getItem(name);
+});
+ipcMain.on("latest-download", (event, link2) => {
+  shell.openExternal(link2);
 });
 ipcMain.on("window-create", (event, optionObj, configObj) => {
   let cw = new CreateWindow();

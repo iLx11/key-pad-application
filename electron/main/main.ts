@@ -1,4 +1,4 @@
-const { app, protocol, BrowserWindow, ipcMain, dialog } = require('electron')
+const { app, protocol, BrowserWindow, ipcMain, dialog, shell } = require('electron')
 // 需在当前文件内开头引入 Node.js 的 'path' 模块
 const path = require('path')
 
@@ -22,6 +22,11 @@ ipcMain.on('set-item', (event, name: string, item: string) => {
 
 ipcMain.handle('get-item', async (event, name: string) => {
   return await getItem(name)
+})
+
+// 跳转到下载页面
+ipcMain.on('latest-download', (event, link: string) => {
+  shell.openExternal(link)
 })
 
 // 创建其他窗口

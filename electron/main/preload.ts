@@ -1,5 +1,9 @@
 const { contextBridge, ipcRenderer, dialog } = require('electron')
 
+const latestDownload = (link: string) => {
+  ipcRenderer.send('latest-download', link)
+}
+
 const readShortcutsFile = async (filePath: string) => {
   return await ipcRenderer.invoke('get-shortcut', filePath)
 }
@@ -83,6 +87,7 @@ const generateResultArray = async ( picData, threshold = 120, ...configArray) =>
 }
 
 contextBridge.exposeInMainWorld('myApi', {
+  latestDownload,
   readShortcutsFile,
   storageMenu, 
   getMenu,

@@ -4,6 +4,7 @@ import WindowTitle from '../components/tools/WindowTitle.vue'
 import { onMounted, nextTick, ref, watch, reactive } from 'vue'
 import PopBox from '../components/tools/PopBox.vue'
 import ProgressBox from '../components/homePage/ProgressBox.vue'
+import AppInfo from '../components/homePage/AppInfo.vue'
 import ContextMenu from '../views/contextMenu.vue'
 import { useRouter } from 'vue-router'
 import { useConfigStore } from '../stores/configStore'
@@ -286,18 +287,26 @@ const closeStorage = () => {
   win.myApi.storageMenu('configData', JSON.stringify(configStore.menuConfig))
 }
 
+// 软件信息
+const infoShow = ref<boolean>(false)
+const showAppInfo = () => {
+  infoShow.value = true
+}
 
 </script>
 
 <template>
+  <div id="app-info" v-if="infoShow" @click.stop="infoShow = false">
+    <AppInfo @click.stop="" />
+  </div>
   <ContextMenu />
   <PopBox ref="popBoxRef" />
   <div class="container">
     <WindowTitle @click="closeStorage">
       <template #title>
-        <div id="window-title" @click.stop="titleClick">
-          <div>MultiPad</div>
-          <div id="con-state" :style="{ background: conState ? stateMes[1].bgStyle : stateMes[0].bgStyle }">
+        <div id="window-title">
+          <div @click="showAppInfo">MultiPad</div>
+          <div id="con-state" @click.stop="titleClick" :style="{ background: conState ? stateMes[1].bgStyle : stateMes[0].bgStyle }">
             {{ conState ? stateMes[1].text : stateMes[0].text }}
             <div id="mes-box">点击连接状态或窗口标题可以手动连接</div>
           </div>
@@ -372,6 +381,12 @@ const closeStorage = () => {
 </template>
 
 <style lang="scss">
+#app-info {
+  @include full_wh;
+  @include pos_ab;
+  // @include style_common(12px, rgba(51, 51, 51, 0.2));
+  z-index: 88;
+}
 #window-title {
   width: 30%;
   height: 100%;

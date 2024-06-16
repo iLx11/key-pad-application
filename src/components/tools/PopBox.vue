@@ -18,15 +18,20 @@ const showPop = (text: string) => {
       (popBoxRef as any).value, // element to animate
       [
         {
-          width: '30%',
+          width: '43%',
           opacity: '100%',
-          top: '10%'
+          top: '11%'
+        },
+        {
+          width: '45%',
+          opacity: '70%',
+          top: '12%'
         },
         {
           opacity: '0%',
-          top: '5%',
-          width: '35%',
-          height: '40px'
+          top: '8%',
+          width: '40%',
+          height: '47px'
         }
       ],
       {
@@ -82,8 +87,8 @@ defineExpose({
 
 <style lang="scss" scoped>
 #pop-box {
-  width: 30%;
-  height: 30px;
+  width: 42%;
+  height: 40px;
   position: fixed;
   top: 10%;
   left: 50%;
@@ -92,17 +97,14 @@ defineExpose({
   border-radius: 25px;
   box-shadow: 1.1px 0px 10.8px -34px rgba(0, 0, 0, 0.059), 7px 0px 81px -34px rgba(0, 0, 0, 0.12);
   border: 0.1 solid rgba(0, 0, 0, 0.12);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 2em;
+  @include flex_config(0, flex-start);
+  padding: 2em 0.2em;
   z-index: 9999;
   animation: begin 0.3s ease-in-out;
   color: var(--text-color-1);
+  text-align: center;
   div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
   }
   #font-box {
     width: 20%;
@@ -110,7 +112,7 @@ defineExpose({
     font-size: 12px;
   }
   #message-box {
-    width: 75%;
+    width: 78%;
     height: 100%;
     font-size: 18px;
   }
@@ -119,10 +121,10 @@ defineExpose({
   0% {
     opacity: 0%;
     top: 1%;
-    width: 20%;
+    width: 30%;
   }
   100% {
-    width: 30%;
+    width: 42%;
     opacity: 100%;
     top: 10%;
   }
@@ -131,10 +133,10 @@ defineExpose({
   100% {
     opacity: 0%;
     top: 1%;
-    width: 20%;
+    width: 42%;
   }
   0% {
-    width: 30%;
+    width: 40%;
     opacity: 100%;
     top: 10%;
   }

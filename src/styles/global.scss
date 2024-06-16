@@ -65,7 +65,6 @@
   display: flex;
   @if $isrow != 0 {
     flex-flow: column $wrap;
-    justify-content: center;
   } @else {
     flex-flow: row $wrap;
   }
