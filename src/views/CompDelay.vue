@@ -328,11 +328,12 @@ const commit = () => {
         position: relative;
         overflow: hidden;
         cursor: pointer;
+        // del
         div {
           width: 40px;
           height: 40px;
           @include style_common(50% 2px 2px 2px, rgba(255, 255, 255, 1));
-          @include pos_ab;
+          @include pos_ab(0, 0, 2);
           @include flex_center;
           color: rgba($color: #494c54, $alpha: 1);
           cursor: pointer;

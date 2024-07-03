@@ -3,6 +3,7 @@ import { onMounted, reactive, ref, watch } from 'vue'
 import { useConfigStore } from '../../stores/configStore'
 import packageJson from '../../../package.json'
 import { getLatestVersion } from '../../api/version'
+// import goodImg from '../../../img/good.jpg'
 
 const win = window as any
 
@@ -62,7 +63,7 @@ const scrollToBottom = () => {
       <div>Version</div>
       <div id="check-version" @click.stop="getLatest">{{ latestVersion }}</div>
       <div id="good-text" @click="scrollToBottom">如果觉得软件做的不错，并且觉得可以支持一下的朋友可以扫下面的赞赏码，同时还请留下您的备注，非常感谢！</div>
-      <img src="../../../img/good.jpg" id="good-img" @click="scrollToBottom" />
+      <img src="../../../public/img/good.jpg" id="good-img" @click="scrollToBottom" />
     </div>
   </div>
 </template>

@@ -34,130 +34,91 @@ const rollMove = reactive({
   rollUp: '',
   rollDown: ''
 })
+
 watch(
-  () => rollMove.rollUp,
-  () => {
-    rollMove.rollDown = '0'
-    let reg = new RegExp(/^\d+$/)
-    if (!reg.test(rollMove.rollUp)) {
-      configStore.notice('请输入纯数字')
-      rollMove.rollUp = '0'
+  [() => mouseMove.mouseUp, () => mouseMove.mouseDown, () => mouseMove.mouseLeft, () => mouseMove.mouseRight],
+  (newVal, oldVal) => {
+    for (let key in newVal) {
+      if (newVal[key] != oldVal[key]) {
+        // 限制数值
+        if (newVal[key] > 255) {
+          configStore.notice('输入的值不能大于 255')
+          mouseMove[Object.keys(mouseMove)[key]] = ''
+        }
+        // 限制双向
+        if(newVal[key] != '') {
+          let setKey = Number(key)
+          setKey += (setKey % 2 == 0 ? 1 : -1);
+          mouseMove[Object.keys(mouseMove)[setKey]] = ''
+        }
+      }
     }
-    if(Number(rollMove.rollUp) > 255) {
-      configStore.notice('偏移数值不能超过 255')
-      rollMove.rollUp = '0'
-    }
-  }
-)
-watch(
-  () => rollMove.rollDown,
-  () => {
-    rollMove.rollUp = '0'
-    let reg = new RegExp(/^\d+$/)
-    if (!reg.test(rollMove.rollDown)) {
-      configStore.notice('请输入纯数字')
-      rollMove.rollDown = '0'
-    }
-    if(Number(rollMove.rollDown) > 255) {
-      configStore.notice('偏移数值不能超过 255')
-      rollMove.rollDown = '0'
-    }
-  }
-)
-watch(
-  () => mouseMove.mouseUp,
-  () => {
-    mouseMove.mouseDown = '0'
-    let reg = new RegExp(/^\d+$/)
-    if (!reg.test(mouseMove.mouseUp)) {
-      configStore.notice('请输入纯数字')
-      mouseMove.mouseUp = '0'
-    }
-    if(Number(mouseMove.mouseUp) > 255) {
-      configStore.notice('偏移数值不能超过 255')
-      mouseMove.mouseUp = '0'
-    }
-  }
-)
-watch(
-  () => mouseMove.mouseDown,
-  () => {
-    mouseMove.mouseUp = '0'
-    let reg = new RegExp(/^\d+$/)
-    if (!reg.test(mouseMove.mouseDown)) {
-      configStore.notice('请输入纯数字')
-      mouseMove.mouseDown = '0'
-    }
-    if(Number(mouseMove.mouseDown) > 255) {
-      configStore.notice('偏移数值不能超过 255')
-      mouseMove.mouseDown = '0'
-    }
-  }
-)
-watch(
-  () => mouseMove.mouseLeft,
-  () => {
-    mouseMove.mouseRight = '0'
-    let reg = new RegExp(/^\d+$/)
-    if (!reg.test(mouseMove.mouseLeft)) {
-      configStore.notice('请输入纯数字')
-      mouseMove.mouseLeft = '0'
-    }
-    if(Number(mouseMove.mouseLeft) > 255) {
-      configStore.notice('偏移数值不能超过 255')
-      mouseMove.mouseLeft = '0'
-    }
-  }
-)
-watch(
-  () => mouseMove.mouseRight,
-  () => {
-    mouseMove.mouseLeft = '0'
-    let reg = new RegExp(/^\d+$/)
-    if (!reg.test(mouseMove.mouseRight)) {
-      configStore.notice('请输入纯数字')
-      mouseMove.mouseRight = '0'
-    }
-    if(Number(mouseMove.mouseRight) > 255) {
-      configStore.notice('偏移数值不能超过 255')
-      mouseMove.mouseRight = '0'
-    }
+  },
+  {
+    deep: true
   }
 )
 
-const mouseKeyArray = [0x01, 0x04, 0x02,]
+watch(
+  [() => rollMove.rollUp, () => rollMove.rollDown],
+  (newVal, oldVal) => {
+    for (let key in newVal) {
+      if (newVal[key] != oldVal[key]) {
+        // 限制数值
+        if (newVal[key] > 255) {
+          configStore.notice('输入的值不能大于 255')
+          rollMove[Object.keys(rollMove)[key]] = ''
+        }
+        // 限制双向
+        if(newVal[key] != '') {
+          let setKey = Number(key)
+          setKey += (setKey % 2 == 0 ? 1 : -1);
+          rollMove[Object.keys(rollMove)[setKey]] = ''
+        }
+      }
+    }
+  },
+  {
+    deep: true
+  }
+)
+
+const mouseKeyArray = [0x01, 0x04, 0x02]
 
 const commit = () => {
   let genKeyStr: string = ''
   let userKeyStr: string = ''
   let mouseKey: number = 0x00
-  mouseArray.forEach(o => {
-    if(o.isSelect)  {
+  mouseArray.forEach((o) => {
+    if (o.isSelect) {
       mouseKey += mouseKeyArray[o.eventId]
-      userKeyStr += `${o.eventName}\r\n `
+      userKeyStr += `${o.eventName}<br>`
     }
   })
   genKeyStr = `4${toHexStr(mouseKey)}`
-  if(mouseMove.mouseRight != '0') {
+  if (mouseMove.mouseRight != '') {
     genKeyStr += `1${toHexStr(Number(mouseMove.mouseRight))}`
-    userKeyStr += `向右移动 -> ${mouseMove.mouseRight}\r\n`
-  } else {
+    userKeyStr += `向右移动 -> ${mouseMove.mouseRight}<br>`
+  }
+  if (mouseMove.mouseLeft != '') {
     genKeyStr += `0${toHexStr(Number(mouseMove.mouseLeft))}`
-    userKeyStr += `向左移动 -> ${mouseMove.mouseLeft}\r\n`
+    userKeyStr += `向左移动 -> ${mouseMove.mouseLeft}<br>`
   }
-  if(mouseMove.mouseUp != '0') {
+  if (mouseMove.mouseUp != '') {
     genKeyStr += `0${toHexStr(Number(mouseMove.mouseUp))}`
-    userKeyStr += `向上移动 -> ${mouseMove.mouseUp}\r\n`
-  } else {
-    genKeyStr += `1${toHexStr(Number(mouseMove.mouseDown))}`
-    userKeyStr += `向下移动 -> ${mouseMove.mouseDown}\r\n`
+    userKeyStr += `向上移动 -> ${mouseMove.mouseUp}<br>`
   }
-  if(rollMove.rollUp != '0') {
+  if (mouseMove.mouseDown != '') {
+    genKeyStr += `1${toHexStr(Number(mouseMove.mouseDown))}`
+    userKeyStr += `向下移动 -> ${mouseMove.mouseDown}<br>`
+  }
+  if (rollMove.rollUp != '') {
     genKeyStr += `1${toHexStr(Number(rollMove.rollUp))}`
-    userKeyStr += `向上滚动 -> ${rollMove.rollUp}\r\n`
-  } else {
+    userKeyStr += `向上滚动 -> ${rollMove.rollUp}<br>`
+  }
+  if (rollMove.rollDown != '') {
     genKeyStr += `0${toHexStr(Number(rollMove.rollDown))}`
-    userKeyStr += `向下上滚动 -> ${rollMove.rollUp}\r\n`
+    userKeyStr += `向下滚动 -> ${rollMove.rollDown}<br>`
   }
   // console.info(genKeyStr)
   configStore.keyConfig[configStore.curEvent] = {
@@ -173,24 +134,24 @@ const commit = () => {
   <div id="mouse-func-content">
     <div class="div1"></div>
     <div class="div2">
-      <input type="text" placeholder="左" v-model="mouseMove.mouseLeft" />
+      <input type="number" placeholder="左" v-model.number="mouseMove.mouseLeft" />
     </div>
     <div class="div3">
-      <input type="text" placeholder="右" v-model="mouseMove.mouseRight" />
+      <input type="number" placeholder="右" v-model.number="mouseMove.mouseRight" />
     </div>
     <div class="div4">
-      <input type="text" placeholder="下" v-model="mouseMove.mouseDown" />
+      <input type="number" placeholder="下" v-model.number="mouseMove.mouseDown" />
     </div>
     <div class="div5">
-      <input type="text" placeholder="上" v-model="mouseMove.mouseUp" />
+      <input type="number" placeholder="上" v-model.number="mouseMove.mouseUp" />
     </div>
-    <div class="div6" :class="{isSelect: mouseArray[0].isSelect}" @click="mouseArray[0].isSelect = !mouseArray[0].isSelect">{{ mouseArray[0].eventName }}</div>
+    <div class="div6" :class="{ isSelect: mouseArray[0].isSelect }" @click="mouseArray[0].isSelect = !mouseArray[0].isSelect">{{ mouseArray[0].eventName }}</div>
     <div class="div7">
-      <input type="text" placeholder="向上滚动" v-model="rollMove.rollUp"/>
-      <span :class="{isSelect: mouseArray[1].isSelect}" @click="mouseArray[1].isSelect = !mouseArray[1].isSelect">{{ mouseArray[1].eventName }}</span>
-      <input type="text" placeholder="向下滚动" v-model="rollMove.rollDown" />
+      <input type="number" placeholder="向上滚动" v-model.number="rollMove.rollUp" />
+      <span :class="{ isSelect: mouseArray[1].isSelect }" @click="mouseArray[1].isSelect = !mouseArray[1].isSelect">{{ mouseArray[1].eventName }}</span>
+      <input type="number" placeholder="向下滚动" v-model.number="rollMove.rollDown" />
     </div>
-    <div class="div8" :class="{isSelect: mouseArray[2].isSelect}" @click="mouseArray[2].isSelect = !mouseArray[2].isSelect">{{ mouseArray[2].eventName }}</div>
+    <div class="div8" :class="{ isSelect: mouseArray[2].isSelect }" @click="mouseArray[2].isSelect = !mouseArray[2].isSelect">{{ mouseArray[2].eventName }}</div>
     <div class="div9" @click="commit">确认</div>
     <!-- <div id="commit-box">确认</div> -->
   </div>
@@ -220,6 +181,14 @@ const commit = () => {
     border: none;
     text-align: center;
     @include font_config(35px, rgba(255, 255, 255, 1));
+    overflow: hidden !important;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
   }
   .div1 {
     grid-area: 2 / 2 / 8 / 8;

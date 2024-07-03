@@ -23,8 +23,7 @@ watch(() => configStore.keyConfig, () => {
 
 <template>
   <div id="config-data-content">
-    <div>
-      {{ configStr }}
+    <div v-html="configStr">
     </div>
   </div>
 </template>
