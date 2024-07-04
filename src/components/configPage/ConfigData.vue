@@ -37,6 +37,7 @@ watch(() => configStore.keyConfig, () => {
   overflow: hidden;
   padding: 0.5em;
   word-break: break-all;
+  line-height: 42px;
   div {
     width: 100%;
     height: 100%;

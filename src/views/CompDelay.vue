@@ -83,7 +83,7 @@ const keyCommit = () => {
     .filter((o) => o.isSelect)
     .forEach((x) => {
       count += specialKeyCode[x.spId]
-      userKeyStr += (x.spName + ' + ')
+      userKeyStr += x.spName + ' + '
     })
   try {
     // 处理键值索引
@@ -125,27 +125,31 @@ const delayTime = reactive<IDelayTime>({
   delayMs: ''
 })
 
-watch([() => delayTime.delayS, () => delayTime.delayMs], (newVal, oldVal) => {
-  for (let key in delayTime) {
-    if (newVal[key] != oldVal[key]) {
-      if (key == 0 && delayTime.delayS > 10) {
-        configStore.notice('延时时间不能超过 10s')
-        delayTime.delayS = ''
-      }
-      if (key == 1 && delayTime.delayMs > 255) {
-        configStore.notice('毫秒延时时间不能超过 255ms')
-        delayTime.delayMs = ''
-      }
-      let reg = new RegExp(/^\d+$/)
-      if (!reg.test(delayTime[Object.keys(delayTime)[key]])) {
-        configStore.notice('请输入纯数字')
-        delayTime[Object.keys(delayTime)[key]] = ''
+watch(
+  [() => delayTime.delayS, () => delayTime.delayMs],
+  (newVal, oldVal) => {
+    for (let key in delayTime) {
+      if (newVal[key] != oldVal[key]) {
+        let reg = new RegExp(/^\d+$/)
+        if (!reg.test(delayTime[Object.keys(delayTime)[key]])) {
+          configStore.notice('请输入纯数字')
+          delayTime[Object.keys(delayTime)[key]] = ''
+        }
       }
     }
+    if (delayTime.delayS > 10) {
+      configStore.notice('秒延时时间不能超过 10s')
+      delayTime.delayS = ''
+    }
+    if (delayTime.delayMs > 255) {
+      configStore.notice('毫秒延时时间不能超过 255ms')
+      delayTime.delayMs = ''
+    }
+  },
+  {
+    deep: true
   }
-}, {
-  deep: true
-})
+)
 
 interface IDelayComp {
   [index: number]: {
@@ -181,9 +185,7 @@ const delayCommit = () => {
     configStore.notice('不能添加 0 延时')
     return
   }
-  if ((curSelected.value != delayCompList.length && delayCompList[curSelected.value].kind == 1) ||
-    (curSelected.value != 0 && delayCompList[curSelected.value - 1].kind == 1) ||
-    (delayCompList.length != 0 && delayCompList[delayCompList.length - 1].kind == 1)) {
+  if ((curSelected.value != delayCompList.length && delayCompList[curSelected.value].kind == 1) || (curSelected.value != 0 && delayCompList[curSelected.value - 1].kind == 1) || (delayCompList.length != 0 && delayCompList[delayCompList.length - 1].kind == 1)) {
     configStore.notice('不能添加连续的延时')
     return
   }
@@ -197,6 +199,12 @@ const delayCommit = () => {
     isSelected: false,
     listGenStr: genDelayStr,
     kind: 1
+  }
+  if(delayTime.delayS == '') {
+    tempObj.listStr = tempObj.listStr.replace('s.', '')
+  }
+  if(delayTime.delayMs == '') {
+    tempObj.listStr = tempObj.listStr.replace('.ms', '')
   }
   if (curSelected.value != 0) delayCompList.splice(curSelected.value, 0, tempObj)
   else delayCompList.push(tempObj)
@@ -242,7 +250,7 @@ const commit = () => {
     }
     genKeyStr = `3${delayCount}${genKeyStr}`
   }
-  let userKeyStr = delayCompList.reduce((pre, cur) => pre += `${cur.listStr}<br>`, '')
+  let userKeyStr = delayCompList.reduce((pre, cur) => (pre += `${cur.listStr}<br>`), '')
   configStore.keyConfig[configStore.curEvent] = {
     userKey: userKeyStr,
     genKey: genKeyStr
@@ -256,13 +264,11 @@ const commit = () => {
   <div id="comp-delay-content">
     <div class="div1">
       <ul>
-        <li v-for="(v, k) in delayCompList" :key="v.listId" :class="{ listselected: v.isSelected }"
-          @click="changeListSelect(k)">
+        <li v-for="(v, k) in delayCompList" :key="v.listId" :class="{ listselected: v.isSelected }" @click="changeListSelect(k)">
           <span> {{ v.listStr }}</span>
           <div class="dele-box" @click.stop="deleteItem(k)">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-              <path fill="currentColor"
-                d="M15 18v-2h4v2zm0-8V8h7v2zm0 4v-2h6v2zM3 8H2V6h4V4.5h4V6h4v2h-1v9q0 .825-.587 1.413T11 19H5q-.825 0-1.412-.587T3 17z" />
+              <path fill="currentColor" d="M15 18v-2h4v2zm0-8V8h7v2zm0 4v-2h6v2zM3 8H2V6h4V4.5h4V6h4v2h-1v9q0 .825-.587 1.413T11 19H5q-.825 0-1.412-.587T3 17z" />
             </svg>
           </div>
         </li>
