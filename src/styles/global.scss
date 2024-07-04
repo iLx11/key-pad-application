@@ -124,6 +124,15 @@
     text-decoration: none;
     color: inherit;
   }
+  
+  // 数字输入框去除上下箭头
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 }
 
 $shadow1: 0px 2px 35px rgba(0, 0, 0, 0.07);

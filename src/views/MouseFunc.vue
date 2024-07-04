@@ -183,13 +183,7 @@ const commit = () => {
     @include font_config(35px, rgba(255, 255, 255, 1));
     overflow: hidden !important;
   }
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
-  input[type='number'] {
-    -moz-appearance: textfield;
-  }
+
   .div1 {
     grid-area: 2 / 2 / 8 / 8;
     @include style_common(50%, rgba(255, 255, 255, 1), null, 0 0 0 2px #494c54);
