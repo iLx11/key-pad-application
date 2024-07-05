@@ -14,17 +14,19 @@ const latestVersion = ref<string>('检查版本更新')
 let preTime: number
 
 onMounted(async () => {
+  // win.myApi.delItem('pretime')
   curVersion.value = packageJson.version
   const time = await win.myApi.getMenu('pretime')
-  if (!time) {
+  if (!time || time == undefined) {
     win.myApi.storageMenu('pretime', '0')
+    preTime = 0
   } else {
     preTime = Number(time)
   }
   if(typeof preTime != 'number' || isNaN(preTime)) {
     win.myApi.storageMenu('pretime', '0')
   }
-  // console.info(preTime)
+  console.info(preTime)
 })
 
 const getLatest = async () => {

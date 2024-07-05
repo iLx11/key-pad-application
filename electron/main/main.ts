@@ -7,7 +7,7 @@ import CreateWindow from '../controller/createWindow'
 import { getFilePath, getConfigFile, writeConfigFile } from '../controller/fileDialog'
 import SerialConnect from '../controller/serialPort'
 import { picDataListener } from '../controller/picDataEditor'
-import { setItem, getItem } from "../controller/storage"
+import { setItem, getItem, delItem } from "../controller/storage"
 import { fileReadListener } from "../controller/fileRead"
 // 窗口监听
 windowControlListener()
@@ -20,9 +20,14 @@ ipcMain.on('set-item', (event, name: string, item: string) => {
   setItem(name, item)
 })
 
+ipcMain.on('del-item', (event, name: string) => {
+  delItem(name)
+})
+
 ipcMain.handle('get-item', async (event, name: string) => {
   return await getItem(name)
 })
+
 
 // 跳转到下载页面
 ipcMain.on('latest-download', (event, link: string) => {
