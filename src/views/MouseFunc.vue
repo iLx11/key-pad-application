@@ -10,77 +10,50 @@ const mouseArray = reactive([
   {
     eventId: 0,
     eventName: '左键点击',
-    isSelect: false
+    isSelect: false,
   },
   {
     eventId: 1,
     eventName: '中键点击',
-    isSelect: false
+    isSelect: false,
   },
   {
     eventId: 2,
     eventName: '右键点击',
-    isSelect: false
-  }
+    isSelect: false,
+  },
 ])
 
-const mouseMove = reactive({
+const mouseEvent = reactive({
+  mouseLeft: '',
+  mouseRight: '',
   mouseUp: '',
   mouseDown: '',
-  mouseLeft: '',
-  mouseRight: ''
-})
-
-const rollMove = reactive({
+  rollDown: '',
   rollUp: '',
-  rollDown: ''
 })
 
 watch(
-  [() => mouseMove.mouseUp, () => mouseMove.mouseDown, () => mouseMove.mouseLeft, () => mouseMove.mouseRight],
+  [() => mouseEvent.mouseLeft, () => mouseEvent.mouseRight, () => mouseEvent.mouseUp, () => mouseEvent.mouseDown, () => mouseEvent.rollDown, () => mouseEvent.rollUp],
   (newVal, oldVal) => {
     for (let key in newVal) {
       if (newVal[key] != oldVal[key]) {
         // 限制数值
         if (newVal[key] > 255) {
           XBox.popMes('输入的值不能大于 255')
-          mouseMove[Object.keys(mouseMove)[key]] = ''
+          mouseEvent[Object.keys(mouseEvent)[key]] = ''
         }
         // 限制双向
-        if(newVal[key] != '') {
+        if (newVal[key] != '') {
           let setKey = Number(key)
-          setKey += (setKey % 2 == 0 ? 1 : -1);
-          mouseMove[Object.keys(mouseMove)[setKey]] = ''
+          setKey += setKey % 2 == 0 ? 1 : -1
+          mouseEvent[Object.keys(mouseEvent)[setKey]] = ''
         }
       }
     }
   },
   {
-    deep: true
-  }
-)
-
-watch(
-  [() => rollMove.rollUp, () => rollMove.rollDown],
-  (newVal, oldVal) => {
-    for (let key in newVal) {
-      if (newVal[key] != oldVal[key]) {
-        // 限制数值
-        if (newVal[key] > 255) {
-          XBox.popMes('输入的值不能大于 255')
-          rollMove[Object.keys(rollMove)[key]] = ''
-        }
-        // 限制双向
-        if(newVal[key] != '') {
-          let setKey = Number(key)
-          setKey += (setKey % 2 == 0 ? 1 : -1);
-          rollMove[Object.keys(rollMove)[setKey]] = ''
-        }
-      }
-    }
-  },
-  {
-    deep: true
+    deep: true,
   }
 )
 
@@ -90,6 +63,7 @@ const commit = () => {
   let genKeyStr: string = ''
   let userKeyStr: string = ''
   let mouseKey: number = 0x00
+
   mouseArray.forEach((o) => {
     if (o.isSelect) {
       mouseKey += mouseKeyArray[o.eventId]
@@ -97,34 +71,33 @@ const commit = () => {
     }
   })
   genKeyStr = `4${toHexStr(mouseKey)}`
-  if (mouseMove.mouseRight != '') {
-    genKeyStr += `1${toHexStr(Number(mouseMove.mouseRight))}`
-    userKeyStr += `向右移动 -> ${mouseMove.mouseRight}<br>`
-  }
-  if (mouseMove.mouseLeft != '') {
-    genKeyStr += `0${toHexStr(Number(mouseMove.mouseLeft))}`
-    userKeyStr += `向左移动 -> ${mouseMove.mouseLeft}<br>`
-  }
-  if (mouseMove.mouseUp != '') {
-    genKeyStr += `0${toHexStr(Number(mouseMove.mouseUp))}`
-    userKeyStr += `向上移动 -> ${mouseMove.mouseUp}<br>`
-  }
-  if (mouseMove.mouseDown != '') {
-    genKeyStr += `1${toHexStr(Number(mouseMove.mouseDown))}`
-    userKeyStr += `向下移动 -> ${mouseMove.mouseDown}<br>`
-  }
-  if (rollMove.rollUp != '') {
-    genKeyStr += `1${toHexStr(Number(rollMove.rollUp))}`
-    userKeyStr += `向上滚动 -> ${rollMove.rollUp}<br>`
-  }
-  if (rollMove.rollDown != '') {
-    genKeyStr += `0${toHexStr(Number(rollMove.rollDown))}`
-    userKeyStr += `向下滚动 -> ${rollMove.rollDown}<br>`
-  }
-  // console.info(genKeyStr)
+  let sign = 0
+  const evenStr = ['向左移动', '向右移动', '向上移动', '向下移动','向下滚动', '向上滚动']
+  const gen = Object.keys(mouseEvent).reduce((pre, cur, index) => {
+    console.info(mouseEvent)
+    console.info(cur)
+    if(mouseEvent[cur] != '') {
+      pre.genkey += `${String(index % 2)}${toHexStr(Number(mouseEvent[cur]))}` 
+      pre.userKey += `${evenStr[index]} -> ${mouseEvent[cur]}<br>`
+      sign = 1
+    }
+    if(index % 2) {
+      if(sign == 0) {
+        pre.genkey += `000`
+      }
+      sign = 0
+    }
+    return pre
+  }, {
+    genkey: '',
+    userKey: ''
+  })
+  genKeyStr += gen.genkey
+  userKeyStr += gen.userKey
+
   configStore.keyConfig[configStore.curEvent] = {
     userKey: userKeyStr,
-    genKey: genKeyStr
+    genKey: genKeyStr,
   }
   console.info(configStore.keyConfig[configStore.curEvent])
   configStore.setFuncShow(false)
@@ -135,25 +108,70 @@ const commit = () => {
   <div id="mouse-func-content">
     <div class="div1"></div>
     <div class="div2">
-      <input type="number" placeholder="左" v-model.number="mouseMove.mouseLeft" />
+      <input
+        type="number"
+        placeholder="左"
+        v-model.number="mouseEvent.mouseLeft"
+      />
     </div>
     <div class="div3">
-      <input type="number" placeholder="右" v-model.number="mouseMove.mouseRight" />
+      <input
+        type="number"
+        placeholder="右"
+        v-model.number="mouseEvent.mouseRight"
+      />
     </div>
     <div class="div4">
-      <input type="number" placeholder="下" v-model.number="mouseMove.mouseDown" />
+      <input
+        type="number"
+        placeholder="下"
+        v-model.number="mouseEvent.mouseDown"
+      />
     </div>
     <div class="div5">
-      <input type="number" placeholder="上" v-model.number="mouseMove.mouseUp" />
+      <input
+        type="number"
+        placeholder="上"
+        v-model.number="mouseEvent.mouseUp"
+      />
     </div>
-    <div class="div6" :class="{ isSelect: mouseArray[0].isSelect }" @click="mouseArray[0].isSelect = !mouseArray[0].isSelect">{{ mouseArray[0].eventName }}</div>
+    <div
+      class="div6"
+      :class="{ isSelect: mouseArray[0].isSelect }"
+      @click="mouseArray[0].isSelect = !mouseArray[0].isSelect"
+    >
+      {{ mouseArray[0].eventName }}
+    </div>
     <div class="div7">
-      <input type="number" placeholder="向上滚动" v-model.number="rollMove.rollUp" />
-      <span :class="{ isSelect: mouseArray[1].isSelect }" @click="mouseArray[1].isSelect = !mouseArray[1].isSelect">{{ mouseArray[1].eventName }}</span>
-      <input type="number" placeholder="向下滚动" v-model.number="rollMove.rollDown" />
+      <input
+        type="number"
+        placeholder="向上滚动"
+        v-model.number="mouseEvent.rollUp"
+      />
+      <span
+        :class="{ isSelect: mouseArray[1].isSelect }"
+        @click="mouseArray[1].isSelect = !mouseArray[1].isSelect"
+        >{{ mouseArray[1].eventName }}</span
+      >
+      <input
+        type="number"
+        placeholder="向下滚动"
+        v-model.number="mouseEvent.rollDown"
+      />
     </div>
-    <div class="div8" :class="{ isSelect: mouseArray[2].isSelect }" @click="mouseArray[2].isSelect = !mouseArray[2].isSelect">{{ mouseArray[2].eventName }}</div>
-    <div class="div9" @click="commit">确认</div>
+    <div
+      class="div8"
+      :class="{ isSelect: mouseArray[2].isSelect }"
+      @click="mouseArray[2].isSelect = !mouseArray[2].isSelect"
+    >
+      {{ mouseArray[2].eventName }}
+    </div>
+    <div
+      class="div9"
+      @click="commit"
+    >
+      确认
+    </div>
     <!-- <div id="commit-box">确认</div> -->
   </div>
 </template>

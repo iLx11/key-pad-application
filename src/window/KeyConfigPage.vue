@@ -7,7 +7,6 @@ import FuncBox from '../components/configPage/FuncBox.vue'
 import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
 import { useRouter } from 'vue-router'
-import {XBox} from '@/utils/xBox/xBox.js'
 
 const win = window as any
 const router = useRouter()
@@ -61,19 +60,7 @@ watch(
     }
   }
 )
-watch(
-  () => configStore.isTextShow,
-  () => {
-    if (configStore.isTextShow == true) {
-      configStore.setIsTextShow(false)
-      popBoxRef.value['showPop'](XBox.popMesText)
-    }
-  },
-  {
-    immediate: true,
-    deep: true
-  }
-)
+
 </script>
 
 <template>
