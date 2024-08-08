@@ -9,19 +9,6 @@ interface IConfigKey {
 }
 
 export const useConfigStore = defineStore('config', () => {
-  // 发送通知
-  const noticeText = ref<string>('')
-  const isTextShow = ref<boolean>(false)
-  const setNoticeText = (text: string) => {
-    noticeText.value = text
-  }
-  const setIsTextShow = (state: boolean) => {
-    isTextShow.value = state
-  }
-  const notice = (text: string) => {
-    setNoticeText(text)
-    setIsTextShow(true)
-  }
 
   // 菜单配置
   const curMenu = ref<number>(0)
@@ -102,11 +89,6 @@ export const useConfigStore = defineStore('config', () => {
     screenData[curScreen.value] = JSON.parse(objData)
   }
   return {
-    noticeText,
-    isTextShow,
-    setIsTextShow,
-    setNoticeText,
-    notice,
     curMenu,
     setCurMenu,
     menuConfig,
