@@ -3,6 +3,7 @@ import { reactive, ref, watch } from "vue";
 import { useConfigStore } from '../stores/configStore'
 import { getStringMap } from "../utils/hidKeyCode"
 import { toHexStr } from "../utils/strTools"
+import {XBox} from '@/utils/xBox/xBox.js'
 
 const configStore = useConfigStore()
 
@@ -63,7 +64,7 @@ watch(() => keyValue.value, () => {
   let reg = new RegExp(/[(\u4e00-\u9fa5)|(A-Z)]/)
   if (reg.test(keyValue.value)) {
     keyValue.value = keyValue.value.replace(reg, '')
-    configStore.notice('只能输入英文小写字母~')
+    XBox.popMes('只能输入英文小写字母~')
   }
 })
 const changeSelect = (speacialId: number) => {
@@ -86,7 +87,7 @@ const commit = () => {
       genKeyStr += getStringMap().get(i).hex
     }
   } catch (error) {
-    configStore.notice("有错误产生，可能有不支持的字符")
+    XBox.popMes("有错误产生，可能有不支持的字符")
     return 
   }
   // 没有快捷键按普通按键处理

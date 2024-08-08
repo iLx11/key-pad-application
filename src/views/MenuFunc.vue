@@ -2,6 +2,7 @@
 import { reactive, ref, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
 import { toHexStr } from '../utils/strTools'
+import {XBox} from '@/utils/xBox/xBox.js'
 
 const configStore = useConfigStore()
 const menuValue = ref<string>('')
@@ -15,11 +16,11 @@ watch(
   () => {
     let reg = new RegExp(/^\d+$/)
     if (!reg.test(menuValue.value)) {
-      configStore.notice('请输入纯数字')
+      XBox.popMes('请输入纯数字')
       menuValue.value = '0'
     }
     if (Number(menuValue.value) > 10 || Number(menuValue.value) < 0) {
-      configStore.notice('调转的菜单不能超过 10')
+      XBox.popMes('调转的菜单不能超过 10')
       menuValue.value = '0'
     }
     if (menuValue.value !== '0') {

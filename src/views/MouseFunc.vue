@@ -2,6 +2,7 @@
 import { reactive, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
 import { toHexStr } from '../utils/strTools'
+import {XBox} from '@/utils/xBox/xBox.js'
 
 const configStore = useConfigStore()
 
@@ -42,7 +43,7 @@ watch(
       if (newVal[key] != oldVal[key]) {
         // 限制数值
         if (newVal[key] > 255) {
-          configStore.notice('输入的值不能大于 255')
+          XBox.popMes('输入的值不能大于 255')
           mouseMove[Object.keys(mouseMove)[key]] = ''
         }
         // 限制双向
@@ -66,7 +67,7 @@ watch(
       if (newVal[key] != oldVal[key]) {
         // 限制数值
         if (newVal[key] > 255) {
-          configStore.notice('输入的值不能大于 255')
+          XBox.popMes('输入的值不能大于 255')
           rollMove[Object.keys(rollMove)[key]] = ''
         }
         // 限制双向

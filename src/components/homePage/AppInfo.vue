@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, watch } from 'vue'
-import { useConfigStore } from '../../stores/configStore'
 import packageJson from '../../../package.json'
 import { getLatestVersion } from '../../api/version'
 // import goodImg from '../../../img/good.jpg'
+import {XBox} from '@/utils/xBox/xBox.js'
+
 
 const win = window as any
 
-const configStore = useConfigStore()
 const curVersion = ref<string>('')
 const latestVersion = ref<string>('检查版本更新')
 
@@ -38,17 +38,17 @@ const getLatest = async () => {
     // 获取最新版本信息
     const data = await getLatestVersion()
     if (!data) {
-      configStore.notice('获取版本出错！')
+      XBox.popMes('获取版本出错！')
       return
     }
     if (data.latestVerison == curVersion.value) {
-      configStore.notice('版本已经是最新！')
+      XBox.popMes('版本已经是最新！')
     } else {
-      configStore.notice('有最新版软件，即将跳转下载')
+      XBox.popMes('有最新版软件，即将跳转下载')
       win.myApi.latestDownload(data.downloadLink)
     }
   } else {
-    configStore.notice('接口资源有限，请在 30 秒后尝试 ~')
+    XBox.popMes('接口资源有限，请在 30 秒后尝试 ~')
   }
 }
 

@@ -6,6 +6,7 @@ import 'tui-image-editor/dist/tui-image-editor.css'
 import { useConfigStore } from '../../stores/configStore'
 import ImageEditor from 'tui-image-editor/dist/tui-image-editor.js'
 import { config } from 'process'
+import {XBox} from '@/utils/xBox/xBox.js'
 
 const win = window as any
 const emits = defineEmits(['editorCancle', 'editorCommit'])
@@ -46,7 +47,7 @@ const switchBack = () => {
 const editorCommit = async () => {
   const picBase64Str = (instance as any).value.toDataURL()
   let data, arrData
-  configStore.notice('处理数据中...')
+  XBox.popMes('处理数据中...')
   coverShow.value = true
   if(configStore.curScreen < 1) {
     // 缩放图片（1 为单色屏幕）

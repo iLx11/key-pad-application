@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue"
 import { genCompStr, toHexStr } from '../utils/strTools'
 import { useConfigStore } from '../stores/configStore'
+import {XBox} from '@/utils/xBox/xBox.js'
 
 const win = window as any
 const configStore = useConfigStore()
@@ -16,12 +17,12 @@ const filePathStr = ref<string>('')
 
 const commit = () => {
   if(filePathStr.value == '') {
-    configStore.notice('没有选择路径或路径选择错误')
+    XBox.popMes('没有选择路径或路径选择错误')
     return
   }
   let compStr = genCompStr(filePathStr.value)
   if((/error/g).test(compStr)) {
-    configStore.notice(compStr)
+    XBox.popMes(compStr)
     return
   }
   let strLen = toHexStr(parseInt(`0x${compStr.substring(0, 2)}`))

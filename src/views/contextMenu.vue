@@ -3,6 +3,7 @@ import { onMounted, reactive, readonly, ref, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
 import { useMenuStore } from '../stores/menuStore'
 import { resetData, parseMenuConfig, loadMenu } from '../utils/dataHandle'
+import {XBox} from '@/utils/xBox/xBox.js'
 
 const configStore = useConfigStore()
 const menuStore = useMenuStore()
@@ -43,7 +44,7 @@ const menuFunc = async (index: number) => {
     fileNameShow.value = true
   } else if (index == 2) {
     resetCurMenu()
-    configStore.notice('清除当层成功')
+    XBox.popMes('清除当层成功')
   } else if (index == 3) {
     // 清除所有层
     let curMenu = configStore.curMenu
@@ -58,7 +59,7 @@ const menuFunc = async (index: number) => {
       configStore.setMenuConfig(JSON.stringify(tempObj))
     }
     configStore.setCurMenu(curMenu)
-    configStore.notice('清除所有层成功')
+    XBox.popMes('清除所有层成功')
   }
 }
 

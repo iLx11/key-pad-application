@@ -1,4 +1,5 @@
 import { useConfigStore } from '../stores/configStore'
+import {XBox} from '@/utils/xBox/xBox.js'
 
 const configStore = useConfigStore()
 const win = window as any
@@ -12,10 +13,10 @@ const waitSign = async (): Promise<boolean> => {
 export const testConnection = async (): Promise<boolean> => {
   // console.info(conStore)
   if (await win.myApi.connectHardware()) {
-    configStore.notice('连接成功')
+    XBox.popMes('连接成功')
     return new Promise((resolve) => resolve(true))
   } else {
-    configStore.notice('连接失败，请检查硬件连接')
+    XBox.popMes('连接失败，请检查硬件连接')
     return new Promise((resolve) => resolve(false))
   }
 }
@@ -153,7 +154,7 @@ export const sendConfigData = async () => {
       let state = await win.myApi.sendData(str)
       // await new Promise((resolve) => setTimeout(resolve, 1))
       if (!state) {
-        configStore.notice('发送数据出错')
+        XBox.popMes('发送数据出错')
       }
       // configStore.setProgressMes(Math.ceil((right / dataStr.length) * 100))
     })

@@ -5,6 +5,7 @@ import { reactive, ref, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
 import { getStringMap } from '../utils/hidKeyCode'
 import { toHexStr } from '../utils/strTools'
+import {XBox} from '@/utils/xBox/xBox.js'
 
 const configStore = useConfigStore()
 
@@ -67,7 +68,7 @@ watch(
     let reg = new RegExp(/[(\u4e00-\u9fa5)|(A-Z)]/)
     if (reg.test(keyValue.value)) {
       keyValue.value = keyValue.value.replace(reg, '')
-      configStore.notice('只能输入英文小写字母~')
+      XBox.popMes('只能输入英文小写字母~')
     }
   }
 )
@@ -91,7 +92,7 @@ const keyCommit = () => {
       genKeyStr += getStringMap().get(i).hex
     }
   } catch (error) {
-    configStore.notice('有错误产生，可能有不支持的字符')
+    XBox.popMes('有错误产生，可能有不支持的字符')
     return
   }
 
@@ -132,17 +133,17 @@ watch(
       if (newVal[key] != oldVal[key]) {
         let reg = new RegExp(/^\d+$/)
         if (!reg.test(delayTime[Object.keys(delayTime)[key]])) {
-          configStore.notice('请输入纯数字')
+          XBox.popMes('请输入纯数字')
           delayTime[Object.keys(delayTime)[key]] = ''
         }
       }
     }
     if (delayTime.delayS > 10) {
-      configStore.notice('秒延时时间不能超过 10s')
+      XBox.popMes('秒延时时间不能超过 10s')
       delayTime.delayS = ''
     }
     if (delayTime.delayMs > 255) {
-      configStore.notice('毫秒延时时间不能超过 255ms')
+      XBox.popMes('毫秒延时时间不能超过 255ms')
       delayTime.delayMs = ''
     }
   },
@@ -178,15 +179,15 @@ const changeListSelect = (k: number) => {
 const delayCommit = () => {
   // 限制条件
   if (delayCompList.filter((o) => o.kind == 1).length > 8) {
-    configStore.notice('延迟总数不能超过 9')
+    XBox.popMes('延迟总数不能超过 9')
     return
   }
   if (delayTime.delayS == '0' && delayTime.delayMs == '0') {
-    configStore.notice('不能添加 0 延时')
+    XBox.popMes('不能添加 0 延时')
     return
   }
   if ((curSelected.value != delayCompList.length && delayCompList[curSelected.value].kind == 1) || (curSelected.value != 0 && delayCompList[curSelected.value - 1].kind == 1) || (delayCompList.length != 0 && delayCompList[delayCompList.length - 1].kind == 1)) {
-    configStore.notice('不能添加连续的延时')
+    XBox.popMes('不能添加连续的延时')
     return
   }
   // 生成与赋值

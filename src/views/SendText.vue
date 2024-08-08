@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
 import { getStringMap } from '../utils/hidKeyCode'
 import { toHexStr } from '../utils/strTools'
+import {XBox} from '@/utils/xBox/xBox.js'
 
 const configStore = useConfigStore()
 
@@ -22,7 +23,7 @@ watch(
 // 提交
 const commit = () => {
   if (textValue.value == '') {
-    configStore.notice('没有输入任何内容')
+    XBox.popMes('没有输入任何内容')
     return
   }
   let genKeyStr: string = ''
@@ -66,7 +67,7 @@ const commit = () => {
     }
     genKeyStr = `1${toHexStr(++keyCount)}${genKeyStr}`
   } catch (error) {
-    configStore.notice('有错误产生，可能有不支持的字符')
+    XBox.popMes('有错误产生，可能有不支持的字符')
     return
   }
   console.info(genKeyStr)

@@ -11,6 +11,7 @@ import { useConfigStore } from '../stores/configStore'
 import { useMenuStore } from '../stores/menuStore'
 import { parseMenuConfig, testConnection, sendMenu, sendColorScreen, sendOledScreen, sendConfigData, loadMenu, resetData } from '../utils/dataHandle'
 // import { setItem, getItem } from '@/utils/storage'
+import {XBox} from '@/utils/xBox/xBox.js'
 
 const router = useRouter()
 const win = window as any
@@ -57,7 +58,7 @@ onMounted(async () => {
       }
     } catch (error) {
       console.error(error)
-      configStore.notice('同步信息错误')
+      XBox.popMes('同步信息错误')
     }
   })
   // 右键菜单
@@ -140,19 +141,6 @@ const titleClick = async () => {
   conState.value = await testConnection()
 }
 
-watch(
-  () => configStore.isTextShow,
-  () => {
-    if (configStore.isTextShow == true) {
-      configStore.setIsTextShow(false)
-      popBoxRef.value['showPop'](configStore.noticeText)
-    }
-  },
-  {
-    immediate: true,
-    deep: true
-  }
-)
 
 // 同步一层配置的功能
 watch(
@@ -175,7 +163,7 @@ const sendFinalData = async () => {
   // 测试连接
   conState.value = await win.myApi.connectHardware()
   if (!conState.value) {
-    configStore.notice('硬件已经断开连接')
+    XBox.popMes('硬件已经断开连接')
     configStore.setProgressMes(0)
     progressShow.value = false
     return

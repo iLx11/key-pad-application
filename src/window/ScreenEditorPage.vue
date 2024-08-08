@@ -27,19 +27,6 @@ onMounted(() => {
   })
 })
 
-watch(
-  () => configStore.isTextShow,
-  () => {
-    if (configStore.isTextShow == true) {
-      configStore.setIsTextShow(false)
-      popBoxRef.value['showPop'](configStore.noticeText)
-    }
-  },
-  {
-    immediate: true,
-    deep: true
-  }
-)
 </script>
 
 <template>
