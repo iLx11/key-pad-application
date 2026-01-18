@@ -33,6 +33,7 @@
     "electron-store": "^8.1.0",
     "fs-extra": "^11.1.0",
     "graceful-fs": "^4.2.0",
+    "ilx1-x-box": "^1.0.0",
     "node-gyp-build": "^4.8.0",
     "pinia": "^2.1.6",
     "pngparse": "^2.0.1",

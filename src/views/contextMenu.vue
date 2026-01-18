@@ -3,7 +3,7 @@ import { onMounted, reactive, readonly, ref, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
 import { useMenuStore } from '../stores/menuStore'
 import { resetData, parseMenuConfig, loadMenu } from '../utils/dataHandle'
-import {XBox} from '@/utils/xBox/xBox.js'
+import { XBox } from 'ilx1-x-box'
 
 const configStore = useConfigStore()
 const menuStore = useMenuStore()

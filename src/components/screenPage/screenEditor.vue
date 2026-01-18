@@ -6,7 +6,7 @@ import 'tui-image-editor/dist/tui-image-editor.css'
 import { useConfigStore } from '../../stores/configStore'
 import ImageEditor from 'tui-image-editor/dist/tui-image-editor.js'
 import { config } from 'process'
-import {XBox} from '@/utils/xBox/xBox.js'
+import { XBox } from 'ilx1-x-box'
 
 const win = window as any
 const emits = defineEmits(['editorCancle', 'editorCommit'])

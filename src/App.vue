@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import '@/utils/xBox/style/xBox.css'
+import 'ilx1-x-box/style/xBox.css'
 </script>
 
 <template>

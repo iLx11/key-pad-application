@@ -3,7 +3,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { toHexStr } from '../utils/strTools'
 import { useConfigStore } from '../stores/configStore'
 import { getStringMap } from '../utils/hidKeyCode'
-import {XBox} from '@/utils/xBox/xBox.js'
+import { XBox } from 'ilx1-x-box'
 
 const configStore = useConfigStore()
 const win = window as any

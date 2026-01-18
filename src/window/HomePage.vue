@@ -11,7 +11,7 @@ import { useConfigStore } from '../stores/configStore'
 import { useMenuStore } from '../stores/menuStore'
 import { parseMenuConfig, testConnection, sendMenu, sendColorScreen, sendOledScreen, sendConfigData, loadMenu, resetData } from '../utils/dataHandle'
 // import { setItem, getItem } from '@/utils/storage'
-import {XBox} from '@/utils/xBox/xBox.js'
+import { XBox } from 'ilx1-x-box'
 
 const router = useRouter()
 const win = window as any

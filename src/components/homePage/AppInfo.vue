@@ -3,7 +3,7 @@ import { onMounted, reactive, ref, watch } from 'vue'
 import packageJson from '../../../package.json'
 import { getLatestVersion } from '../../api/version'
 // import goodImg from '../../../img/good.jpg'
-import {XBox} from '@/utils/xBox/xBox.js'
+import { XBox } from 'ilx1-x-box'
 
 
 const win = window as any

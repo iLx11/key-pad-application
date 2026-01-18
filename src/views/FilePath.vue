@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue"
 import { genCompStr, toHexStr } from '../utils/strTools'
 import { useConfigStore } from '../stores/configStore'
-import {XBox} from '@/utils/xBox/xBox.js'
+import { XBox } from 'ilx1-x-box'
 
 const win = window as any
 const configStore = useConfigStore()

@@ -3,7 +3,7 @@ import { ref, watch } from 'vue'
 import { useConfigStore } from '../stores/configStore'
 import { getStringMap } from '../utils/hidKeyCode'
 import { toHexStr } from '../utils/strTools'
-import {XBox} from '@/utils/xBox/xBox.js'
+import { XBox } from 'ilx1-x-box'
 
 const configStore = useConfigStore()
 
