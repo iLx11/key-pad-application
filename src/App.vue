@@ -41,7 +41,7 @@ import '@/utils/xBox/style/xBox.css'
 }
 
 
-@include app_common;
+@include global.app_common;
 
 #app {
   overflow: hidden;

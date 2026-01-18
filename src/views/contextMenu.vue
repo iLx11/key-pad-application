@@ -125,16 +125,16 @@ const writeFile = async () => {
 
 <style lang="scss" scoped>
 #file-name {
-  @include full_wh;
+  @include global.full_wh;
   position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  @include flex_center;
+  @include global.flex_center;
   z-index: 8;
   border-radius: 32px;
   input {
-    @include full_wh;
+    @include global.full_wh;
     border: none;
     text-align: center;
     font-size: 25px;
@@ -143,18 +143,18 @@ const writeFile = async () => {
   div {
     width: 300px;
     height: 60px;
-    @include style_common(22px, rgba(255, 255, 255, 1));
+    @include global.style_common(22px, rgba(255, 255, 255, 1));
     z-index: 8;
     overflow: hidden;
   }
   #cover {
     width: 70%;
     height: 60%;
-    @include ab_center;
+    @include global.ab_center;
     background: rgba(51, 51, 51, 0.9);
     font-size: 28px;
     color: rgb(210, 207, 207);
-    @include flex_config(1, space-evenly);
+    @include global.flex_config(1, space-evenly);
     padding: 1em;
     cursor: pointer;
   }
@@ -162,7 +162,7 @@ const writeFile = async () => {
 #context-menu {
   width: 200px;
   height: 220px;
-  @include style_common(25px, rgb(252, 252, 252), 2px solid rgba(215, 220, 231, 1));
+  @include global.style_common(25px, rgb(252, 252, 252), 2px solid rgba(215, 220, 231, 1));
   position: absolute;
   // top: 0;
   // left: 0;
@@ -171,16 +171,16 @@ const writeFile = async () => {
   opacity: 0;
   padding: 0.4em;
   ul {
-    @include full_wh;
+    @include global.full_wh;
     overflow-y: scroll;
     padding: 0.3em;
 
     li {
       width: 100%;
       height: 40px;
-      @include style_common(11px, rgb(131, 141, 145));
+      @include global.style_common(11px, rgb(131, 141, 145));
       margin-bottom: 9px;
-      @include flex_config(0, flex_start);
+      @include global.flex_config(0, flex_start);
       padding: 0.3em;
       cursor: pointer;
 
@@ -196,7 +196,7 @@ const writeFile = async () => {
         height: 100%;
       }
       div {
-        @include flex_center;
+        @include global.flex_center;
       }
     }
     li:hover {

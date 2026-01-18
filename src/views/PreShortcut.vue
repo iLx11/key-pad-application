@@ -243,24 +243,24 @@ const commit = (key: string, index: string) => {
   color: rgba(255, 255, 255, 1) !important;
 }
 #pre-shortcuts-content {
-  @include wh(75%, 50%, 700px, 500px, 670px);
-  @include ab_center;
+  @include global.wh(75%, 50%, 700px, 500px, 670px);
+  @include global.ab_center;
   z-index: 66;
-  @include style_common(25px, rgba(255, 255, 255, 1));
+  @include global.style_common(25px, rgba(255, 255, 255, 1));
   ul {
-    @include full_wh;
+    @include global.full_wh;
     // margin-right: 10px;
-    @include flex_config(0, flex-start, wrap);
+    @include global.flex_config(0, flex-start, wrap);
     align-items: flex-start;
     overflow: scroll;
     padding: 1.2em;
     li {
-      @include wh(19%, 120px);
+      @include global.wh(19%, 120px);
       margin: 0.92em;
       cursor: pointer;
       color: rgba(51, 51, 51, 0.8);
-      @include style_common(12px);
-      @include flex_center;
+      @include global.style_common(12px);
+      @include global.flex_center;
       font-size: 20px;
       transition: all 0.3s ease-in-out;
       span {
@@ -272,44 +272,44 @@ const commit = (key: string, index: string) => {
     }
   }
   #pre-shortcuts-content #commit-box {
-    @include wh(120px, 50px);
-    @include pos_ab(20px, 20px, 2);
-    @include style_common(12px, rgba(210, 168, 169, 1));
+    @include global.wh(120px, 50px);
+    @include global.pos_ab(20px, 20px, 2);
+    @include global.style_common(12px, rgba(210, 168, 169, 1));
     cursor: pointer;
-    @include flex_center;
-    @include font_config(20px, rgba(255, 255, 255, 1));
+    @include global.flex_center;
+    @include global.font_config(20px, rgba(255, 255, 255, 1));
   }
 }
 #shortcuts-box {
-  @include wh(72%, 180%);
-  @include style_common(25px, rgba(255, 255, 255, 1), null, $shadow1);
-  @include fixed_center;
+  @include global.wh(72%, 180%);
+  @include global.style_common(25px, rgba(255, 255, 255, 1), null, global.$shadow1);
+  @include global.fixed_center;
   z-index: 88;
   > ul {
-    @include full_wh;
+    @include global.full_wh;
     overflow-y: scroll;
-    @include flex_config(1, flex-start);
+    @include global.flex_config(1, flex-start);
     padding: 1em;
     > li {
       width: 100%;
       height: auto;
-      @include flex_config(1, space-between);
+      @include global.flex_config(1, space-between);
       align-items: flex-start;
-      @include style_common(25px, rgba(255, 255, 255, 1), null, $shadow1);
+      @include global.style_common(25px, rgba(255, 255, 255, 1), null, global.$shadow1);
       padding: 1em;
       .list-trans-name {
-        @include font_config(42px, rgba(51, 51, 51, 0.7));
+        @include global.font_config(42px, rgba(51, 51, 51, 0.7));
       }
       .list-ori-name {
-        @include font_config(32px, rgba(51, 51, 51, 0.5));
+        @include global.font_config(32px, rgba(51, 51, 51, 0.5));
         margin-bottom: 10px;
       }
       ul {
-        @include full_wh;
+        @include global.full_wh;
         padding: 0.3em;
         li {
-          @include wh(100%, auto);
-          @include flex_config(0, flex-start);
+          @include global.wh(100%, auto);
+          @include global.flex_config(0, flex-start);
           // align-items: flex-end;
           margin: 0;
           padding: 0;
@@ -319,31 +319,31 @@ const commit = (key: string, index: string) => {
   }
 }
 .shortcut-key-box {
-  @include wh(100%, auto);
-  @include flex_config(1, space-around);
+  @include global.wh(100%, auto);
+  @include global.flex_config(1, space-around);
   align-items: flex-end;
   margin: 1.3em 0;
   position: relative;
   div {
     margin: 0.3em 0;
-    @include font_config(30px);
+    @include global.font_config(30px);
   }
   .box2 {
-    @include font_config(20px, rgba(51, 51, 51, 0.7));
+    @include global.font_config(20px, rgba(51, 51, 51, 0.7));
   }
   .box3 {
-    @include font_config(40px, rgb(250, 206, 203));
+    @include global.font_config(40px, rgb(250, 206, 203));
   }
   .line {
-    @include wh(100%, 1px);
-    @include pos_ab(-20px, 0px, 2);
-    @include style_common(25px, rgba(51, 51, 51, 0.2));
+    @include global.wh(100%, 1px);
+    @include global.pos_ab(-20px, 0px, 2);
+    @include global.style_common(25px, rgba(51, 51, 51, 0.2));
   }
 }
 #cover {
-  @include full_wh;
-  @include fixed_center;
-  @include style_common(25px, rgba(51, 51, 51, 0.25));
+  @include global.full_wh;
+  @include global.fixed_center;
+  @include global.style_common(25px, rgba(51, 51, 51, 0.25));
   z-index: 66;
   position: fixed;
 }

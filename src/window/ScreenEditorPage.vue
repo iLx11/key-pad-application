@@ -47,13 +47,13 @@ onMounted(() => {
 #cover {
   width: 98%;
   height: 98%;
-  @include ab_center;
-  @include style_common(15px, rgba(51, 51, 51, 0.2));
+  @include global.ab_center;
+  @include global.style_common(15px, rgba(51, 51, 51, 0.2));
   z-index: 998;
 }
 .container {
-  @include full_wh;
-  @include ab_center;
+  @include global.full_wh;
+  @include global.ab_center;
   border: 6px solid rgba(15, 16, 23, 1);
   border-radius: 2.5em;
   overflow: hidden;
@@ -68,14 +68,14 @@ onMounted(() => {
   position: relative;
 }
 #key-config-content {
-  @include full_wh;
+  @include global.full_wh;
   max-width: 950px;
   max-height: 750px;
   margin: 0 auto;
   border-radius: 25px;
   overflow: hidden;
   > div {
-    @include style_common(9px, rgba(114, 106, 109, 0.2));
+    @include global.style_common(9px, rgba(114, 106, 109, 0.2));
   } 
 }
 </style>

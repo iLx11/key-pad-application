@@ -88,14 +88,14 @@ watch(
 
 <style lang="scss" scoped>
 #cover {
-  @include wh(98%, 98%);
-  @include ab_center;
-  @include style_common(15px, rgba(51, 51, 51, 0.2));
+  @include global.wh(98%, 98%);
+  @include global.ab_center;
+  @include global.style_common(15px, rgba(51, 51, 51, 0.2));
   z-index: 998;
 }
 .container {
-  @include full_wh;
-  @include ab_center;
+  @include global.full_wh;
+  @include global.ab_center;
   border: 6px solid rgba(15, 16, 23, 1);
   border-radius: 2.5em;
   overflow: hidden;
@@ -110,15 +110,15 @@ watch(
   position: relative;
 }
 #key-config-content {
-  @include full_wh;
+  @include global.full_wh;
   max-width: 950px;
   max-height: 750px;
   margin: 0 auto;
   border-radius: 19px;
   overflow: hidden;
-  @include grid_config(5, 6, 15px, 16px);
+  @include global.grid_config(repeat(5, 1fr), repeat(6, 1fr), 15px, 16px);
   > div {
-    @include style_common(9px, rgba(114, 106, 109, 0.2));
+    @include global.style_common(9px, rgba(114, 106, 109, 0.2));
   }
   .div1 {
     grid-area: 1 / 1 / 4 / 4;
@@ -128,7 +128,7 @@ watch(
     grid-area: 4 / 1 / 7 / 4;
     padding: 12px;
     div {
-      @include full_wh;
+      @include global.full_wh;
       // background: rgba(255, 255, 255, 0.7);
       border-radius: 12px;
     }
@@ -139,11 +139,11 @@ watch(
   }
 }
 #func-position {
-  @include full_wh;
-  @include pos_ab;
+  @include global.full_wh;
+  @include global.pos_ab;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  @include style_common(10px, rgba(158, 170, 172, 0.3), 1px solid rgba(255, 255, 255, 0.18));
+  @include global.style_common(10px, rgba(158, 170, 172, 0.3), 1px solid rgba(255, 255, 255, 0.18));
   z-index: 88;
 }
 </style>

@@ -311,19 +311,19 @@ const commit = () => {
   height: 85%;
   max-width: 900px;
   max-height: 700px;
-  @include ab_center;
+  @include global.ab_center;
   z-index: 66;
-  @include style_common(25px, rgb(255, 255, 255));
+  @include global.style_common(25px, rgb(255, 255, 255));
   overflow: hidden;
   padding: 20px;
-  @include grid_config(7, 8, 25px, 25px);
+  @include global.grid_config(repeat(7, 1fr), repeat(8, 1fr), 25px, 25px);
 
   .div1 {
     grid-area: 1 / 1 / 9 / 4;
-    @include style_common(25px, rgba(229, 234, 235, 0.8));
+    @include global.style_common(25px, rgba(229, 234, 235, 0.8));
 
     ul {
-      @include full_wh;
+      @include global.full_wh;
       overflow: scroll;
       padding: 1.2em;
 
@@ -333,8 +333,8 @@ const commit = () => {
         padding: 0.8em;
         margin-bottom: 15px;
         color: rgba(255, 255, 255, 1);
-        @include style_common(12px, rgba($color: #494c54, $alpha: 1));
-        @include flex_center;
+        @include global.style_common(12px, rgba($color: #494c54, $alpha: 1));
+        @include global.flex_center;
         font-size: 20px;
         word-break: break-all;
         position: relative;
@@ -345,9 +345,9 @@ const commit = () => {
         div {
           width: 40px;
           height: 40px;
-          @include style_common(50% 2px 2px 2px, rgba(255, 255, 255, 1));
-          @include pos_ab(0, 0, 2);
-          @include flex_center;
+          @include global.style_common(50% 2px 2px 2px, rgba(255, 255, 255, 1));
+          @include global.pos_ab(0, 0, 2);
+          @include global.flex_center;
           color: rgba($color: #494c54, $alpha: 1);
           cursor: pointer;
           display: none;
@@ -380,8 +380,8 @@ const commit = () => {
 
   .div4 {
     grid-area: 8 / 4 / 9 / 8;
-    @include style_common(12px, rgba(210, 168, 169, 0.5));
-    @include flex_center;
+    @include global.style_common(12px, rgba(210, 168, 169, 0.5));
+    @include global.flex_center;
     font-size: 20px;
     color: rgba(255, 255, 255, 1);
     cursor: pointer;
@@ -389,7 +389,7 @@ const commit = () => {
 }
 
 #comp-key-content {
-  @include full_wh;
+  @include global.full_wh;
   // max-width: 600px;
   // max-height: 300px;
   z-index: 66;
@@ -398,14 +398,14 @@ const commit = () => {
   #comp-special {
     width: 100%;
     height: 70%;
-    @include style_common(35px 35px 0 0, rgba($color: #494c54, $alpha: 1));
-    @include grid_config(4, 2, 15px, 16px);
+    @include global.style_common(35px 35px 0 0, rgba($color: #494c54, $alpha: 1));
+    @include global.grid_config(repeat(4, 1fr), repeat(2, 1fr), 15px, 16px);
     grid-template-rows: repeat(2, 25%);
     padding: 20px;
 
     div {
-      @include style_common(5px, rgba(255, 255, 255, 1));
-      @include flex_center;
+      @include global.style_common(5px, rgba(255, 255, 255, 1));
+      @include global.flex_center;
       cursor: pointer;
     }
 
@@ -418,9 +418,9 @@ const commit = () => {
   #key-input-box {
     width: 100%;
     height: 55%;
-    @include style_common(30px 30px 20px 20px, rgba(255, 255, 255, 1), null, 0 0 0 4px rgba(191, 203, 206, 0.6));
-    @include pos_ab(0, 0, 2);
-    @include flex_center;
+    @include global.style_common(30px 30px 20px 20px, rgba(255, 255, 255, 1), null, 0 0 0 4px rgba(191, 203, 206, 0.6));
+    @include global.pos_ab(0, 0, 2);
+    @include global.flex_center;
 
     input {
       width: 80%;
@@ -436,32 +436,32 @@ const commit = () => {
 #commit-box {
   width: 90px;
   height: 40px;
-  @include pos_ab(20px, 20px, 2);
-  @include style_common(12px, rgba(210, 168, 169, 0.5));
-  @include flex_center;
+  @include global.pos_ab(20px, 20px, 2);
+  @include global.style_common(12px, rgba(210, 168, 169, 0.5));
+  @include global.flex_center;
   font-size: 20px;
   color: rgba(255, 255, 255, 1);
   cursor: pointer;
 }
 
 #delay-config-box {
-  @include full_wh;
-  @include style_common(25px, rgba(191, 203, 206, 0.4));
-  @include flex_config(0, center);
+  @include global.full_wh;
+  @include global.style_common(25px, rgba(191, 203, 206, 0.4));
+  @include global.flex_config(0, center);
 
   div {
     width: 20%;
     height: 40%;
-    @include flex_center;
+    @include global.flex_center;
     font-size: 40px;
   }
 
   div:nth-child(1),
   div:nth-child(3) {
-    @include style_common(12px, rgba($color: #494c54, $alpha: 1));
+    @include global.style_common(12px, rgba($color: #494c54, $alpha: 1));
 
     input {
-      @include full_wh;
+      @include global.full_wh;
       outline: none;
       border: none;
       background: rgba(255, 255, 255, 0);

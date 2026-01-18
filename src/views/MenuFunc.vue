@@ -83,37 +83,37 @@ const commit = () => {
 <style lang="scss" scoped>
 .isSelect {
   color: rgb(219, 141, 141) !important;
-  @include style_common(null, rgba($color: #494c54, $alpha: 1) !important, 2px solid rgba(217, 224, 226, 1));
+  @include global.style_common(null, rgba($color: #494c54, $alpha: 1) !important, 2px solid rgba(217, 224, 226, 1));
 }
 #menu-func-content {
-  @include wh(60%, 30%, 1200px, 600px);
-  @include ab_center;
+  @include global.wh(60%, 30%, 1200px, 600px);
+  @include global.ab_center;
   z-index: 66;
-  @include style_common(50px, rgba(255, 255, 255, 1));
-  @include flex_config(0, space-around);
+  @include global.style_common(50px, rgba(255, 255, 255, 1));
+  @include global.flex_config(0, space-around);
   padding: 25px;
-  @include font_config(1.4em, rgba(255, 255, 255, 1));
+  @include global.font_config(1.4em, rgba(255, 255, 255, 1));
   div {
-    @include wh(25%, 60%);
-    @include style_common(25px, rgba($color: #494c54, $alpha: 1));
-    @include flex_center;
+    @include global.wh(25%, 60%);
+    @include global.style_common(25px, rgba($color: #494c54, $alpha: 1));
+    @include global.flex_center;
     cursor: pointer;
   }
   input {
-    @include full_wh;
+    @include global.full_wh;
     outline: none;
     border: none;
     text-align: center;
-    @include font_config(20px);
-    @include style_common(20px, rgba(255, 255, 255, 1), 3px solid rgba(217, 224, 226, 1));
+    @include global.font_config(20px);
+    @include global.style_common(20px, rgba(255, 255, 255, 1), 3px solid rgba(217, 224, 226, 1));
   }
   #commit-box {
-    @include wh(90px, 40px);
-    @include pos_ab(12px, 20px, 2);
+    @include global.wh(90px, 40px);
+    @include global.pos_ab(12px, 20px, 2);
     cursor: pointer;
-    @include flex_center;
-    @include style_common(12px, rgba(210, 168, 169, 0.5));
-    @include font_config(20px, rgba(255, 255, 255, 1));
+    @include global.flex_center;
+    @include global.style_common(12px, rgba(210, 168, 169, 0.5));
+    @include global.font_config(20px, rgba(255, 255, 255, 1));
   }
 }
 </style>
