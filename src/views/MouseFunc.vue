@@ -160,33 +160,33 @@ const commit = () => {
 <style lang="scss" scoped>
 .isSelect {
   color: rgb(219, 141, 141) !important;
-  @include style_common(null, rgba($color: #494c54, $alpha: 1) !important, 2px solid rgba(217, 224, 226, 1));
+  @include global.style_common(null, rgba($color: #494c54, $alpha: 1) !important, 2px solid rgba(217, 224, 226, 1));
 }
 #mouse-func-content {
-  @include wh(600px, 600px, 600px, 600px);
-  @include ab_center;
+  @include global.wh(600px, 600px, 600px, 600px);
+  @include global.ab_center;
   z-index: 66;
-  @include style_common(50%, rgba(255, 255, 255, 1));
-  @include grid_config(8, 8, 15px, 16px);
+  @include global.style_common(50%, rgba(255, 255, 255, 1));
+  @include global.grid_config(repeat(8, 1fr), repeat(8, 1fr), 15px, 16px);
   padding: 25px;
-  @include font_config(1.4em, rgba(255, 255, 255, 1));
+  @include global.font_config(1.4em, rgba(255, 255, 255, 1));
   div {
-    @include style_common(39px, rgba($color: #494c54, $alpha: 1));
+    @include global.style_common(39px, rgba($color: #494c54, $alpha: 1));
     cursor: pointer;
   }
   input {
-    @include full_wh;
+    @include global.full_wh;
     background: rgba(255, 255, 255, 0);
     outline: none;
     border: none;
     text-align: center;
-    @include font_config(35px, rgba(255, 255, 255, 1));
+    @include global.font_config(35px, rgba(255, 255, 255, 1));
     overflow: hidden !important;
   }
 
   .div1 {
     grid-area: 2 / 2 / 8 / 8;
-    @include style_common(50%, rgba(255, 255, 255, 1), null, 0 0 0 2px #494c54);
+    @include global.style_common(50%, rgba(255, 255, 255, 1), null, 0 0 0 2px #494c54);
   }
   .div2 {
     grid-area: 4 / 1 / 6 / 3;
@@ -202,38 +202,38 @@ const commit = () => {
   }
   .div6 {
     grid-area: 3 / 3 / 5 / 4;
-    @include flex_center;
+    @include global.flex_center;
     text-align: center;
   }
   .div7 {
     grid-area: 3 / 4 / 6 / 6;
-    @include flex_config(1, space-between);
+    @include global.flex_config(1, space-between);
     overflow: hidden;
-    @include style_common(null, rgba(255, 255, 255, 1), 1.5px solid #494c54);
+    @include global.style_common(null, rgba(255, 255, 255, 1), 1.5px solid #494c54);
     input {
-      @include wh(100%, 30%);
+      @include global.wh(100%, 30%);
       background: rgba(255, 255, 255, 1);
       outline: none;
       text-align: center;
-      @include font_config(18px, rgba(51, 51, 51, 1));
+      @include global.font_config(18px, rgba(51, 51, 51, 1));
     }
     span {
-      @include wh(100%, 30%);
+      @include global.wh(100%, 30%);
       background: rgba($color: #494c54, $alpha: 1);
       color: rgba(255, 255, 255, 1);
-      @include flex_center;
+      @include global.flex_center;
     }
   }
   .div8 {
     grid-area: 3 / 6 / 5 / 7;
-    @include flex_center;
+    @include global.flex_center;
     text-align: center;
   }
   .div9 {
     grid-area: 6 / 4 / 7 / 6;
     background: rgba(210, 168, 169, 0.8);
-    @include flex_center;
-    @include font_config(20px, rgba(255, 255, 255, 1));
+    @include global.flex_center;
+    @include global.font_config(20px, rgba(255, 255, 255, 1));
     cursor: pointer;
   }
 }

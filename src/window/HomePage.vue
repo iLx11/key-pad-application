@@ -382,9 +382,9 @@ const showAppInfo = () => {
 
 <style lang="scss">
 #app-info {
-  @include full_wh;
-  @include pos_ab;
-  // @include style_common(12px, rgba(51, 51, 51, 0.2));
+  @include global.full_wh;
+  @include global.pos_ab;
+  // @include global.style_common(12px, rgba(51, 51, 51, 0.2));
   z-index: 88;
 }
 #window-title {
@@ -402,27 +402,27 @@ const showAppInfo = () => {
   width: 80px;
   height: 30px;
   word-break: keep-all;
-  @include flex_center;
-  @include style_common(12px, rgba(51, 51, 51, 0.2));
+  @include global.flex_center;
+  @include global.style_common(12px, rgba(51, 51, 51, 0.2));
   font-size: 17px;
   position: relative;
   #mes-box {
     width: 150px;
     height: 70px;
-    @include pos_ab(-84px, 50%, 3);
+    @include global.pos_ab(-84px, 50%, 3);
     transform: translateX(-50%);
 
     padding: 10px;
     word-break: break-all;
     display: none;
-    @include style_common(9px, rgba(103, 109, 115, 1));
+    @include global.style_common(9px, rgba(103, 109, 115, 1));
   }
   #mes-box::after {
     content: '';
     width: 30px;
     height: 10px;
     transform: translateX(-50%);
-    @include pos_ab(-10px, 50%, 0);
+    @include global.pos_ab(-10px, 50%, 0);
     background: rgba(103, 109, 115, 1);
     clip-path: polygon(0 100%, 50% 0, 100% 100%, 0 100%);
   }
@@ -434,16 +434,16 @@ const showAppInfo = () => {
 }
 
 #cover {
-  @include full_wh;
-  @include ab_center;
-  @include style_common(15px, rgba(51, 51, 51, 0.2));
+  @include global.full_wh;
+  @include global.ab_center;
+  @include global.style_common(15px, rgba(51, 51, 51, 0.2));
   z-index: 998;
 }
 
 .container {
   width: 95%;
   height: 100%;
-  @include pos_ab(50%, 50%, 0);
+  @include global.pos_ab(50%, 50%, 0);
   transform: translate(-52%, -50%);
   border: 10px solid rgba(15, 16, 23, 1);
   border-radius: 4em;
@@ -459,23 +459,23 @@ const showAppInfo = () => {
 }
 
 #home-cotent {
-  @include wh(100%, 400px);
-  @include grid_config(7, 5);
+  @include global.wh(100%, 400px);
+  @include global.grid_config(repeat(7, 1fr), repeat(5, 1fr));
   overflow: hidden;
 }
 .div1 {
   grid-area: 1 / 1 / 3 / 2;
-  @include flex_config(1, space-around);
+  @include global.flex_config(1, space-around);
   div {
     width: 75px;
     height: 75px;
-    @include style_common(50%, rgba(12, 14, 20, 1));
+    @include global.style_common(50%, rgba(12, 14, 20, 1));
     cursor: pointer;
   }
 }
 .div2 {
   grid-area: 1 / 2 / 3 / 8;
-  @include grid_config(7, 3, 16px, 16px);
+  @include global.grid_config(repeat(7, 1fr), repeat(3, 1fr), 16px, 16px);
 
   padding-left: 10px;
   div {
@@ -483,7 +483,7 @@ const showAppInfo = () => {
     cursor: pointer;
   }
   img {
-    @include full_wh;
+    @include global.full_wh;
   }
   img[src=''] {
     opacity: 0;
@@ -520,16 +520,16 @@ const showAppInfo = () => {
   }
   .div8 {
     grid-area: 3 / 4 / 4 / 8;
-    @include flex_config(0, flex-start);
+    @include global.flex_config(0, flex-start);
     padding: 5px;
     color: rgba(255, 255, 255, 1);
     user-select: none;
     #send-box {
       width: 90px;
       height: 100%;
-      @include style_common(2px, rgba(191, 205, 211, 0.909));
+      @include global.style_common(2px, rgba(191, 205, 211, 0.909));
       word-break: keep-all;
-      @include flex_center;
+      @include global.flex_center;
       font-size: 15px;
       margin-right: 15px;
     }
@@ -537,12 +537,12 @@ const showAppInfo = () => {
       width: 170px;
       height: 100%;
       background: rgba(191, 205, 211, 0.7);
-      @include flex_config(0, space-between);
+      @include global.flex_config(0, space-between);
       > div {
         width: 30%;
         height: 100%;
         background: rgba(51, 51, 51, 0.4);
-        @include flex_center;
+        @include global.flex_center;
         font-size: 20px;
         position: relative;
       }
@@ -551,7 +551,7 @@ const showAppInfo = () => {
         // height: 20px;
         font-size: 9px;
         transform: rotate(-90deg);
-        @include pos_ab(11px, -5px, 3);
+        @include global.pos_ab(11px, -5px, 3);
         background: rgba(51, 51, 51, 0);
       }
     }
@@ -560,19 +560,19 @@ const showAppInfo = () => {
 .div3 {
   grid-area: 3 / 1 / 6 / 6;
   padding-top: 15px;
-  @include flex_config(0, flex-start);
+  @include global.flex_config(0, flex-start);
 
   > div {
     width: 100%;
     height: 210px;
-    @include grid_config(4, 2, 15px, 15px);
+    @include global.grid_config(repeat(4, 1fr), repeat(2, 1fr), 15px, 15px);
     // background: rgba($color: #000000, $alpha: 0.4);
     background-color: #cfaaac;
     background-image: linear-gradient(62deg, #cfaaac 0%, #a9b7c0 100%);
     border-radius: 12px;
     div {
       cursor: pointer;
-      @include style_common(12px, rgba($color: #000000, $alpha: 0.4));
+      @include global.style_common(12px, rgba($color: #000000, $alpha: 0.4));
     }
   }
 }
@@ -580,7 +580,7 @@ const showAppInfo = () => {
   grid-area: 3 / 6 / 6 / 8;
   width: 210px;
   height: 210px;
-  @include style_common(50%, rgba(12, 14, 20, 1));
+  @include global.style_common(50%, rgba(12, 14, 20, 1));
   position: fixed;
   right: -40px;
   bottom: 20px;

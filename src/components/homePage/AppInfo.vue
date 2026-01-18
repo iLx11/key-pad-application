@@ -72,32 +72,32 @@ const scrollToBottom = () => {
 
 <style lang="scss" scoped>
 #app-info-box {
-  @include wh(60%, 80%);
-  @include ab_center;
+  @include global.wh(60%, 80%);
+  @include global.ab_center;
   left: 47%;
-  @include style_common(25px, rgba(255, 255, 255, 1));
-  @include flex_config(1, flex-start);
+  @include global.style_common(25px, rgba(255, 255, 255, 1));
+  @include global.flex_config(1, flex-start);
   padding: 3em;
   overflow-y: scroll;
-  @include font_config(18px, rgba(51, 51, 51, 0.8));
+  @include global.font_config(18px, rgba(51, 51, 51, 0.8));
   user-select: none;
   #info-centent {
-    @include wh(100%, auto);
-    @include flex_config(1, flex-start);
+    @include global.wh(100%, auto);
+    @include global.flex_config(1, flex-start);
   }
   span {
-    @include font_config(50px, rgba(51, 51, 51, 0.6));
+    @include global.font_config(50px, rgba(51, 51, 51, 0.6));
   }
   #check-version {
-    @include wh(200px, 50px);
+    @include global.wh(200px, 50px);
     margin-top: 1em;
-    @include style_common(25px, rgba(145, 208, 156, 0.4), null, $shadow1);
-    @include flex_center;
+    @include global.style_common(25px, rgba(145, 208, 156, 0.4), null, global.$shadow1);
+    @include global.flex_center;
     cursor: pointer;
   }
   #good-text {
     margin-top: 68px;
-    @include font_config(14px, rgba(51, 51, 51, 0.6));
+    @include global.font_config(14px, rgba(51, 51, 51, 0.6));
     text-align: center;
     cursor: pointer;
   }

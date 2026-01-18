@@ -40,7 +40,7 @@ import { RouterLink, RouterView } from 'vue-router'
 }
 
 
-@include app_common;
+@include global.app_common;
 
 #app {
   overflow: hidden;

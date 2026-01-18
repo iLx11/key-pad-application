@@ -97,14 +97,14 @@ defineExpose({
   border-radius: 25px;
   box-shadow: 1.1px 0px 10.8px -34px rgba(0, 0, 0, 0.059), 7px 0px 81px -34px rgba(0, 0, 0, 0.12);
   border: 0.1 solid rgba(0, 0, 0, 0.12);
-  @include flex_config(0, flex-start);
+  @include global.flex_config(0, flex-start);
   padding: 2em 0.2em;
   z-index: 9999;
   animation: begin 0.3s ease-in-out;
   color: var(--text-color-1);
   text-align: center;
   div {
-    @include flex-center;
+    @include global.flex-center;
   }
   #font-box {
     width: 20%;

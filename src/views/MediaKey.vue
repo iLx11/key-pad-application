@@ -143,14 +143,14 @@ const commit = (index: number) => {
 
 <style lang="scss" scoped>
 #media-key-content {
-  @include wh(70%, 60%, 600px, 500px);
-  @include ab_center;
+  @include global.wh(70%, 60%, 600px, 500px);
+  @include global.ab_center;
   z-index: 66;
-  @include style_common(25px, rgba($color: #494c54, $alpha: 1));
+  @include global.style_common(25px, rgba($color: #494c54, $alpha: 1));
   ul {
-    @include full_wh;
+    @include global.full_wh;
     // margin-right: 10px;
-    @include flex_config(0, flex-start, wrap);
+    @include global.flex_config(0, flex-start, wrap);
     overflow: scroll;
     padding: 1.5em;
     li {
@@ -159,8 +159,8 @@ const commit = (index: number) => {
       margin: 4.1%;
       cursor: pointer;
       color: rgba(51, 51, 51, 0.8);
-      @include style_common(12px, rgba(255, 255, 255, 1));
-      @include flex_center;
+      @include global.style_common(12px, rgba(255, 255, 255, 1));
+      @include global.flex_center;
       font-size: 20px;
       span {
         text-align: center;
@@ -170,11 +170,11 @@ const commit = (index: number) => {
   #commit-box {
     width: 120px;
     height: 50px;
-    @include pos_ab(20px, 20px, 2);
-    @include style_common(12px, rgba(210, 168, 169, 1));
+    @include global.pos_ab(20px, 20px, 2);
+    @include global.style_common(12px, rgba(210, 168, 169, 1));
     cursor: pointer;
-    @include flex_center;
-    @include font_config(20px, rgba(255, 255, 255, 1));
+    @include global.flex_center;
+    @include global.font_config(20px, rgba(255, 255, 255, 1));
   }
 }
 </style>

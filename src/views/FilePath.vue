@@ -57,43 +57,43 @@ const commit = () => {
 
 <style lang="scss" scoped>
 #file-path-content {
-  @include wh(60%, 40%, 600px, 300px);
-  @include ab_center;
+  @include global.wh(60%, 40%, 600px, 300px);
+  @include global.ab_center;
   z-index: 66;
   // background: rgba($color: #000000, $alpha: 0.3);
   #file-text {
-    @include wh(100%, 60%);
-    @include style_common(35px 35px 0 0, rgba($color: #494c54, $alpha: 1));
+    @include global.wh(100%, 60%);
+    @include global.style_common(35px 35px 0 0, rgba($color: #494c54, $alpha: 1));
     color: rgba(255, 255, 255, 1);
     padding: 1.2em;
     font-size: 20px;
   }
   #key-input-box {
-    @include wh(100%, 70%);
-    @include style_common(30px 30px 12px 12px, rgba(255, 255, 255, 1));
-    @include pos_ab(0, 0, 2);
-    @include flex_center;
+    @include global.wh(100%, 70%);
+    @include global.style_common(30px 30px 12px 12px, rgba(255, 255, 255, 1));
+    @include global.pos_ab(0, 0, 2);
+    @include global.flex_center;
     overflow: hidden;
     #file-path-show {
-      @include wh(80%, 50%);
+      @include global.wh(80%, 50%);
       font-size: 35px;
       word-break: break-all;
       cursor: pointer;
-      @include flex_config(1, space-around);
+      @include global.flex_config(1, space-around);
       color: rgba(119, 119, 119, 0.8);
       span {
         width: 100%;
         // height: 30px;
-        @include font_config(24px !important, rgba(73, 76, 84, 0.8));
+        @include global.font_config(24px !important, rgba(73, 76, 84, 0.8));
       }
     }
     #commit-box {
-      @include wh(120px, 50px);
-      @include pos_ab(20px, 20px, 2);
+      @include global.wh(120px, 50px);
+      @include global.pos_ab(20px, 20px, 2);
       cursor: pointer;
-      @include style_common(12px, rgba(210, 168, 169, 0.8));
-      @include flex_center;
-      @include font_config(20px, rgba(255, 255, 255, 1));
+      @include global.style_common(12px, rgba(210, 168, 169, 0.8));
+      @include global.flex_center;
+      @include global.font_config(20px, rgba(255, 255, 255, 1));
     }
   }
 }
