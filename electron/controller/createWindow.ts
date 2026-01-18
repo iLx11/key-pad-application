@@ -40,6 +40,7 @@ export default class CreateWindow {
       parentId: null, //父窗口 id   子窗口永远显示在父窗口顶部 【父窗口可以操作】
       modal: true //模态窗口 -- 模态窗口是禁用父窗口的子窗口，创建模态窗口必须设置 parent 和 modal 选项 【父窗口不能操作】
     }
+    
     this.defaultOptions = {
       width: 900,
       height: 700,
