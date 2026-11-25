@@ -19,6 +19,10 @@ const router = createRouter({
       component: () => import('../window/ScreenEditorPage.vue')
     },
     {
+      path: '/pet',
+      component: () => import('../window/PetPreviewPage.vue')
+    },
+    {
       path: '/config',
       component: () => import('../window/KeyConfigPage.vue'),
       // component: KeyConfigPage,

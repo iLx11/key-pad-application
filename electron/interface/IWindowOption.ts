@@ -15,6 +15,9 @@ export default interface IWindowOption {
   minimizable: boolean
   maximizable: boolean
   frame: boolean
+  thickFrame?: boolean
+  hasShadow?: boolean
+  roundedCorners?: boolean
   show: boolean
   parent?: BrowserWindow
   modal: boolean

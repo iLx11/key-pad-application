@@ -46,6 +46,9 @@ export default defineConfig({
           build: {
             // 将入口文件转为 js 后输出到指定目录
             outDir: 'appDir/main',
+            rollupOptions: {
+              external: [/^node:/],
+            },
           },
         },
       },

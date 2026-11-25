@@ -51,12 +51,6 @@ const menuFunc = async (index: number) => {
     for (let i = 0; i < 10; i++) {
       configStore.setCurMenu(i)
       resetCurMenu()
-      let tempObj = {
-        keyConfig: configStore.layerKeyConfig,
-        screenConfig: configStore.screenData
-      }
-      // 存储在全层数据
-      configStore.setMenuConfig(JSON.stringify(tempObj))
     }
     configStore.setCurMenu(curMenu)
     XBox.popMes('清除所有层成功')
@@ -64,12 +58,11 @@ const menuFunc = async (index: number) => {
 }
 
 const resetCurMenu = () => {
-  // 清空单层数据
   resetData()
-  let img = document.querySelectorAll('img')
-  for (let i = 0; i < 3; i++) {
-    img[i].src = ''
-  }
+  configStore.setMenuConfig(JSON.stringify({
+    keyConfig: configStore.layerKeyConfig,
+    screenConfig: configStore.screenData
+  }))
 }
 
 const menuArr = reactive([

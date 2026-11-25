@@ -1,72 +1,19 @@
-const os = require('os')
-const path = require('path')
-const Crypto = require('crypto')
 // png 文件转像素
 const pngparse = require('pngparse')
-const sharp = require('sharp')
-// const mime = require('mime')
-const fs = require('fs-extra')
 
 export default class ImageToHexArray{
   static configArray
   static threshold
   static generate = (picData, thresholdData, config) => {
-    // console.info('thresholdData', thresholdData)
-    // console.info('config', config)
-    this.configArray = config
-    this.threshold = thresholdData
     return new Promise((resolve, reject) => {
-      this.convert(this.generateTemFile(picData), function (err, hex) {
-        if (!err) {
-          // let dataList = hex.split(',')
-          resolve(hex)
-        } else {
-          reject(err)
-        }
+      const input = Buffer.from(picData.replace(/^data:image\/\w+;base64,/, ''), 'base64')
+      pngparse.parseBuffer(input, (error, image) => {
+        if (error) return reject(error)
+        this.configArray = config
+        this.threshold = thresholdData
+        const pixels = this.imageDataToHexArray(image)
+        resolve(config[3] == 0 ? this.hex2hex(pixels.toString('hex')) : pixels)
       })
-    })
-  }
-
-  // 根据 base64 生成临时文件
-  static generateTemFile(base64) {
-    let hashname = Crypto.createHash('md5').update('angular-tmp-img').digest('hex') + '.bmp'
-    let temFilePath = path.join(os.tmpdir(), hashname)
-    let dataBuffer = Buffer.from(base64.replace(/^data:image\/\w+;base64,/, ''), 'base64')
-    fs.writeFileSync(temFilePath, dataBuffer)
-    return temFilePath
-  }
-
-  // ---------------------------------- TODO ---------------------------------------
-  static convert(filename, callback) {
-    let _this = this
-    // 获取文件类型
-    // let ext = mime.getType(filename)
-    // if (ext == 'image/png') {
-    // 图片取模
-    _this.pngtolcd(filename, function (err, buffer) {
-      err ? callback(err, null) : callback(null, _this.configArray[3] == 0 ? _this.hex2hex(buffer.toString('hex')) : buffer)
-    })
-  }
-
-  // 图片取模
-  static pngtolcd = (filename, callback) => {
-    let _this = this
-    // ------------------------- TODO ---------------------------------------
-    // 获取图片的数据对象
-    pngparse.parseFile(filename, function (err, img) {
-      if (err) {
-        let bufferStirng = _this.imgFileToBuffer(filename)
-        return callback(null, bufferStirng)
-      }
-      let buffer = _this.imageDataToHexArray(img)
-      callback(null, buffer)
-    })
-  }
-
-  // 图像转 buffer 数组
-  static imgFileToBuffer = (filename) => {
-    sharp(filename).toBuffer().then(outputBuffer => {
-      return outputBuffer
     })
   }
 
@@ -248,11 +195,7 @@ export default class ImageToHexArray{
         pos += 4
       }
     }
-    // 更新图像数据为缓冲区中的数据
-    // imageData.data = buffer
-    imageData.data.set(buffer)
-    return imageData
-    // return new ImageData(new Uint8ClampedArray(buffer), imageData.width, imageData.height)
+    return { ...imageData, data: buffer }
   }
 
   // 获取指定位置的像素值
@@ -301,13 +244,4 @@ export default class ImageToHexArray{
     return bytes
   }
 
-  static pngtohexarray = (filename, callback) => {
-    this.pngtolcd(filename, function (err, buffer) {
-      if (err) {
-        callback(err, null)
-      } else {
-        callback(null, this.hex2hex(buffer.toString('hex')))
-      }
-    })
-  }
 }
