@@ -54,8 +54,8 @@ const connectHardware = async () => {
 }
 
 // 发送数据
-const sendData = async (dataStr: string) => {
-  return await ipcRenderer.invoke('send-data', dataStr)
+const sendData = async (data: string | Uint8Array) => {
+  return await ipcRenderer.invoke('send-data', data)
 }
 
 // 打开新窗口
@@ -94,7 +94,7 @@ contextBridge.exposeInMainWorld('myApi', {
   latestDownload,
   readShortcutsFile,
   delItem,
-  storageMenu, 
+  storageMenu,
   getMenu,
   getConfigFile,
   writeConfigFile,
@@ -106,6 +106,24 @@ contextBridge.exposeInMainWorld('myApi', {
   getFilePath,
   waitSign,
   connectHardware,
+  readDeviceScreens: (knownGeneration?: number) => ipcRenderer.invoke('device-screens', knownGeneration),
+  readDeviceButtons: () => ipcRenderer.invoke('device-buttons'),
+  setDeviceConfiguring: (enabled: boolean) => ipcRenderer.invoke('device-configuring', enabled),
+  pcPerformance: () => ipcRenderer.invoke('pc-performance'),
+  livePerformance: (menu: number, metrics?: number[]) => ipcRenderer.invoke('live-performance', menu, metrics),
+  petAction: (command: number, value = 0) => ipcRenderer.invoke('pet-action', command, value),
+  getPetAiActivity: () => ipcRenderer.invoke('pet-ai-activity-get'),
+  onPetAiActivity: (callback: (activity: unknown) => void) => {
+    const listener = (_event: unknown, activity: unknown) => callback(activity)
+    ipcRenderer.on('pet-ai-activity', listener)
+    return () => ipcRenderer.removeListener('pet-ai-activity', listener)
+  },
+  getPetAi: () => ipcRenderer.invoke('pet-ai-get'),
+  savePetAi: (settings: object) => ipcRenderer.invoke('pet-ai-save', settings),
+  testPetAi: (kind: 'connection' | 'blink') => ipcRenderer.invoke('pet-ai-test', kind),
+  liveOled: (operation?: object) => ipcRenderer.invoke('live-oled', operation),
+  fetchScreenValue: (url: string, field: string) => ipcRenderer.invoke('screen-api-value', url, field),
+  updateFirmware: () => ipcRenderer.invoke('update-firmware'),
   sendData,
   resizeImage,
   generateResultArray,

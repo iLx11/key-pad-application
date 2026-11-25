@@ -1,5 +1,6 @@
 import { ref, computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
+import type { ScreenFrame } from '../components/screenPage/screenContent'
 
 interface IConfigKey {
   [eventIndex: number]: {
@@ -77,13 +78,8 @@ export const useConfigStore = defineStore('config', () => {
     curScreen.value = cur
   }
   // 编辑图片的数据
-  const screenData = reactive(
-    new Array(3).fill(
-      new Object({
-        baseData: '',
-        buffData: []
-      })
-    )
+  const screenData = reactive<ScreenFrame[]>(
+    Array.from({ length: 3 }, () => ({ baseData: '', buffData: [] }))
   )
   const setScreenData = (objData: string) => {
     screenData[curScreen.value] = JSON.parse(objData)

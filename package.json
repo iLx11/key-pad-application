@@ -11,6 +11,7 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
+    "firmware:update": "node scripts/firmware-update.cjs",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "electron:build": "rimraf dist && vite build && electron-builder"
   },
@@ -29,17 +30,21 @@
     }
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
     "axios": "^1.7.2",
+    "debug": "4.3.4",
     "electron-store": "^8.1.0",
     "fs-extra": "^11.1.0",
     "graceful-fs": "^4.2.0",
     "ilx1-x-box": "^1.0.0",
+    "ms": "2.1.2",
     "node-gyp-build": "^4.8.0",
     "pinia": "^2.1.6",
     "pngparse": "^2.0.1",
     "serialport": "^12.0.0",
     "sharp": "^0.33.4",
-    "tui-image-editor": "^3.15.3"
+    "tui-image-editor": "^3.15.3",
+    "zod": "3.25.76"
   },
   "devDependencies": {
     "@serialport/binding-mock": "10.2.2",
@@ -60,12 +65,10 @@
     "@types/node": "^18.17.17",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vue/tsconfig": "^0.4.0",
-    "debug": "4.3.4",
     "electron": "35.2.0",
     "electron-builder": "^26.0.12",
     "electron-rebuild": "^3.2.9",
     "ilx1-x-style": "^1.1.2",
-    "ms": "2.1.2",
     "npm-run-all2": "^6.0.6",
     "rimraf": "^5.0.5",
     "sass": "^1.69.0",
@@ -125,7 +128,15 @@
     "files": [
       "./dist",
       "./electron",
-      "./appDir"
+      "./appDir",
+      "./scripts/firmware-update.cjs"
+    ],
+    "extraResources": [
+      {
+        "from": "node_modules/ms",
+        "to": "app/node_modules/ms",
+        "filter": ["index.js", "package.json", "license.md"]
+      }
     ],
     "asar": false,
     "nsis": {

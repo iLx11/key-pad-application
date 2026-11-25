@@ -67,7 +67,7 @@ watch(
   <PopBox ref="popBoxRef" />
   <div class="container">
     <WindowTitle>
-      <template #title> KeyConfig </template>
+      <template #title>按键配置</template>
     </WindowTitle>
     <div id="key-config-content">
       <div class="div1">

@@ -1,0 +1,282 @@
+{
+  "width": 56,
+  "height": 44,
+  "anchorX": 28,
+  "anchorY": 41,
+  "fruitContactX": 47,
+  "tickRateHz": 16,
+  "compatibilityFrames": [
+    "idle",
+    "blink",
+    "walk_gather",
+    "walk_push",
+    "walk_air",
+    "walk_land",
+    "sleep",
+    "eat_bite",
+    "eat_chew"
+  ],
+  "clips": {
+    "idle": {
+      "first": 0,
+      "ticks": [
+        1
+      ],
+      "loop": true
+    },
+    "blink": {
+      "first": 1,
+      "ticks": [
+        2
+      ],
+      "loop": false
+    },
+    "walk": {
+      "first": 9,
+      "ticks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": true
+    },
+    "jump": {
+      "first": 17,
+      "ticks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "sleep": {
+      "first": 25,
+      "ticks": [
+        6,
+        7,
+        6,
+        7
+      ],
+      "loop": true
+    },
+    "daydream": {
+      "first": 29,
+      "ticks": [
+        12,
+        4,
+        6,
+        6
+      ],
+      "loop": true
+    },
+    "eat": {
+      "first": 33,
+      "ticks": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": true
+    },
+    "run": {
+      "first": 37,
+      "ticks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": true
+    },
+    "flee": {
+      "first": 45,
+      "ticks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": true,
+      "loopFrom": 4
+    },
+    "trip_angry": {
+      "first": 53,
+      "ticks": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "loop": false
+    },
+    "gaze_owner": {
+      "first": 63,
+      "ticks": [
+        15,
+        12,
+        1,
+        2,
+        8,
+        10
+      ],
+      "loop": true
+    },
+    "stand_watch": {
+      "first": 74,
+      "poses": [
+        0,
+        74,
+        75,
+        76,
+        75,
+        74,
+        0
+      ],
+      "ticks": [
+        2,
+        3,
+        23,
+        2,
+        25,
+        4,
+        3
+      ],
+      "loop": false
+    },
+    "inspect_table": {
+      "first": 69,
+      "ticks": [
+        3,
+        3,
+        12,
+        8,
+        10
+      ],
+      "loop": true,
+      "loopFrom": 2
+    },
+    "binky": {
+      "first": 77,
+      "poses": [
+        18,
+        19,
+        77,
+        78,
+        22,
+        23,
+        24,
+        0
+      ],
+      "ticks": [
+        2,
+        2,
+        3,
+        2,
+        2,
+        2,
+        2,
+        3
+      ],
+      "loop": false
+    },
+    "groom_fur": {
+      "first": 79,
+      "poses": [
+        0,
+        79,
+        80,
+        79,
+        80,
+        79,
+        80,
+        79,
+        0
+      ],
+      "ticks": [
+        3,
+        5,
+        6,
+        4,
+        6,
+        4,
+        6,
+        4,
+        2
+      ],
+      "loop": false
+    },
+    "groom_ear": {
+      "first": 81,
+      "poses": [
+        0,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        85,
+        87,
+        88,
+        0
+      ],
+      "ticks": [
+        2,
+        4,
+        4,
+        4,
+        5,
+        3,
+        5,
+        3,
+        7,
+        7,
+        4
+      ],
+      "loop": false
+    }
+  },
+  "biteMouth": [
+    [
+      45,
+      37
+    ],
+    [
+      46,
+      38
+    ],
+    [
+      46,
+      38
+    ],
+    [
+      46,
+      37
+    ]
+  ]
+}
